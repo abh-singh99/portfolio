@@ -72,6 +72,7 @@ test.describe('case studies', () => {
       await expect(page.getByRole('heading', { level: 1 })).toHaveText(p.name);
       await expect(page.getByText(p.metric.value).first()).toBeVisible();
       await expect(page).toHaveTitle(new RegExp(p.name));
+      await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
     });
   }
 
@@ -121,7 +122,8 @@ test('SEO files are served', async ({ request }) => {
   const sitemap = await request.get('/sitemap.xml');
   expect(sitemap.ok()).toBeTruthy();
   const xml = await sitemap.text();
-  for (const p of projects) expect(xml).toContain(`/work/${p.slug}`);
+  expect(xml).toContain(site.url);
+  for (const p of projects) expect(xml).not.toContain(`/work/${p.slug}`);
   expect((await request.get('/robots.txt')).ok()).toBeTruthy();
   expect((await request.get('/opengraph-image')).headers()['content-type']).toContain('image/png');
 });

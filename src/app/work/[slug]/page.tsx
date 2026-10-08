@@ -16,7 +16,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const project = getProject((await params).slug);
   if (!project) return {};
-  return { title: `${project.name} case study`, description: `${project.summary}. ${project.outcome}` };
+  return {
+    title: `${project.name} case study`,
+    description: `${project.summary}. ${project.outcome}`,
+    // Unlisted until case studies are linked from the site again.
+    robots: { index: false, follow: false },
+  };
 }
 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
