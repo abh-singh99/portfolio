@@ -9,7 +9,7 @@ export function Strengths() {
         <SectionHeading id="strengths-heading" eyebrow={strengths.eyebrow} lines={strengths.heading} />
         <ol className="grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
           {strengths.items.map((item, i) => (
-            <li key={item.title} className="flex flex-col gap-4 border-t border-line-hi pt-6" data-reveal>
+            <li key={item.title} className="flex flex-col items-center gap-4 border-t border-line-hi pt-6 text-center" data-reveal>
               <span className="font-mono text-label text-flame">0{i + 1}</span>
               <h3 className="text-heading font-semibold text-fg-hi">{item.title}</h3>
               <p className="text-body text-fg-muted">{item.body}</p>

@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { getProject, projects } from '@/content/projects';
 import { Container } from '@/components/layout/Container';
 import { Tag } from '@/components/ui';
+import { ProjectVideo } from '@/components/ProjectVideo';
 
 type Params = { slug: string };
 
@@ -54,6 +55,8 @@ export default async function CaseStudy({ params }: { params: Promise<Params> })
             ))}
           </ul>
         </header>
+
+        {project.media && <ProjectVideo media={project.media} />}
 
         <dl className="grid gap-8 rounded-card border border-line bg-surface-1 p-6 sm:grid-cols-2 sm:p-8 lg:grid-cols-4" data-reveal>
           <div className="flex flex-col gap-1">

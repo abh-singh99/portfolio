@@ -15,7 +15,7 @@ export function About() {
   return (
     <section id="about" aria-labelledby="about-heading" className="scroll-mt-8">
       <Container className="flex flex-col gap-10 py-24 sm:py-36">
-        <SectionHeading id="about-heading" eyebrow={about.eyebrow} lines={about.heading} />
+        <SectionHeading id="about-heading" eyebrow={about.eyebrow} lines={about.heading} align="left" />
         <div className="flex max-w-3xl flex-col gap-5" data-reveal>
           {about.body.map((p) => (
             <p key={p} className="text-lead text-fg-muted">

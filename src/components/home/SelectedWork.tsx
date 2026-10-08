@@ -2,6 +2,7 @@ import { work } from '@/content/home';
 import { projects, type Project } from '@/content/projects';
 import { Container } from '@/components/layout/Container';
 import { Pill, Tag } from '@/components/ui';
+import { ProjectVideo } from '@/components/ProjectVideo';
 import { SectionHeading } from './SectionHeading';
 
 // Stands in for a product screenshot: the suite's real numbers, laid out like
@@ -54,6 +55,7 @@ function ProjectBlock({ p }: { p: Project }) {
           </ul>
         </header>
 
+        {p.media && <ProjectVideo media={p.media} />}
         <TestSummary p={p} />
 
         <dl className="mx-auto grid w-full max-w-4xl gap-x-16 gap-y-10 md:grid-cols-2" data-reveal>

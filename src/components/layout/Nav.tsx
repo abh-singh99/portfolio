@@ -31,12 +31,29 @@ export function Nav() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const active = useActiveSection(sectionIds, pathname === '/');
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => setOpen(false), [pathname]);
 
+  // Stacked and transparent over the hero, as in the reference; once the page
+  // scrolls it folds into a solid bar so it never sits on top of content.
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 80);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-40">
-      <div className="pointer-events-auto flex items-center justify-between border-b border-line bg-surface-0 px-4 py-3 sm:pointer-events-none sm:items-start sm:border-0 sm:bg-transparent sm:px-8 sm:pt-7 sm:pb-0">
+      <div
+        data-scrolled={scrolled || undefined}
+        className={`pointer-events-auto flex items-center justify-between border-b px-4 py-3 transition-colors sm:px-8 ${
+          scrolled
+            ? 'border-line bg-surface-0'
+            : 'border-line bg-surface-0 sm:pointer-events-none sm:items-start sm:border-transparent sm:bg-transparent sm:pt-7'
+        }`}
+      >
         <Link
           href="/"
           className="pointer-events-auto rounded text-heading font-semibold tracking-tight text-fg-hi"
@@ -45,7 +62,10 @@ export function Nav() {
           <span className="text-flame">.</span>
         </Link>
 
-        <nav aria-label="Primary" className="pointer-events-auto hidden flex-col items-end sm:flex">
+        <nav
+          aria-label="Primary"
+          className={`pointer-events-auto hidden sm:flex ${scrolled ? 'flex-row items-center gap-4' : 'flex-col items-end'}`}
+        >
           {site.nav.map((item) => {
             const id = item.href.split('#')[1];
             const isActive = active === id;
@@ -58,13 +78,13 @@ export function Nav() {
               >
                 <span
                   aria-hidden="true"
-                  className={`size-1.5 rounded-full bg-current transition-opacity ${isActive ? 'opacity-100' : 'opacity-0'}`}
+                  className={`size-1.5 rounded-full bg-current transition-opacity ${isActive ? 'opacity-100' : scrolled ? 'hidden' : 'opacity-0'}`}
                 />
                 {item.label}
               </Link>
             );
           })}
-          <div className="mt-2 flex items-center gap-1">
+          <div className={`flex items-center gap-1 ${scrolled ? '' : 'mt-2'}`}>
             <a
               href={site.resume.href}
               download

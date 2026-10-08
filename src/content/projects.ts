@@ -1,3 +1,14 @@
+export type ProjectMedia = {
+  /** MP4 (H.264) in public/videos, e.g. '/videos/yeapp.mp4'. */
+  src: string;
+  /** First-frame still in public/videos, shown before play and under reduced motion. */
+  poster: string;
+  /** Phone frame for mobile apps, browser frame for web products. */
+  frame: 'phone' | 'browser';
+  /** What the clip shows, read by screen readers. */
+  caption: string;
+};
+
 export type Project = {
   slug: string;
   id: string;
@@ -17,6 +28,8 @@ export type Project = {
   strategy: { label: string; value: string }[];
   tools: string[];
   results: string[];
+  /** Optional walkthrough video. Add once a recording is available. */
+  media?: ProjectMedia;
 };
 
 export const projects: Project[] = [

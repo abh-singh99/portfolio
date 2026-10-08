@@ -7,7 +7,7 @@ export function SectionHeading({
   eyebrow,
   lines,
   size = 'statement',
-  align = 'left',
+  align = 'center',
 }: {
   id: string;
   eyebrow: string;
