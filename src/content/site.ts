@@ -6,7 +6,7 @@ export const site = {
   email: 'singh.abhay99@outlook.com',
   phone: '+91 89328 70552',
   phoneHref: 'tel:+918932870552',
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://abhaysingh.vercel.app',
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://abhsingh.vercel.app',
   resume: {
     href: '/Abhay_Pratap_Singh_QA_Engineer_Resume.pdf',
     label: 'Download CV',
