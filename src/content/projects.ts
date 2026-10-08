@@ -26,7 +26,7 @@ export const projects: Project[] = [
     summary: 'Voice-first social messaging app',
     company: 'The Product Highway',
     period: 'Jun 2026 to present',
-    platforms: ['Android', 'iOS', 'Web'],
+    platforms: ['Android', 'iOS'],
     problem:
       'A voice-first social app had to go from early builds to a public launch on two app stores.',
     contribution:
@@ -183,7 +183,7 @@ export const projects: Project[] = [
     summary: 'Dating app from the “Pop the Balloon or Find Love” show',
     company: 'The Product Highway',
     period: 'Jun 2026 to present',
-    platforms: ['Android', 'iOS', 'Web'],
+    platforms: ['Android', 'iOS'],
     problem:
       'A dating app built on a YouTube show needed every feature, from matching to live video, tested before launch.',
     contribution:

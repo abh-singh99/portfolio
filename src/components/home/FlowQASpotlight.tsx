@@ -7,7 +7,11 @@ export function FlowQASpotlight() {
     <Section id="flowqa" heading={flowqa.heading} intro={flowqa.lead}>
       <div className="flex flex-col gap-10">
         <figure className="flex flex-col gap-3" data-reveal>
-          <pre className="scroll-thin overflow-x-auto rounded-card border border-line bg-surface-1 p-5 font-mono text-body-sm text-fg sm:p-6">
+          {/* Focusable so keyboard users can scroll the snippet when it overflows. */}
+          <pre
+            tabIndex={0}
+            aria-label={flowqa.codeCaption}
+            className="scroll-thin overflow-x-auto rounded-card border border-line bg-surface-1 p-5 font-mono text-body-sm text-fg sm:p-6">
             <code>{flowqa.code}</code>
           </pre>
           <figcaption className="text-caption text-fg-muted">{flowqa.codeCaption}</figcaption>
