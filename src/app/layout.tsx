@@ -4,7 +4,6 @@ import { site } from '@/content/site';
 import { MotionProvider } from '@/providers/MotionProvider';
 import { SkipLink } from '@/components/layout/SkipLink';
 import { Nav } from '@/components/layout/Nav';
-import { Footer } from '@/components/layout/Footer';
 import { CursorLens } from '@/components/layout/CursorLens';
 import './globals.css';
 
@@ -47,7 +46,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <MotionProvider>
           <Nav />
           <main id="main">{children}</main>
-          <Footer />
         </MotionProvider>
         <CursorLens />
       </body>

@@ -2,14 +2,22 @@ import { contact } from '@/content/home';
 import { site } from '@/content/site';
 import { Container } from '@/components/layout/Container';
 import { Pill } from '@/components/ui';
+import { PerspectiveGrid } from '@/components/PerspectiveGrid';
 import { ContactForm } from './ContactForm';
 import { CopyEmail } from './CopyEmail';
 import { SectionHeading } from './SectionHeading';
 
 export function Contact() {
   return (
-    <section id="contact" aria-labelledby="contact-heading" className="scroll-mt-16 border-t border-line">
-      <Container className="grid gap-16 py-24 sm:py-36 lg:grid-cols-12 lg:gap-12">
+    <section
+      id="contact"
+      aria-labelledby="contact-heading"
+      className="relative isolate flex min-h-svh scroll-mt-16 flex-col justify-center overflow-hidden border-t border-line"
+    >
+      <PerspectiveGrid />
+
+      {/* The pointer passes through to the grid except over links, buttons and the form. */}
+      <Container className="pointer-events-none relative z-10 grid gap-16 pt-28 pb-16 sm:pt-36 lg:grid-cols-12 lg:gap-12 [&_a]:pointer-events-auto [&_button]:pointer-events-auto">
         <div className="flex flex-col gap-8 lg:col-span-6">
           <SectionHeading
             id="contact-heading"
@@ -68,9 +76,15 @@ export function Contact() {
           </p>
         </div>
 
-        <div className="lg:col-span-6" data-reveal>
+        <div className="pointer-events-auto lg:col-span-6" data-reveal>
           <ContactForm />
         </div>
+      </Container>
+
+      <Container className="relative z-10 pb-8">
+        <p className="border-t border-line pt-6 text-caption text-fg-muted">
+          © {new Date().getFullYear()} {site.name}. This site is tested with Playwright on every push.
+        </p>
       </Container>
     </section>
   );
