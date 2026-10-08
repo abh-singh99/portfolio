@@ -17,7 +17,7 @@ export const site = {
     { label: 'LinkedIn', short: 'in', href: 'https://www.linkedin.com/in/abhay-singh-9a647a369/' },
     { label: 'GitHub', short: 'gh', href: 'https://github.com/abh-singh99' },
   ],
-  builtWith: 'Hand-coded. Playwright-tested.',
+  builtWith: 'AI-built. Human-tested.',
   nav: [
     { label: 'Work', href: '/#work' },
     { label: 'About', href: '/#about' },
