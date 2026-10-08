@@ -1,8 +1,8 @@
 export const hero = {
   eyebrow: 'Abhay Pratap Singh · QA Engineer',
-  title: ['I break things', 'before your', 'users do.'],
+  title: ['I break software', 'before users do.'],
   // Index into title of the line set in the flame accent.
-  accentLine: 2,
+  accentLine: 1,
   location: 'Bengaluru, India · Open to QA roles',
   cta: { work: 'View projects', contact: 'Contact me' },
   intro:
@@ -129,13 +129,14 @@ export const credentials = {
 
 export const contact = {
   eyebrow: 'Contact',
-  heading: ['Let’s talk about', 'your QA needs.'],
+  heading: ['Let’s talk', 'about your', 'QA needs.'],
+  details: { email: 'Email', phone: 'Phone', location: 'Location' },
   body: 'Hiring for a QA role or need someone to own testing on your product? Send a note with the details.',
   availability: 'Based in Bengaluru. Open to on-site, hybrid and remote roles.',
   copyLabel: 'Copy email',
   copiedLabel: 'Email copied',
   form: {
-    name: 'Name',
+    name: 'Your name',
     email: 'Email',
     message: 'Message',
     submit: 'Send message',
@@ -144,5 +145,10 @@ export const contact = {
     error: 'Could not send. Please email me directly instead.',
     required: 'Required',
     invalidEmail: 'Enter a valid email address',
+    placeholders: {
+      name: 'Jane Cooper',
+      email: 'jane@company.com',
+      message: 'Tell me about the role or product',
+    },
   },
 };

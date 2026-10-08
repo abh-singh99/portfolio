@@ -155,6 +155,27 @@ html.lenis body {
   }
 }
 
+/* ---- Underline fields -------------------------------------------------
+   The contact form's fields are a single bottom rule. Focus thickens and
+   recolours that rule in --color-focus rather than drawing a box, so the
+   indicator matches the field's own shape. Invalid uses the error colour. */
+.field-line {
+  outline: none;
+  transition:
+    border-color var(--duration) var(--ease-snap),
+    box-shadow var(--duration) var(--ease-snap);
+}
+.field-line:focus-visible {
+  border-bottom-color: var(--color-focus);
+  box-shadow: 0 1px 0 0 var(--color-focus);
+}
+.field-line[aria-invalid='true'] {
+  border-bottom-color: var(--color-error);
+}
+.field-line[aria-invalid='true']:focus-visible {
+  box-shadow: 0 1px 0 0 var(--color-error);
+}
+
 /* ---- Paint text ---------------------------------------------------------
    Words start dim and paint in as the statement scrolls through view. The
    dim state is applied by script, so without motion the text is solid. */

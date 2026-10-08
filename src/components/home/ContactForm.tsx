@@ -61,15 +61,24 @@ export function ContactForm() {
     }
   }
 
+  // Editorial underline fields: small uppercase label, large text on one line.
   const fieldClass =
-    'field w-full rounded border border-line-hi bg-surface-0 px-3 py-2 text-body text-fg placeholder:text-fg-subtle';
+    'field-line w-full border-0 border-b border-line-hi bg-transparent px-0 pt-2 pb-3 font-display text-heading text-fg-hi placeholder:text-fg-subtle';
+  const labelClass = 'text-eyebrow font-semibold uppercase text-fg-muted';
+
+  const error = (field: keyof Errors) =>
+    errors[field] && (
+      <p id={`${field}-error`} className="text-label text-error">
+        {errors[field]}
+      </p>
+    );
 
   return (
-    <form noValidate onSubmit={onSubmit} className="flex flex-col gap-4" aria-describedby="form-status">
-      <div className="grid gap-4 sm:grid-cols-2">
+    <form noValidate onSubmit={onSubmit} className="flex flex-col gap-10" aria-describedby="form-status">
+      <div className="grid gap-10 sm:grid-cols-2">
         {(['name', 'email'] as const).map((field) => (
-          <div key={field} className="flex flex-col gap-1.5">
-            <label htmlFor={field} className="text-label font-medium text-fg-hi">
+          <div key={field} className="flex flex-col gap-2">
+            <label htmlFor={field} className={labelClass}>
               {t[field]}
             </label>
             <input
@@ -77,51 +86,46 @@ export function ContactForm() {
               name={field}
               type={field === 'email' ? 'email' : 'text'}
               autoComplete={field}
+              placeholder={t.placeholders[field]}
               aria-invalid={errors[field] ? true : undefined}
               aria-describedby={errors[field] ? `${field}-error` : undefined}
               className={fieldClass}
             />
-            {errors[field] && (
-              <p id={`${field}-error`} className="text-label text-error">
-                {errors[field]}
-              </p>
-            )}
+            {error(field)}
           </div>
         ))}
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="message" className="text-label font-medium text-fg-hi">
+      <div className="flex flex-col gap-2">
+        <label htmlFor="message" className={labelClass}>
           {t.message}
         </label>
         <textarea
           id="message"
           name="message"
-          rows={4}
+          rows={3}
+          placeholder={t.placeholders.message}
           aria-invalid={errors.message ? true : undefined}
           aria-describedby={errors.message ? 'message-error' : undefined}
-          className={`${fieldClass} resize-y`}
+          className={`${fieldClass} resize-none`}
         />
-        {errors.message && (
-          <p id="message-error" className="text-label text-error">
-            {errors.message}
-          </p>
-        )}
+        {error('message')}
       </div>
 
-      <div className="flex flex-wrap items-center gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <p id="form-status" role="status" className="text-label text-fg-muted">
+          {status === 'success' && <span className="text-success">✓ {t.success}</span>}
+          {status === 'error' && <span className="text-error">{t.error}</span>}
+        </p>
         <button
           type="submit"
           disabled={status === 'sending'}
           data-press
-          className="rounded-full bg-accent px-6 py-3 text-label font-semibold text-accent-on hover:bg-accent-hi disabled:opacity-60"
+          className="ml-auto inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-label font-semibold text-accent-on hover:bg-accent-hi disabled:opacity-60"
         >
           {status === 'sending' ? t.sending : t.submit}
+          <span aria-hidden="true">→</span>
         </button>
-        <p id="form-status" role="status" className="text-label">
-          {status === 'success' && <span className="text-success">✓ {t.success}</span>}
-          {status === 'error' && <span className="text-error">{t.error}</span>}
-        </p>
       </div>
     </form>
   );

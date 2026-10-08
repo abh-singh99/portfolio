@@ -8,20 +8,45 @@ import { SectionHeading } from './SectionHeading';
 
 export function Contact() {
   return (
-    <section id="contact" aria-labelledby="contact-heading" className="scroll-mt-8 border-t border-line">
-      <Container className="flex flex-col gap-16 py-24 sm:py-36">
-        <div className="flex flex-col items-center gap-6 text-center">
-          <SectionHeading id="contact-heading" eyebrow={contact.eyebrow} lines={contact.heading} align="center" />
-          <p className="max-w-xl text-lead text-fg-muted" data-reveal>
+    <section id="contact" aria-labelledby="contact-heading" className="scroll-mt-16 border-t border-line">
+      <Container className="grid gap-16 py-24 sm:py-36 lg:grid-cols-12 lg:gap-12">
+        <div className="flex flex-col gap-8 lg:col-span-5">
+          <SectionHeading
+            id="contact-heading"
+            eyebrow={contact.eyebrow}
+            lines={contact.heading}
+            size="section"
+            align="left"
+          />
+          <p className="max-w-md text-lead text-fg-muted" data-reveal>
             {contact.body}
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-3" data-reveal>
-            <a href={`mailto:${site.email}`} className="text-heading font-medium break-all text-link hover:text-link-hi">
-              {site.email}
-            </a>
-            <CopyEmail email={site.email} label={contact.copyLabel} copiedLabel={contact.copiedLabel} />
-          </div>
-          <div className="flex flex-wrap justify-center gap-3" data-reveal>
+
+          <dl className="flex flex-col border-t border-line" data-reveal>
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line py-4">
+              <dt className="text-label text-fg-muted">{contact.details.email}</dt>
+              <dd className="flex flex-wrap items-center gap-3">
+                <a href={`mailto:${site.email}`} className="text-body font-medium break-all text-link hover:text-link-hi">
+                  {site.email}
+                </a>
+                <CopyEmail email={site.email} label={contact.copyLabel} copiedLabel={contact.copiedLabel} />
+              </dd>
+            </div>
+            <div className="flex items-center justify-between gap-3 border-b border-line py-4">
+              <dt className="text-label text-fg-muted">{contact.details.phone}</dt>
+              <dd>
+                <a href={site.phoneHref} className="text-body text-fg-hi hover:text-link">
+                  {site.phone}
+                </a>
+              </dd>
+            </div>
+            <div className="flex items-center justify-between gap-3 border-b border-line py-4">
+              <dt className="text-label text-fg-muted">{contact.details.location}</dt>
+              <dd className="text-body text-fg-hi">{site.location}</dd>
+            </div>
+          </dl>
+
+          <div className="flex flex-wrap gap-3" data-reveal>
             <Pill href={site.resume.href} download variant="solid">
               {site.resume.label}
             </Pill>
@@ -39,15 +64,11 @@ export function Contact() {
             ))}
           </div>
           <p className="text-label text-fg-muted" data-reveal>
-            <a href={site.phoneHref} className="font-mono hover:text-fg-hi">
-              {site.phone}
-            </a>
-            <span aria-hidden="true"> · </span>
             {contact.availability}
           </p>
         </div>
 
-        <div className="mx-auto w-full max-w-2xl rounded-card border border-line bg-surface-1 p-5 sm:p-7" data-reveal>
+        <div className="lg:col-span-7 lg:pt-10" data-reveal>
           <ContactForm />
         </div>
       </Container>
