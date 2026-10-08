@@ -100,8 +100,11 @@ test.describe('contact', () => {
     test.skip(browserName !== 'chromium', 'clipboard permissions');
     await context.grantPermissions(['clipboard-read', 'clipboard-write']);
     await page.goto('/#contact');
-    await page.locator('#contact').getByRole('button', { name: 'Copy email address' }).click();
-    await expect(page.locator('#contact').getByRole('button', { name: /Copied/ })).toBeVisible();
+    // Retry the click: one that lands before hydration has no handler yet.
+    await expect(async () => {
+      await page.locator('#contact').getByRole('button', { name: /Copy email address|Copied/ }).click();
+      await expect(page.locator('#contact').getByRole('button', { name: /Copied/ })).toBeVisible({ timeout: 1000 });
+    }).toPass({ timeout: 10_000 });
     expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(site.email);
   });
 });

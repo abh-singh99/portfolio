@@ -174,9 +174,17 @@ export const projects: Project[] = [
   },
   {
     slug: 'nhs',
+    screenshots: {
+      frame: 'browser',
+      brand: { from: '#1f5fbf', to: '#0b2a5c' }, // off-token: NHS blue
+      images: [
+        { src: '/screens/nhs/nhs-uk.jpg', alt: 'NHS website for England home page', width: 1600, height: 990 },
+        { src: '/screens/nhs/nhs-111-wales.jpg', alt: 'NHS 111 Wales home page', width: 1600, height: 990 },
+      ],
+    },
     id: 'TC-04',
     name: 'NHS',
-    summary: 'UK healthcare client transaction processing system',
+    summary: 'NHS websites and a client transaction processing system',
     category: 'Healthcare',
     company: 'Sopra Steria',
     period: 'Feb 2024 to May 2026',
@@ -188,10 +196,11 @@ export const projects: Project[] = [
     outcome: 'Post-release defects fell by 40%, with full UAT sign-off before every release.',
     metric: { value: '−40%', label: 'post-release defects' },
     overview:
-      'A client transaction processing system for the NHS, the UK’s public healthcare service, handling high-volume transaction records.',
+      'Testing for the NHS, the UK’s public healthcare service, across the public NHS websites, including nhs.uk and NHS 111 Wales, and a client transaction processing system handling high-volume transaction records.',
     role: 'QA Engineer across functional, API, data and automation testing, and UAT with NHS stakeholders.',
     scope: [
       'All NHS modules',
+      'nhs.uk and NHS 111 Wales pages',
       '40+ REST API endpoints',
       'Transaction data integrity',
       'Login, navigation and critical workflows',
