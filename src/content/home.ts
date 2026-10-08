@@ -28,12 +28,6 @@ export const marquee = [
 export const about = {
   eyebrow: 'About me',
   heading: ['Quality is', 'a process,', 'not a phase.'],
-  facts: [
-    { label: 'Based in', value: 'Bengaluru, India' },
-    { label: 'In QA since', value: 'February 2024' },
-    { label: 'Currently', value: 'QA Engineer, The Product Highway' },
-    { label: 'Certified', value: 'ISTQB Foundation Level' },
-  ],
   stackEyebrow: 'Toolkit',
   stackHeading: 'The tools behind my testing.',
   body: [
