@@ -47,7 +47,7 @@ export function Contact() {
           </p>
         </div>
 
-        <div className="mx-auto w-full max-w-2xl rounded-card border border-line bg-surface-1 p-6 sm:p-10" data-reveal>
+        <div className="mx-auto w-full max-w-2xl rounded-card border border-line bg-surface-1 p-5 sm:p-7" data-reveal>
           <ContactForm />
         </div>
       </Container>

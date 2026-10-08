@@ -62,31 +62,33 @@ export function ContactForm() {
   }
 
   const fieldClass =
-    'field w-full rounded border border-line-hi bg-surface-0 px-3 py-2.5 text-body text-fg placeholder:text-fg-subtle';
+    'field w-full rounded border border-line-hi bg-surface-0 px-3 py-2 text-body text-fg placeholder:text-fg-subtle';
 
   return (
-    <form noValidate onSubmit={onSubmit} className="flex flex-col gap-5" aria-describedby="form-status">
-      {(['name', 'email'] as const).map((field) => (
-        <div key={field} className="flex flex-col gap-1.5">
-          <label htmlFor={field} className="text-label font-medium text-fg-hi">
-            {t[field]}
-          </label>
-          <input
-            id={field}
-            name={field}
-            type={field === 'email' ? 'email' : 'text'}
-            autoComplete={field}
-            aria-invalid={errors[field] ? true : undefined}
-            aria-describedby={errors[field] ? `${field}-error` : undefined}
-            className={fieldClass}
-          />
-          {errors[field] && (
-            <p id={`${field}-error`} className="text-label text-error">
-              {errors[field]}
-            </p>
-          )}
-        </div>
-      ))}
+    <form noValidate onSubmit={onSubmit} className="flex flex-col gap-4" aria-describedby="form-status">
+      <div className="grid gap-4 sm:grid-cols-2">
+        {(['name', 'email'] as const).map((field) => (
+          <div key={field} className="flex flex-col gap-1.5">
+            <label htmlFor={field} className="text-label font-medium text-fg-hi">
+              {t[field]}
+            </label>
+            <input
+              id={field}
+              name={field}
+              type={field === 'email' ? 'email' : 'text'}
+              autoComplete={field}
+              aria-invalid={errors[field] ? true : undefined}
+              aria-describedby={errors[field] ? `${field}-error` : undefined}
+              className={fieldClass}
+            />
+            {errors[field] && (
+              <p id={`${field}-error`} className="text-label text-error">
+                {errors[field]}
+              </p>
+            )}
+          </div>
+        ))}
+      </div>
 
       <div className="flex flex-col gap-1.5">
         <label htmlFor="message" className="text-label font-medium text-fg-hi">
@@ -95,7 +97,7 @@ export function ContactForm() {
         <textarea
           id="message"
           name="message"
-          rows={5}
+          rows={4}
           aria-invalid={errors.message ? true : undefined}
           aria-describedby={errors.message ? 'message-error' : undefined}
           className={`${fieldClass} resize-y`}
