@@ -1,6 +1,5 @@
 import { flowqa } from '@/content/home';
 import { Container } from '@/components/layout/Container';
-import { Pill } from '@/components/ui';
 import { SectionHeading } from './SectionHeading';
 
 export function FlowQASpotlight() {
@@ -44,14 +43,9 @@ export function FlowQASpotlight() {
               </div>
               <figcaption className="text-caption text-fg-muted">{flowqa.codeCaption}</figcaption>
             </figure>
-            <div className="flex flex-wrap items-center justify-between gap-4" data-reveal>
-              <p className="text-label text-fg-muted">
-                {flowqa.exportsLabel} <span className="font-mono text-fg">{flowqa.exports.join(', ')}</span>
-              </p>
-              <Pill href="/work/flowqa" arrow>
-                {flowqa.cta}
-              </Pill>
-            </div>
+            <p className="text-label text-fg-muted" data-reveal>
+              {flowqa.exportsLabel} <span className="font-mono text-fg">{flowqa.exports.join(', ')}</span>
+            </p>
           </div>
         </div>
       </Container>

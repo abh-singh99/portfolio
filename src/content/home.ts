@@ -60,7 +60,6 @@ export const statement =
 export const work = {
   eyebrow: 'Selected projects',
   heading: ['Products I’ve', 'helped ship.'],
-  caseStudyLabel: 'See case study',
   summaryLabel: 'Test summary',
 };
 
@@ -109,7 +108,6 @@ test('checkout with a saved part', async ({ page }) => {
 });`,
   exportsLabel: 'Exports to',
   exports: ['TypeScript', 'JavaScript', 'Python'],
-  cta: 'Read the FlowQA case study',
 };
 
 export const credentials = {

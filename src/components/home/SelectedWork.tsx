@@ -1,7 +1,6 @@
 import { work } from '@/content/home';
 import { projects, type Project } from '@/content/projects';
 import { Container } from '@/components/layout/Container';
-import { Pill } from '@/components/ui';
 import { ProjectVideo } from '@/components/ProjectVideo';
 import { ProjectStage } from '@/components/ProjectStage';
 import { SectionHeading } from './SectionHeading';
@@ -66,11 +65,6 @@ function ProjectRow({ p, flip }: { p: Project; flip: boolean }) {
           <span className="font-mono text-section font-medium whitespace-nowrap text-flame tabular-nums">{p.metric.value}</span>
           <span className="font-mono text-label uppercase tracking-wide text-fg-muted">{p.metric.label}</span>
         </p>
-        <div>
-          <Pill href={`/work/${p.slug}`} variant="solid" arrow ariaLabel={`${work.caseStudyLabel}: ${p.name}`}>
-            {work.caseStudyLabel}
-          </Pill>
-        </div>
       </div>
     </article>
   );
