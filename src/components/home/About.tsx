@@ -14,12 +14,10 @@ const layout = [
 export function About() {
   return (
     <section id="about" aria-labelledby="about-heading" className="scroll-mt-8">
-      {/* Statement on the left, story and quick facts on the right. */}
+      {/* Statement and story stay left-aligned; quick facts sit centred beside them. */}
       <Container className="grid gap-10 py-24 sm:py-36 lg:grid-cols-12 lg:gap-12">
-        <div className="lg:col-span-5">
-          <SectionHeading id="about-heading" eyebrow={about.eyebrow} lines={about.heading} size="section" align="left" />
-        </div>
-        <div className="flex flex-col gap-10 lg:col-span-7 lg:pt-10">
+        <div className="flex flex-col gap-10 lg:col-span-7">
+          <SectionHeading id="about-heading" eyebrow={about.eyebrow} lines={about.heading} align="left" />
           <div className="flex flex-col gap-5" data-reveal>
             {about.body.map((p) => (
               <p key={p} className="text-lead text-fg-muted">
@@ -27,15 +25,15 @@ export function About() {
               </p>
             ))}
           </div>
-          <dl className="grid border-t border-line sm:grid-cols-2" data-reveal>
-            {about.facts.map((f) => (
-              <div key={f.label} className="flex flex-col gap-1 border-b border-line py-4 sm:odd:pr-6 sm:even:pl-6">
-                <dt className="text-label text-fg-muted">{f.label}</dt>
-                <dd className="text-subheading font-medium text-fg-hi">{f.value}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
+        <dl className="flex flex-col self-center border-t border-line lg:col-span-4 lg:col-start-9" data-reveal>
+          {about.facts.map((f) => (
+            <div key={f.label} className="flex flex-col gap-1 border-b border-line py-5">
+              <dt className="text-label text-fg-muted">{f.label}</dt>
+              <dd className="text-subheading font-medium text-fg-hi">{f.value}</dd>
+            </div>
+          ))}
+        </dl>
       </Container>
 
       <Container className="flex flex-col gap-12 pb-24 sm:pb-36">
