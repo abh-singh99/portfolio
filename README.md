@@ -22,6 +22,23 @@ All copy lives in `src/content/`. Components hold no strings.
 
 Replace `public/Abhay_Pratap_Singh_QA_Engineer_Resume.pdf` to update the CV.
 
+## Project videos
+
+Each project can show a muted, looping walkthrough: a phone frame for mobile apps, a browser frame for web products.
+
+```bash
+# trim from 0:03 for 18 seconds, compress, and write a poster image
+scripts/process-video.sh ~/Desktop/yeapp.mov yeapp phone 00:00:03 18
+```
+
+Then add `media` to the project in `src/content/projects.ts`:
+
+```ts
+media: { src: '/videos/yeapp.mp4', poster: '/videos/yeapp.jpg', frame: 'phone', caption: 'Sending a voice note in Yeapp' },
+```
+
+Videos play only while on screen, and never autoplay for visitors who prefer reduced motion. Requires ffmpeg on the PATH or at `~/.local/bin/ffmpeg`.
+
 ## Environment
 
 | Variable | Purpose |
