@@ -10,7 +10,7 @@ export function Contact() {
   return (
     <section id="contact" aria-labelledby="contact-heading" className="scroll-mt-16 border-t border-line">
       <Container className="grid gap-16 py-24 sm:py-36 lg:grid-cols-12 lg:gap-12">
-        <div className="flex flex-col gap-8 lg:col-span-5">
+        <div className="flex flex-col gap-8 lg:col-span-6">
           <SectionHeading
             id="contact-heading"
             eyebrow={contact.eyebrow}
@@ -68,7 +68,7 @@ export function Contact() {
           </p>
         </div>
 
-        <div className="lg:col-span-7 lg:pt-10" data-reveal>
+        <div className="lg:col-span-6" data-reveal>
           <ContactForm />
         </div>
       </Container>

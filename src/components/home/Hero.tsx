@@ -1,7 +1,7 @@
 import { hero } from '@/content/home';
 import { site } from '@/content/site';
 import { Eyebrow, Pill } from '@/components/ui';
-import { PerspectiveGrid } from './PerspectiveGrid';
+import { PerspectiveGrid } from '@/components/PerspectiveGrid';
 
 export function Hero() {
   return (

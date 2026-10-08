@@ -74,8 +74,8 @@ export function ContactForm() {
     );
 
   return (
-    <form noValidate onSubmit={onSubmit} className="flex flex-col gap-10" aria-describedby="form-status">
-      <div className="grid gap-10 sm:grid-cols-2">
+    <form noValidate onSubmit={onSubmit} className="flex h-full flex-col gap-10" aria-describedby="form-status">
+      <div className="flex flex-col gap-10">
         {(['name', 'email'] as const).map((field) => (
           <div key={field} className="flex flex-col gap-2">
             <label htmlFor={field} className={labelClass}>
@@ -96,18 +96,19 @@ export function ContactForm() {
         ))}
       </div>
 
-      <div className="flex flex-col gap-2">
+      {/* Grows so the form ends level with the details column beside it. */}
+      <div className="flex flex-1 flex-col gap-2">
         <label htmlFor="message" className={labelClass}>
           {t.message}
         </label>
         <textarea
           id="message"
           name="message"
-          rows={3}
+          rows={4}
           placeholder={t.placeholders.message}
           aria-invalid={errors.message ? true : undefined}
           aria-describedby={errors.message ? 'message-error' : undefined}
-          className={`${fieldClass} resize-none`}
+          className={`${fieldClass} min-h-32 flex-1 resize-none`}
         />
         {error('message')}
       </div>
