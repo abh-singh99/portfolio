@@ -20,7 +20,7 @@ export function CopyEmail({ email, label, copiedLabel }: { email: string; label:
       type="button"
       onClick={copy}
       data-press
-      className="rounded border border-line-hi px-3 py-1.5 text-label font-medium text-fg hover:bg-surface-2"
+      className="rounded-full border border-line-hi px-4 py-2 text-label font-medium text-fg hover:bg-surface-2"
     >
       <span aria-live="polite">{copied ? copiedLabel : label}</span>
     </button>

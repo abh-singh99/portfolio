@@ -14,10 +14,10 @@ test.describe('home', () => {
   test('lists every project with a working case study link', async ({ page }) => {
     await page.goto('/');
     for (const p of projects) {
-      await expect(page.locator('#work').getByRole('link', { name: p.name, exact: true })).toHaveAttribute(
-        'href',
-        `/work/${p.slug}`,
-      );
+      await expect(page.locator('#work').getByRole('heading', { name: p.name, exact: true })).toBeVisible();
+      await expect(
+        page.locator('#work').getByRole('link', { name: `See case study: ${p.name}`, exact: true }),
+      ).toHaveAttribute('href', `/work/${p.slug}`);
     }
   });
 

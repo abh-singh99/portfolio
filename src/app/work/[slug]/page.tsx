@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getProject, projects } from '@/content/projects';
 import { Container } from '@/components/layout/Container';
+import { Tag } from '@/components/ui';
 
 type Params = { slug: string };
 
@@ -19,7 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="grid gap-4 border-t border-line py-10 lg:grid-cols-12 lg:gap-8" data-reveal>
-      <h2 className="text-heading font-semibold text-fg-hi lg:col-span-4">{title}</h2>
+      <h2 className="font-display text-bento font-semibold text-fg-hi lg:col-span-4">{title}</h2>
       <div className="lg:col-span-8">{children}</div>
     </section>
   );
@@ -34,29 +35,38 @@ export default async function CaseStudy({ params }: { params: Promise<Params> })
 
   return (
     <article>
-      <Container className="flex flex-col gap-10 pt-12 pb-16 sm:pt-20">
+      <Container className="flex flex-col gap-12 pt-32 pb-16 sm:pt-40">
         <Link href="/#work" className="w-fit text-label font-medium text-link hover:text-link-hi">
           ← All work
         </Link>
 
-        <header className="flex flex-col gap-6" data-reveal>
-          <p className="font-mono text-label text-fg-muted">{project.id}</p>
+        <header className="flex flex-col items-center gap-6 text-center" data-reveal>
+          <p className="text-eyebrow font-semibold uppercase text-flame">
+            {project.id.replace('TC-', '')} / {project.category} · Case study
+          </p>
           <h1 className="font-display text-hero font-semibold text-fg-hi">{project.name}</h1>
-          <p className="max-w-2xl text-subheading text-fg">{project.overview}</p>
+          <p className="max-w-2xl text-lead text-fg-muted">{project.overview}</p>
+          <ul className="flex flex-wrap justify-center gap-2">
+            {project.tools.map((t) => (
+              <li key={t}>
+                <Tag>{t}</Tag>
+              </li>
+            ))}
+          </ul>
         </header>
 
-        <dl className="grid gap-6 border-t border-line pt-6 sm:grid-cols-2 lg:grid-cols-4" data-reveal>
+        <dl className="grid gap-8 rounded-card border border-line bg-surface-1 p-6 sm:grid-cols-2 sm:p-8 lg:grid-cols-4" data-reveal>
           <div className="flex flex-col gap-1">
             <dt className="text-label text-fg-muted">Company</dt>
-            <dd className="text-body text-fg-hi">{project.company}</dd>
+            <dd className="text-subheading text-fg-hi">{project.company}</dd>
           </div>
           <div className="flex flex-col gap-1">
             <dt className="text-label text-fg-muted">Period</dt>
-            <dd className="text-body text-fg-hi">{project.period}</dd>
+            <dd className="text-subheading text-fg-hi">{project.period}</dd>
           </div>
           <div className="flex flex-col gap-1">
             <dt className="text-label text-fg-muted">Platforms</dt>
-            <dd className="text-body text-fg-hi">{project.platforms.join(', ')}</dd>
+            <dd className="text-subheading text-fg-hi">{project.platforms.join(', ')}</dd>
           </div>
           <div className="flex flex-col gap-1">
             <dt className="text-label text-fg-muted first-letter:uppercase">{project.metric.label}</dt>
@@ -117,7 +127,7 @@ export default async function CaseStudy({ params }: { params: Promise<Params> })
           className="group flex flex-col gap-2 border-t border-line pt-8 hover:text-fg-hi"
         >
           <span className="text-label text-fg-muted">Next case study</span>
-          <span className="font-display text-statement font-semibold text-fg-hi">
+          <span className="font-display text-section font-semibold text-fg-hi">
             {next.name} <span className="text-link group-hover:text-link-hi">→</span>
           </span>
         </Link>

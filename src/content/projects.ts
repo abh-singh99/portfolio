@@ -3,6 +3,7 @@ export type Project = {
   id: string;
   name: string;
   summary: string;
+  category: string;
   company: string;
   period: string;
   platforms: string[];
@@ -24,6 +25,7 @@ export const projects: Project[] = [
     id: 'TC-01',
     name: 'Yeapp by Krafton',
     summary: 'Voice-first social messaging app',
+    category: 'Social messaging',
     company: 'The Product Highway',
     period: 'Jun 2026 to present',
     platforms: ['Android', 'iOS'],
@@ -63,6 +65,7 @@ export const projects: Project[] = [
     id: 'TC-02',
     name: 'Scuderia Car Parts',
     summary: 'Multi-region e-commerce for supercar parts',
+    category: 'E-commerce',
     company: 'The Product Highway',
     period: 'Jun 2026 to present',
     platforms: ['Web'],
@@ -102,6 +105,7 @@ export const projects: Project[] = [
     id: 'TC-03',
     name: 'FlowQA',
     summary: 'Record-and-replay test automation platform',
+    category: 'Test automation',
     company: 'The Product Highway',
     period: 'Jun 2026 to present',
     platforms: ['Playwright', 'TypeScript'],
@@ -141,6 +145,7 @@ export const projects: Project[] = [
     id: 'TC-04',
     name: 'NHS',
     summary: 'UK healthcare client transaction processing system',
+    category: 'Healthcare',
     company: 'Sopra Steria',
     period: 'Feb 2024 to May 2026',
     platforms: ['Web'],
@@ -181,6 +186,7 @@ export const projects: Project[] = [
     id: 'TC-05',
     name: 'Luv or Pop',
     summary: 'Dating app from the “Pop the Balloon or Find Love” show',
+    category: 'Dating',
     company: 'The Product Highway',
     period: 'Jun 2026 to present',
     platforms: ['Android', 'iOS'],

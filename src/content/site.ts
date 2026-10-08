@@ -1,5 +1,6 @@
 export const site = {
   name: 'Abhay Pratap Singh',
+  shortName: 'AbhaySingh',
   role: 'QA Engineer',
   location: 'Bengaluru, India',
   email: 'singh.abhay99@outlook.com',

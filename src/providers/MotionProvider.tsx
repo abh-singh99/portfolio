@@ -53,6 +53,20 @@ function useReveals(pathname: string) {
           scrollTrigger: { trigger: el, start: 'top 90%', once: true },
         });
       });
+
+      // Paint text: words brighten in reading order as the block scrolls through.
+      gsap.utils.toArray<HTMLElement>('[data-paint]').forEach((el) => {
+        gsap.fromTo(
+          el.querySelectorAll('.paint-word'),
+          { opacity: 0.18 },
+          {
+            opacity: 1,
+            ease: 'none',
+            stagger: 0.1,
+            scrollTrigger: { trigger: el, start: 'top 80%', end: 'bottom 50%', scrub: true },
+          },
+        );
+      });
     });
 
     ScrollTrigger.refresh();

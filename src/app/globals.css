@@ -1,27 +1,48 @@
 @import '../styles/foundation.css';
 
 /* App overrides on top of the TPH foundation. Foundation stays an untouched
-   copy so check-foundation can diff it; everything portfolio-specific lives here. */
+   copy so check-foundation can diff it; everything portfolio-specific lives here.
+
+   Deliberate deviations from TPH product-UI rules, requested for this
+   portfolio: uppercase eyebrows, an interactive background grid, a cursor
+   lens, a marquee and scroll-painted text. All of them switch off under
+   prefers-reduced-motion, and none carries information on its own. */
 
 @theme {
-  /* next/font hashes family names, so point the TPH families at its variables. */
-  --font-sans: var(--font-geist), 'Geist', ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-albert), 'Albert Sans', ui-sans-serif, system-ui, sans-serif;
+  /* One grotesk for everything, set tight at display sizes. */
+  --font-sans: var(--font-inter), 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-inter), 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), 'JetBrains Mono', ui-monospace, monospace;
 
-  /* Portfolio hero statement. TPH caps display at 3rem for product UI; a
-     portfolio's single opening line is its focal object, so it scales up. */
-  --text-hero: clamp(3rem, 9vw, 7rem);
-  --text-hero--line-height: 0.98;
-  --text-hero--letter-spacing: -0.045em;
+  /* Display scale for the portfolio. TPH caps display at 3rem for product UI;
+     an editorial page is built on these statements, so they scale up. */
+  --text-hero: clamp(3.25rem, 7.4vw, 6.5rem);
+  --text-hero--line-height: 1.02;
+  --text-hero--letter-spacing: -0.035em;
 
-  /* Section statements: between title and hero. */
-  --text-statement: clamp(2rem, 4.5vw, 3.5rem);
-  --text-statement--line-height: 1.05;
+  --text-statement: clamp(2.75rem, 7vw, 6.3rem);
+  --text-statement--line-height: 0.94;
   --text-statement--letter-spacing: -0.035em;
 
-  /* Scroll reveals. Longer than TPH's business-UI budget on purpose: they
-     play once per section on a showcase page and only move transform/opacity. */
+  --text-section: clamp(2.25rem, 5vw, 4.5rem);
+  --text-section--line-height: 0.98;
+  --text-section--letter-spacing: -0.03em;
+
+  --text-bento: clamp(1.75rem, 3.6vw, 3.25rem);
+  --text-bento--line-height: 0.95;
+  --text-bento--letter-spacing: -0.03em;
+
+  --text-marquee: clamp(2.5rem, 6vw, 4.5rem);
+  --text-marquee--line-height: 1;
+  --text-marquee--letter-spacing: -0.02em;
+
+  --text-eyebrow: 0.75rem;
+  --text-eyebrow--line-height: 1;
+  --text-eyebrow--letter-spacing: 0.16em;
+
+  --text-lead: clamp(1.125rem, 1.6vw, 1.375rem);
+  --text-lead--line-height: 1.5;
+
   --duration-reveal: 700ms;
 }
 
@@ -32,7 +53,6 @@
 html {
   scroll-behavior: smooth;
 }
-
 html.lenis,
 html.lenis body {
   height: auto;
@@ -46,10 +66,97 @@ html.lenis body {
   color: var(--color-flame-on);
 }
 
-/* Reveal targets start visible; MotionProvider hides them only once GSAP is
-   ready and motion is allowed, so no-JS and reduced-motion get full content. */
-[data-reveal] {
-  will-change: auto;
+.font-display {
+  letter-spacing: -0.035em;
+}
+
+/* ---- Hero perspective grid ----------------------------------------------
+   A square plane of tiles tilted in 3D. Tiles light up under the pointer and
+   fade back slowly, so a sweep of the mouse leaves a short trail. */
+.perspective-grid {
+  perspective: 2000px;
+  overflow: hidden;
+  -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 45%, #000 35%, transparent 100%); /* off-token: mask alpha */
+  mask-image: radial-gradient(ellipse 75% 70% at 50% 45%, #000 35%, transparent 100%); /* off-token: mask alpha */
+}
+.perspective-grid-plane {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 80rem;
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-n), 1fr);
+  grid-template-rows: repeat(var(--grid-n), 1fr);
+  transform-style: preserve-3d;
+  transform: translate(-50%, -50%) rotateX(30deg) rotateY(-5deg) rotate(20deg) scale(2);
+}
+.perspective-grid-tile {
+  border-right: 1px solid var(--color-line);
+  border-bottom: 1px solid var(--color-line);
+  transition: background-color 1.4s var(--ease-expo);
+}
+.perspective-grid-tile:hover {
+  background-color: color-mix(in oklch, var(--color-flame) 55%, transparent);
+  transition-duration: 0s;
+}
+:root[data-theme='light'] .perspective-grid-tile:hover {
+  background-color: color-mix(in oklch, var(--color-flame) 30%, transparent);
+}
+
+/* ---- Cursor lens --------------------------------------------------------
+   A difference-blended disc that follows the pointer and grows over anything
+   interactive. Pointer devices only; hidden under reduced motion. */
+.cursor-lens {
+  position: fixed;
+  top: var(--cursor-y, 50vh);
+  left: var(--cursor-x, 50vw);
+  z-index: 60;
+  width: 9rem;
+  height: 9rem;
+  margin: -4.5rem 0 0 -4.5rem;
+  border-radius: var(--radius-full);
+  background: var(--color-cloud);
+  mix-blend-mode: difference;
+  pointer-events: none;
+  opacity: var(--cursor-opacity, 0);
+  transform: scale(var(--cursor-scale, 0.2));
+  transition:
+    transform 0.4s var(--ease-expo),
+    opacity 0.12s linear;
+  will-change: left, top, transform;
+}
+@media (hover: none), (prefers-reduced-motion: reduce) {
+  .cursor-lens {
+    display: none;
+  }
+}
+
+/* ---- Marquee ------------------------------------------------------------ */
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* ---- Paint text ---------------------------------------------------------
+   Words start dim and paint in as the statement scrolls through view. The
+   dim state is applied by script, so without motion the text is solid. */
+.paint-word {
+  display: inline-block;
 }
 
 @media (prefers-reduced-motion: reduce) {

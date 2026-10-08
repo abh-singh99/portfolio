@@ -1,18 +1,14 @@
 import type { Metadata, Viewport } from 'next';
-import { Albert_Sans, Geist, JetBrains_Mono } from 'next/font/google';
+import { Inter, JetBrains_Mono } from 'next/font/google';
 import { site } from '@/content/site';
 import { MotionProvider } from '@/providers/MotionProvider';
 import { SkipLink } from '@/components/layout/SkipLink';
 import { Nav } from '@/components/layout/Nav';
 import { Footer } from '@/components/layout/Footer';
+import { CursorLens } from '@/components/layout/CursorLens';
 import './globals.css';
 
-const geist = Geist({ subsets: ['latin'], variable: '--font-geist' });
-const albert = Albert_Sans({
-  subsets: ['latin'],
-  weight: ['500', '600'],
-  variable: '--font-albert',
-});
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const jetbrains = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains' });
 
 export const metadata: Metadata = {
@@ -41,7 +37,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       lang="en"
       data-theme="dark"
       suppressHydrationWarning
-      className={`${geist.variable} ${albert.variable} ${jetbrains.variable}`}
+      className={`${inter.variable} ${jetbrains.variable}`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
@@ -53,6 +49,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <main id="main">{children}</main>
           <Footer />
         </MotionProvider>
+        <CursorLens />
       </body>
     </html>
   );

@@ -1,52 +1,53 @@
 import { contact } from '@/content/home';
 import { site } from '@/content/site';
 import { Container } from '@/components/layout/Container';
+import { Pill } from '@/components/ui';
 import { ContactForm } from './ContactForm';
 import { CopyEmail } from './CopyEmail';
+import { SectionHeading } from './SectionHeading';
 
 export function Contact() {
   return (
-    <section id="contact" aria-labelledby="contact-heading" className="scroll-mt-16 py-20 sm:py-28">
-      <Container className="grid gap-12 lg:grid-cols-12 lg:gap-8">
-        <div className="flex flex-col gap-8 lg:col-span-6" data-reveal>
-          <div className="flex flex-col gap-4">
-            <h2 id="contact-heading" className="font-display text-statement font-semibold text-fg-hi text-balance">
-              {contact.heading}
-            </h2>
-            <p className="max-w-md text-subheading text-fg">{contact.body}</p>
+    <section id="contact" aria-labelledby="contact-heading" className="scroll-mt-8 border-t border-line">
+      <Container className="flex flex-col gap-16 py-24 sm:py-36">
+        <div className="flex flex-col items-center gap-6 text-center">
+          <SectionHeading id="contact-heading" eyebrow={contact.eyebrow} lines={contact.heading} align="center" />
+          <p className="max-w-xl text-lead text-fg-muted" data-reveal>
+            {contact.body}
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3" data-reveal>
+            <a href={`mailto:${site.email}`} className="text-heading font-medium break-all text-link hover:text-link-hi">
+              {site.email}
+            </a>
+            <CopyEmail email={site.email} label={contact.copyLabel} copiedLabel={contact.copiedLabel} />
           </div>
-
-          <div className="flex flex-col gap-3">
-            <div className="flex flex-wrap items-center gap-3">
-              <a href={`mailto:${site.email}`} className="text-heading font-medium text-link hover:text-link-hi break-all">
-                {site.email}
+          <div className="flex flex-wrap justify-center gap-3" data-reveal>
+            <Pill href={site.resume.href} download variant="solid">
+              {site.resume.label}
+            </Pill>
+            {site.socials.map((s) => (
+              <a
+                key={s.label}
+                href={s.href}
+                target="_blank"
+                rel="noreferrer"
+                data-press
+                className="inline-flex items-center rounded-full border border-line-hi px-5 py-3 text-label font-semibold text-fg-hi hover:bg-surface-2"
+              >
+                {s.label}
               </a>
-              <CopyEmail email={site.email} label={contact.copyLabel} copiedLabel={contact.copiedLabel} />
-            </div>
-            <a href={site.phoneHref} className="font-mono text-body text-fg hover:text-fg-hi">
+            ))}
+          </div>
+          <p className="text-label text-fg-muted" data-reveal>
+            <a href={site.phoneHref} className="font-mono hover:text-fg-hi">
               {site.phone}
             </a>
-          </div>
-
-          <ul className="flex flex-wrap gap-x-6 gap-y-2 text-label font-medium">
-            <li>
-              <a href={site.resume.href} download className="text-link hover:text-link-hi">
-                {site.resume.label}
-              </a>
-            </li>
-            {site.socials.map((s) => (
-              <li key={s.label}>
-                <a href={s.href} target="_blank" rel="noreferrer" className="text-link hover:text-link-hi">
-                  {s.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-
-          <p className="text-label text-fg-muted">{contact.availability}</p>
+            <span aria-hidden="true"> · </span>
+            {contact.availability}
+          </p>
         </div>
 
-        <div className="rounded-card border border-line bg-surface-1 p-6 sm:p-8 lg:col-span-6" data-reveal data-reveal-delay="0.1">
+        <div className="mx-auto w-full max-w-2xl rounded-card border border-line bg-surface-1 p-6 sm:p-10" data-reveal>
           <ContactForm />
         </div>
       </Container>

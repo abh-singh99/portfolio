@@ -112,7 +112,7 @@ export function ContactForm() {
           type="submit"
           disabled={status === 'sending'}
           data-press
-          className="rounded bg-accent px-5 py-3 text-label font-medium text-accent-on hover:bg-accent-hi disabled:opacity-60"
+          className="rounded-full bg-accent px-6 py-3 text-label font-semibold text-accent-on hover:bg-accent-hi disabled:opacity-60"
         >
           {status === 'sending' ? t.sending : t.submit}
         </button>

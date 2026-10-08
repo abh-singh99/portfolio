@@ -1,46 +1,58 @@
-import Link from 'next/link';
 import { flowqa } from '@/content/home';
-import { Section } from './Section';
+import { Container } from '@/components/layout/Container';
+import { Pill } from '@/components/ui';
+import { SectionHeading } from './SectionHeading';
 
 export function FlowQASpotlight() {
   return (
-    <Section id="flowqa" heading={flowqa.heading} intro={flowqa.lead}>
-      <div className="flex flex-col gap-10">
-        <figure className="flex flex-col gap-3" data-reveal>
-          {/* Focusable so keyboard users can scroll the snippet when it overflows. */}
-          <pre
-            tabIndex={0}
-            aria-label={flowqa.codeCaption}
-            className="scroll-thin overflow-x-auto rounded-card border border-line bg-surface-1 p-5 font-mono text-body-sm text-fg sm:p-6">
-            <code>{flowqa.code}</code>
-          </pre>
-          <figcaption className="text-caption text-fg-muted">{flowqa.codeCaption}</figcaption>
-        </figure>
-
-        <ul className="grid gap-x-8 gap-y-8 sm:grid-cols-2">
-          {flowqa.features.map((f) => (
-            <li key={f.title} className="flex flex-col gap-1" data-reveal>
-              <h3 className="text-body font-semibold text-fg-hi">{f.title}</h3>
-              <p className="text-body-sm text-fg-muted">{f.body}</p>
-            </li>
-          ))}
-        </ul>
-
-        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6" data-reveal>
-          <p className="text-label text-fg-muted">
-            {flowqa.exportsLabel}{' '}
-            {flowqa.exports.map((e, i) => (
-              <span key={e}>
-                <span className="font-mono text-fg">{e}</span>
-                {i < flowqa.exports.length - 1 ? ', ' : ''}
-              </span>
-            ))}
+    <section id="flowqa" aria-labelledby="flowqa-heading" className="border-t border-line bg-surface-1">
+      <Container className="grid gap-16 py-24 sm:py-36 lg:grid-cols-12 lg:gap-12">
+        <div className="flex flex-col gap-8 lg:col-span-5">
+          <SectionHeading id="flowqa-heading" eyebrow={flowqa.eyebrow} lines={flowqa.heading} />
+          <p className="text-lead text-fg-muted" data-reveal>
+            {flowqa.lead}
           </p>
-          <Link href="/work/flowqa" className="text-label font-medium text-link hover:text-link-hi">
-            {flowqa.cta} →
-          </Link>
+          <ul className="flex flex-col" data-reveal>
+            {flowqa.features.map((f) => (
+              <li key={f.title} className="flex flex-col gap-1 border-t border-line py-4">
+                <h3 className="text-body font-semibold text-fg-hi">{f.title}</h3>
+                <p className="text-body-sm text-fg-muted">{f.body}</p>
+              </li>
+            ))}
+          </ul>
         </div>
-      </div>
-    </Section>
+
+        <div className="flex min-w-0 flex-col justify-center gap-6 lg:col-span-7">
+          <figure className="flex min-w-0 flex-col gap-3" data-reveal>
+            <div className="overflow-hidden rounded-card border border-line bg-surface-0">
+              <div className="flex items-center gap-2 border-b border-line px-4 py-3" aria-hidden="true">
+                <span className="size-2.5 rounded-full bg-surface-3" />
+                <span className="size-2.5 rounded-full bg-surface-3" />
+                <span className="size-2.5 rounded-full bg-surface-3" />
+                <span className="ml-3 font-mono text-caption text-fg-muted">checkout.spec.ts</span>
+              </div>
+              {/* Focusable so keyboard users can scroll the snippet when it overflows. */}
+              <pre
+                tabIndex={0}
+                aria-label={flowqa.codeCaption}
+                className="scroll-thin overflow-x-auto p-5 font-mono text-body-sm text-fg sm:p-6"
+              >
+                <code>{flowqa.code}</code>
+              </pre>
+            </div>
+            <figcaption className="text-caption text-fg-muted">{flowqa.codeCaption}</figcaption>
+          </figure>
+          <div className="flex flex-wrap items-center justify-between gap-4" data-reveal>
+            <p className="text-label text-fg-muted">
+              {flowqa.exportsLabel}{' '}
+              <span className="font-mono text-fg">{flowqa.exports.join(', ')}</span>
+            </p>
+            <Pill href="/work/flowqa" arrow>
+              {flowqa.cta}
+            </Pill>
+          </div>
+        </div>
+      </Container>
+    </section>
   );
 }

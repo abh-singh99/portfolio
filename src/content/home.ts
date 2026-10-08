@@ -1,15 +1,35 @@
 export const hero = {
+  eyebrow: 'Abhay Pratap Singh · QA Engineer',
   title: ['I break things', 'before your', 'users do.'],
-  // Index into title of the word set in the flame accent.
+  // Index into title of the line set in the flame accent.
   accentLine: 2,
+  location: 'Bengaluru, India · Open to QA roles',
+  cta: { work: 'View projects', contact: 'Contact me' },
   intro:
     'QA Engineer in Bengaluru. I test mobile and web products end to end, from first build to store launch, with manual, API and automation testing.',
   proof: ['3,000+ test cases written', '5 products', '2 store launches'],
   availability: 'Open to QA roles',
 };
 
+export const marquee = [
+  'Playwright',
+  'Selenium',
+  'Postman',
+  'TypeScript',
+  'Java',
+  'SQL',
+  'JIRA',
+  'TestRail',
+  'Figma',
+  'ClickUp',
+  'Chrome DevTools',
+];
+
 export const about = {
-  heading: 'Quality is a process, not a phase.',
+  eyebrow: 'About me',
+  heading: ['Quality is', 'a process,', 'not a phase.'],
+  stackEyebrow: 'Toolkit',
+  stackHeading: 'The tools behind my testing.',
   body: [
     'I own testing from the first build through release. That means writing the suites, running every regression and smoke pass, checking the APIs and data underneath, and automating what repeats.',
     'My path into QA started in operations and data validation at Amazon, where root-cause work on high-volume discrepancies taught me to find exactly where things break. Since 2024 I have tested healthcare, e-commerce and consumer mobile products, and I am ISTQB certified.',
@@ -34,14 +54,19 @@ export const about = {
   ],
 };
 
+export const statement =
+  'From the first build to the store launch, I find what breaks, prove it with a test, and make sure it never ships again.';
+
 export const work = {
-  heading: 'Selected work',
-  intro: 'Five products, each with the suite I built and what it changed.',
-  caseStudyLabel: 'Read case study',
+  eyebrow: 'Selected projects',
+  heading: ['Products I’ve', 'helped ship.'],
+  caseStudyLabel: 'See case study',
+  summaryLabel: 'Test summary',
 };
 
 export const strengths = {
-  heading: 'Why work with me',
+  eyebrow: 'Why work with me',
+  heading: ['Careful testing.', 'Clear reporting.'],
   items: [
     {
       title: 'I own the whole path',
@@ -63,6 +88,7 @@ export const strengths = {
 };
 
 export const flowqa = {
+  eyebrow: 'Internal tool',
   heading: 'FlowQA',
   lead: 'A record-and-replay automation platform I developed. Record a flow once, run it on any environment, and export it as real Playwright code.',
   features: [
@@ -87,7 +113,8 @@ test('checkout with a saved part', async ({ page }) => {
 };
 
 export const credentials = {
-  heading: 'Credentials',
+  eyebrow: 'Credentials',
+  heading: 'Certified and still learning.',
   items: [
     { name: 'ISTQB Certified Tester, Foundation Level', issuer: 'ISTQB' },
     { name: 'Databricks and AI for All', issuer: 'Databricks' },
@@ -101,7 +128,8 @@ export const credentials = {
 };
 
 export const contact = {
-  heading: 'Let’s talk about your QA needs.',
+  eyebrow: 'Contact',
+  heading: ['Let’s talk about', 'your QA needs.'],
   body: 'Hiring for a QA role or need someone to own testing on your product? Send a note with the details.',
   availability: 'Based in Bengaluru. Open to on-site, hybrid and remote roles.',
   copyLabel: 'Copy email',
