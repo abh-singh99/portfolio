@@ -9,6 +9,15 @@ export type ProjectMedia = {
   caption: string;
 };
 
+export type ProjectScreenshots = {
+  /** Two phones for mobile apps, two overlapping browser windows for web products. */
+  frame: 'phone' | 'browser';
+  /** The product's own brand colours for the card behind the screens. */
+  brand: { from: string; to: string };
+  /** Two files in public/screens/<slug>/, back first. Sizes are the files' pixel sizes. */
+  images: { src: string; alt: string; width: number; height: number }[];
+};
+
 export type Project = {
   slug: string;
   id: string;
@@ -30,6 +39,8 @@ export type Project = {
   results: string[];
   /** Optional walkthrough video. Add once a recording is available. */
   media?: ProjectMedia;
+  /** Optional screenshots, shown when there is no video. */
+  screenshots?: ProjectScreenshots;
 };
 
 export const projects: Project[] = [
@@ -75,6 +86,14 @@ export const projects: Project[] = [
   },
   {
     slug: 'scuderia-car-parts',
+    screenshots: {
+      frame: 'browser',
+      brand: { from: '#b8141c', to: '#5e0a0e' }, // off-token: Scuderia brand red
+      images: [
+        { src: '/screens/scuderia-car-parts/home.jpg', alt: 'Scuderia Car Parts home page with the part search', width: 1600, height: 988 },
+        { src: '/screens/scuderia-car-parts/tuning.jpg', alt: 'Tuning parts page, browsing parts by marque', width: 1600, height: 990 },
+      ],
+    },
     id: 'TC-02',
     name: 'Scuderia Car Parts',
     summary: 'Multi-region e-commerce for supercar parts',
@@ -196,6 +215,14 @@ export const projects: Project[] = [
   },
   {
     slug: 'luv-or-pop',
+    screenshots: {
+      frame: 'phone',
+      brand: { from: '#e8384f', to: '#6d1028' }, // off-token: Luv or Pop balloon red
+      images: [
+        { src: '/screens/luv-or-pop/explore.jpg', alt: 'Luv or Pop Explore screen with a profile card', width: 430, height: 932 },
+        { src: '/screens/luv-or-pop/hub.jpg', alt: 'Luv or Pop Show hub with the latest episode', width: 430, height: 932 },
+      ],
+    },
     id: 'TC-05',
     name: 'Luv or Pop',
     summary: 'Dating app from the “Pop the Balloon or Find Love” show',

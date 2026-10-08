@@ -43,7 +43,7 @@
   --text-lead: clamp(1.125rem, 1.6vw, 1.375rem);
   --text-lead--line-height: 1.5;
 
-  /* Device frame for mobile app recordings. */
+  /* Device frame for app recordings. */
   --radius-phone: 2.5rem;
 
   --duration-reveal: 700ms;
@@ -153,6 +153,77 @@ html.lenis body {
   .marquee-track {
     animation: none;
   }
+}
+
+/* ---- Project stage ----------------------------------------------------
+   A card in the product's brand colours (set per project as --stage-from and
+   --stage-to) with two screens running off its edge. The window chrome and
+   shadows imitate real devices, so their colours are fixed. */
+.stage {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  aspect-ratio: 16 / 11;
+  max-width: 100%;
+  border-radius: calc(var(--radius-card) + 8px);
+  background: radial-gradient(120% 120% at 15% 10%, var(--stage-from), var(--stage-to));
+}
+.stage-label {
+  position: absolute;
+  top: 1rem;
+  left: 1.125rem;
+  z-index: 3;
+  font-size: var(--text-micro);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-cloud);
+  opacity: 0.85;
+}
+.stage-win {
+  position: absolute;
+  overflow: hidden;
+  border-radius: 10px; /* off-token: device chrome */
+  background: #fff; /* off-token: device chrome */
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.45);
+}
+.stage-win::before {
+  content: '';
+  display: block;
+  height: 18px;
+  background-color: #ececec; /* off-token: device chrome */
+  border-bottom: 1px solid #d9d9d9; /* off-token: device chrome */
+  background-image:
+    radial-gradient(circle at 12px 9px, #ff5f57 4px, transparent 4.5px), /* off-token: traffic lights */
+    radial-gradient(circle at 26px 9px, #febc2e 4px, transparent 4.5px), /* off-token: traffic lights */
+    radial-gradient(circle at 40px 9px, #28c840 4px, transparent 4.5px); /* off-token: traffic lights */
+}
+.stage-win img,
+.stage-phone img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.stage-win-back { left: 7%; top: 13%; width: 70%; }
+.stage-win-front { left: 34%; top: 40%; width: 72%; }
+.stage-phone {
+  position: absolute;
+  width: 31%;
+  overflow: hidden;
+  border: 7px solid #0d0d0f; /* off-token: device bezel */
+  border-radius: 2.2rem;
+  background: #fff; /* off-token: device screen */
+  box-shadow: 0 30px 70px rgb(0 0 0 / 0.5);
+}
+.stage-phone-one { left: 16%; top: 11%; }
+.stage-phone-two { left: 53%; top: 21%; }
+@media (max-width: 40rem) {
+  .stage { aspect-ratio: 4 / 3.4; }
+  .stage-phone { width: 40%; }
+  .stage-phone-one { left: 7%; }
+  .stage-phone-two { left: 52%; }
+  .stage-win-back { left: 6%; width: 78%; }
+  .stage-win-front { left: 26%; width: 80%; top: 44%; }
 }
 
 /* ---- Paint text ---------------------------------------------------------
