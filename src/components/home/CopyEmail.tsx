@@ -19,8 +19,9 @@ export function CopyEmail({ email, label, copiedLabel }: { email: string; label:
     <button
       type="button"
       onClick={copy}
+      aria-label={copied ? `${copiedLabel}: ${email}` : `${label} email address`}
       data-press
-      className="rounded-full border border-line-hi px-4 py-2 text-label font-medium text-fg hover:bg-surface-2"
+      className="inline-flex min-h-8 items-center rounded-full border border-line-hi px-3 text-eyebrow font-semibold uppercase text-fg-muted hover:bg-surface-2 hover:text-fg-hi"
     >
       <span aria-live="polite">{copied ? copiedLabel : label}</span>
     </button>

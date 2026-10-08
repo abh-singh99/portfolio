@@ -84,21 +84,25 @@ test.describe('case studies', () => {
   });
 });
 
-test.describe('contact form', () => {
-  test('shows errors for empty and invalid fields', async ({ page }) => {
+test.describe('contact', () => {
+  test('offers email, CV and profile links', async ({ page }) => {
     await page.goto('/#contact');
-    const form = page.locator('#contact form');
-    await form.getByRole('button', { name: 'Send message' }).click();
-    await expect(form.getByLabel('Name')).toHaveAttribute('aria-invalid', 'true');
-    await expect(form.getByLabel('Name')).toBeFocused();
-    await expect(form.getByLabel('Message')).toHaveAttribute('aria-invalid', 'true');
+    const c = page.locator('#contact');
+    await expect(c.getByRole('link', { name: site.email })).toHaveAttribute('href', `mailto:${site.email}`);
+    await expect(c.getByRole('link', { name: 'Email me' })).toHaveAttribute('href', `mailto:${site.email}`);
+    await expect(c.getByRole('link', { name: site.resume.label })).toHaveAttribute('href', site.resume.href);
+    for (const s of site.socials) {
+      await expect(c.getByRole('link', { name: s.label })).toHaveAttribute('href', s.href);
+    }
+  });
 
-    await form.getByLabel('Name').fill('Recruiter');
-    await form.getByLabel('Email').fill('not-an-email');
-    await form.getByLabel('Message').fill('Hello');
-    await form.getByRole('button', { name: 'Send message' }).click();
-    await expect(form.getByText('Enter a valid email address')).toBeVisible();
-    await expect(form.getByLabel('Name')).not.toHaveAttribute('aria-invalid', 'true');
+  test('copy button copies the email address', async ({ page, context, browserName }) => {
+    test.skip(browserName !== 'chromium', 'clipboard permissions');
+    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+    await page.goto('/#contact');
+    await page.locator('#contact').getByRole('button', { name: 'Copy email address' }).click();
+    await expect(page.locator('#contact').getByRole('button', { name: /Copied/ })).toBeVisible();
+    expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(site.email);
   });
 });
 

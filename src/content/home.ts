@@ -129,26 +129,9 @@ export const credentials = {
 
 export const contact = {
   eyebrow: 'Contact',
-  heading: ['Let’s talk', 'about your', 'QA needs.'],
-  details: { email: 'Email', phone: 'Phone', location: 'Location' },
-  body: 'Hiring for a QA role or need someone to own testing on your product? Send a note with the details.',
-  availability: 'Based in Bengaluru. Open to on-site, hybrid and remote roles.',
-  copyLabel: 'Copy email',
-  copiedLabel: 'Email copied',
-  form: {
-    name: 'Your name',
-    email: 'Email',
-    message: 'Message',
-    submit: 'Send message',
-    sending: 'Sending',
-    success: 'Message sent. Thanks, I will get back to you soon.',
-    error: 'Could not send. Please email me directly instead.',
-    required: 'Required',
-    invalidEmail: 'Enter a valid email address',
-    placeholders: {
-      name: 'Jane Cooper',
-      email: 'jane@company.com',
-      message: 'Tell me about the role or product',
-    },
-  },
+  heading: ['Let’s talk about', 'your QA needs.'],
+  body: 'Hiring a QA engineer or need someone to own testing on your product? Send me the role details and tell me about your team.',
+  copyLabel: 'Copy',
+  copiedLabel: 'Copied',
+  emailCta: 'Email me',
 };

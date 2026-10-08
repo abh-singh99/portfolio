@@ -5,6 +5,7 @@ import { MotionProvider } from '@/providers/MotionProvider';
 import { SkipLink } from '@/components/layout/SkipLink';
 import { Nav } from '@/components/layout/Nav';
 import { CursorLens } from '@/components/layout/CursorLens';
+import { Footer } from '@/components/layout/Footer';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -46,6 +47,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <MotionProvider>
           <Nav />
           <main id="main">{children}</main>
+          <Footer />
         </MotionProvider>
         <CursorLens />
       </body>

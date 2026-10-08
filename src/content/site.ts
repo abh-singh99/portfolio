@@ -14,9 +14,10 @@ export const site = {
   description:
     'QA Engineer in Bengaluru. Manual, API and automation testing with Playwright and Selenium across healthcare, e-commerce and consumer mobile apps.',
   socials: [
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/abhay-singh-9a647a369/' },
-    { label: 'GitHub', href: 'https://github.com/abh-singh99' },
+    { label: 'LinkedIn', short: 'in', href: 'https://www.linkedin.com/in/abhay-singh-9a647a369/' },
+    { label: 'GitHub', short: 'gh', href: 'https://github.com/abh-singh99' },
   ],
+  builtWith: 'Hand-coded. Playwright-tested.',
   nav: [
     { label: 'Work', href: '/#work' },
     { label: 'About', href: '/#about' },
