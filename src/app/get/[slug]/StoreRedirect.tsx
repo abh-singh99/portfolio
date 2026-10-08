@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { getApp } from '@/content/home';
 import { Container } from '@/components/layout/Container';
 import { Pill } from '@/components/ui';
+import { PerspectiveGrid } from '@/components/PerspectiveGrid';
 
 type Props = { name: string; android?: string; ios?: string };
 
@@ -31,26 +32,30 @@ export function StoreRedirect({ name, android, ios }: Props) {
   const missing = (device === 'android' && !android) || (device === 'ios' && !ios);
 
   return (
-    <Container className="flex min-h-svh flex-col items-center justify-center gap-8 py-32 text-center">
-      <h1 className="font-display text-statement font-semibold text-fg-hi">{getApp.heading(name)}</h1>
-      <p className="max-w-xl text-lead text-fg-muted" role="status">
-        {missing ? getApp.only(name, android ? 'Android' : 'iOS') : device === 'other' ? getApp.desktop : getApp.body}
-      </p>
-      <div className="flex flex-wrap justify-center gap-3">
-        {android && (
-          <Pill href={android} variant={device === 'android' || !ios ? 'solid' : 'outline'}>
-            {getApp.play}
-          </Pill>
-        )}
-        {ios && (
-          <Pill href={ios} variant={device !== 'android' || !android ? 'solid' : 'outline'}>
-            {getApp.appStore}
-          </Pill>
-        )}
-      </div>
-      <Link href="/#work" className="text-label font-medium text-link hover:text-link-hi">
-        {getApp.back}
-      </Link>
-    </Container>
+    <section className="relative isolate flex min-h-svh items-center justify-center overflow-hidden">
+      <PerspectiveGrid />
+      {/* The pointer passes through to the grid except over links. */}
+      <Container className="pointer-events-none relative z-10 flex flex-col items-center gap-8 py-32 text-center [&_a]:pointer-events-auto">
+        <h1 className="font-display text-statement font-semibold text-fg-hi">{getApp.heading(name)}</h1>
+        <p className="max-w-xl text-lead text-fg-muted" role="status">
+          {missing ? getApp.only(name, android ? 'Android' : 'iOS') : device === 'other' ? getApp.desktop : getApp.body}
+        </p>
+        <div className="flex flex-wrap justify-center gap-3">
+          {android && (
+            <Pill href={android} variant={device === 'android' || !ios ? 'solid' : 'outline'}>
+              {getApp.play}
+            </Pill>
+          )}
+          {ios && (
+            <Pill href={ios} variant={device !== 'android' || !android ? 'solid' : 'outline'}>
+              {getApp.appStore}
+            </Pill>
+          )}
+        </div>
+        <Link href="/#work" className="text-label font-medium text-link hover:text-link-hi">
+          {getApp.back}
+        </Link>
+      </Container>
+    </section>
   );
 }
