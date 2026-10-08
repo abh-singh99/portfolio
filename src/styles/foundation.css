@@ -1,0 +1,627 @@
+/* ============================================================================
+   TPH design foundation: Tailwind CSS v4
+   ----------------------------------------------------------------------------
+   Copy this file into your app as src/styles/app.css (or import it first).
+   Do not edit values here. Values are documented in references/tokens.md.
+
+   Requires Tailwind v4:  npm i tailwindcss @tailwindcss/vite
+
+   Dark is the origin theme. Light is a derived inversion, not a second brand.
+   Every text/ground pair below is verified at WCAG 2.2 AA (4.5:1 body,
+   3:1 for interactive borders and focus rings). Re-verify with:
+     node "$TPH_SKILL"/tools/contrast.mjs
+   ========================================================================== */
+
+@import 'tailwindcss';
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme {
+  /* ---- Type ------------------------------------------------------------ */
+  --font-sans: 'Geist', 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Albert Sans', 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  --text-display: 3rem;
+  --text-display--line-height: 1.04;
+  --text-display--letter-spacing: -0.03em;
+  --text-title: 2rem;
+  --text-title--line-height: 1.15;
+  --text-title--letter-spacing: -0.02em;
+  --text-heading: 1.5rem;
+  --text-heading--line-height: 1.25;
+  --text-heading--letter-spacing: -0.015em;
+  --text-subheading: 1.125rem;
+  --text-subheading--line-height: 1.35;
+  --text-body: 1rem;
+  --text-body--line-height: 1.6;
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.5;
+  --text-label: 0.8125rem;
+  --text-label--line-height: 1.4;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.45;
+
+  /* Annotation sizes. A pill must be visibly SMALLER than what it annotates,
+     and caption is not small enough beside a 21px name: the pill reads as a
+     peer and the row loses its hierarchy. Promoted from an app that defined
+     these locally, so Pill and Badge in @tph/ui can rely on them. */
+  --text-micro: 0.6875rem;
+  --text-micro--line-height: 1.45;
+
+  /* Leading 1: a capsule sets its own height, so extra leading only pads it. */
+  --text-nano: 0.625rem;
+  --text-nano--line-height: 1;
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* ---- Space: Tailwind v4 derives the whole scale from this ------------ */
+  --spacing: 0.25rem;
+
+  /* ---- Radius -----------------------------------------------------------
+     ONE base, everything else derived. Change `--radius-base` and the whole
+     system follows; that is the knob an app turns to feel sharper or softer.
+
+     The controlling rule: a floating panel and the control that opens it must
+     share a radius. A 6px trigger under a 16px popover reads as two components
+     from different systems, which is exactly what it was. `--radius-popover`
+     exists so that pairing is a token rather than a thing to remember. */
+  --radius-base: 0.625rem;                        /* 10px, the workhorse */
+  --radius-sm: calc(var(--radius-base) - 4px);    /* 6px:  checkbox, chip */
+  --radius: var(--radius-base);                   /* 10px: input, button, menu item */
+  --radius-popover: var(--radius-base);           /* panels match their trigger */
+  --radius-card: calc(var(--radius-base) + 4px);  /* 14px: cards, dialogs, sheets */
+  --radius-full: 9999px;
+
+  /* ---- Breakpoints ------------------------------------------------------
+     Declared so "one density per screen" has canonical widths behind it and a
+     linter can police them. These match Tailwind's defaults deliberately: the
+     value is having them named and checkable, not having them be unusual.
+     sm is the stack-to-row boundary used throughout; below it, dense rows
+     become cards rather than wrapping. */
+  --breakpoint-sm: 40rem;   /* 640px  stack -> row */
+  --breakpoint-md: 48rem;   /* 768px  two columns */
+  --breakpoint-lg: 64rem;   /* 1024px persistent rail */
+  --breakpoint-xl: 80rem;   /* 1280px full dashboard grid */
+
+  /* ---- Elevation --------------------------------------------------------
+     Documented in tokens.md. Defined HERE, or `shadow-lg` silently falls back
+     to stock Tailwind and the documented geometry is wrong.
+
+     Offsets are y-only: a shadow is the element lifted off the page, not lit
+     from one side. Opacity stays low because these sit on light grounds; in
+     dark themes a shadow alone is weak, so pair it with a surface step and a
+     border (see tokens.md). */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 4px 14px 0 rgb(0 0 0 / 0.07);
+  --shadow-lg: 0 8px 24px 0 rgb(0 0 0 / 0.10);
+
+  /* ---- Motion ---------------------------------------------------------- */
+  --ease-snap: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 120ms;
+  --duration: 150ms;
+  --duration-slow: 240ms;
+
+  /* ---- Brand constants (identical in both themes) ---------------------- */
+  --color-ink: #141416;
+  --color-cloud: #f5f5f5;
+
+  /* ---- Semantic color: DARK is the declared default -------------------- */
+  /* Grounds */
+  --color-surface-0: oklch(0.1344 0 0);
+  --color-surface-1: oklch(0.1822 0 0);
+  --color-surface-2: oklch(0.2178 0 0);
+  --color-surface-3: oklch(0.2686 0 0);
+
+  /* Lines. `line` is decorative (no contrast floor).
+     `line-hi` is interactive and meets 3:1 against surface-0 and surface-1. */
+  --color-line: oklch(0.2686 0 0);
+  --color-line-hi: oklch(0.5600 0.0100 286.0665);
+
+  /* Text ramp. All meet 4.5:1 on surface-0 and surface-1. */
+  --color-fg-hi: oklch(1.0000 0 0);
+  --color-fg: oklch(0.9700 0 0);
+  --color-fg-muted: oklch(0.7118 0.0129 286.0665);
+  --color-fg-subtle: oklch(0.5900 0.0100 286.0665);
+
+  /* Accents. `-on` is the text color that sits on a filled accent. */
+  --color-teal: oklch(0.9500 0 0);
+  --color-teal-hi: oklch(1.0000 0 0);
+  --color-teal-on: oklch(0.1600 0 0);
+  --color-flame: #ff5722;
+  --color-flame-hi: #ff7043;
+  --color-flame-on: #141416;
+
+  /* Semantic states */
+  --color-success: #4ade80;
+  --color-warning: #fbbf24;
+  --color-error: oklch(0.7000 0.1600 25.3313);
+  --color-info: oklch(0.7305 0.1387 268.3215);
+  /* ---- Hued accent ------------------------------------------------------
+     The primary is NEUTRAL: black in light, white in dark, so a filled button
+     is monochrome. This is the one place hue survives outside charts: links
+     and anything that reads as interactive TEXT rather than a filled control.
+     Its own token, so the split is checkable rather than a convention. */
+  --color-link: oklch(0.7305 0.1387 268.3215);
+  --color-link-hi: oklch(0.8335 0.0822 268.6134);
+  --color-state-on: #141416;
+
+  /* Focus ring. Meets 3:1 on every ground in both themes. */
+  /* ---- Semantic accent --------------------------------------------------
+     @tph/ui components target --color-accent, never a brand name, so an app
+     rebrands by repointing these three lines instead of forking components.
+     Defaults to teal. --color-accent-on is the text colour ON a filled accent;
+     it must be checked against the accent, not against a page surface. */
+  --color-accent: var(--color-teal);
+  --color-accent-hi: var(--color-teal-hi);
+  --color-accent-on: var(--color-teal-on);
+
+  /* Text on a filled --color-error. Solid, never a tint: a translucent tint of
+     a pale colour over a dark ground fails contrast in one theme. */
+  --color-error-on: var(--color-cloud);
+
+  --color-focus: oklch(0.7305 0.1387 268.3215);
+}
+
+/* ---- LIGHT theme: redefine only what changes --------------------------
+   Every value verified AA. Note the accents darken: #76abae fails 4.5:1 on
+   white, so light uses #35696d. The brand hue is preserved; the luminance
+   is not, because contrast is not negotiable.
+
+   Deliberately NOT inside `@layer theme`. Tailwind v4 strips unused theme-layer
+   declarations, which silently removes the entire light palette. Plain :root
+   rules survive.                                                          */
+:root[data-theme='light'] {
+  --color-surface-0: oklch(0.9800 0 0);
+  --color-surface-1: oklch(1.0000 0 0);
+  --color-surface-2: oklch(0.9702 0 0);
+  --color-surface-3: oklch(0.9400 0 0);
+
+  --color-line: oklch(0.9288 0.0126 255.5078);
+  --color-line-hi: oklch(0.6000 0.0126 255.5078);
+
+  --color-fg-hi: oklch(0.1600 0 0);
+  --color-fg: oklch(0.2264 0 0);
+  --color-fg-muted: oklch(0.5103 0 0);
+  --color-fg-subtle: oklch(0.6100 0 0);
+
+  --color-teal: oklch(0.2000 0 0);
+  --color-teal-hi: oklch(0.1200 0 0);
+  --color-teal-on: oklch(1.0000 0 0);
+  --color-flame: #b93d0a;
+  --color-flame-hi: #ad3a09;
+  --color-flame-on: #ffffff;
+
+  --color-success: #15803d;
+  --color-warning: #92400e;
+  --color-error: oklch(0.5500 0.2078 25.3313);
+  --color-info: oklch(0.4935 0.2044 266.1762);
+  /* ---- Hued accent ------------------------------------------------------
+     The primary is NEUTRAL: black in light, white in dark, so a filled button
+     is monochrome. This is the one place hue survives outside charts: links
+     and anything that reads as interactive TEXT rather than a filled control.
+     Its own token, so the split is checkable rather than a convention. */
+  --color-link: oklch(0.4935 0.2044 266.1762);
+  --color-link-hi: oklch(0.4200 0.2044 266.1762);
+  --color-state-on: #ffffff;
+
+  --color-focus: oklch(0.4935 0.2044 266.1762);
+}
+
+/* ---- Base -------------------------------------------------------------- */
+@layer base {
+  html,
+  body {
+    height: 100%;
+  }
+
+  /* Declares which theme is in effect, for the browser AND for code. The
+     browser picks native control, scrollbar and form-field colours from it; a
+     theme toggle reads it to learn what "default" means rather than hardcoding
+     an assumption that goes stale.
+
+     Only the two [data-theme] cases live here. The BASE `:root` value belongs
+     with the app's own tokens, next to the @theme block that decides which
+     palette is default, because a light-first app and a dark-first app need
+     opposite values and this file is shared by both. Set it there:
+
+       :root { color-scheme: light; }   // beside a light @theme block
+
+     Without it the toggle starts the app in the wrong mode. */
+  :root[data-theme='light'] {
+    color-scheme: light;
+  }
+  :root[data-theme='dark'] {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--color-surface-0);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Focus is never removed.
+
+     Default for anything that is not a bordered field: a 2px outline offset
+     outside the element, which cannot be confused with the element's own edge.
+
+     Bordered fields (input, textarea, select trigger, combobox) use `.field`
+     below instead. An offset outline around a box that already has a border
+     reads as two rectangles; recolouring the field's own border and adding a
+     soft halo reads as the field lighting up. */
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  /* Clickable affordance. Native <button> shows no pointer by default. */
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']),
+  a[href],
+  label[for],
+  summary,
+  select:not(:disabled) {
+    cursor: pointer;
+  }
+  button:disabled,
+  [role='button'][aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+
+  /* Snappy color transitions on every interactive element. */
+  button:not(:disabled),
+  [role='button'],
+  a[href] {
+    transition:
+      transform var(--duration) var(--ease-snap),
+      background-color var(--duration) var(--ease-snap),
+      border-color var(--duration) var(--ease-snap),
+      color var(--duration) var(--ease-snap),
+      box-shadow var(--duration) var(--ease-snap);
+  }
+  /* Press response.
+     0.98, not 0.94: a discrete control should acknowledge the press, not flinch.
+     Opt IN with data-press, never globally. A press-scale only reads correctly
+     on a singular object (button, chip, badge, icon button). Applied to a full
+     width row or a bar of several elements it reads as the page flexing, so
+     those get a background change instead.
+
+     Uniform scale on both axes: a press is the control moving away from the
+     finger, and that reads as the whole thing shrinking. `scaleY` alone was
+     tried to avoid horizontal drift and is wrong: it squishes rather than
+     presses, which looks like a rendering fault.
+
+     The drift that motivated scaleY is real but sub-pixel (1.3px on a 114px
+     button) and is solved by promoting the layer instead, which snaps the
+     transform to the compositor rather than re-laying-out the box.
+
+     `will-change: transform` does that promotion, and also stops the text
+     re-rasterising at the scaled size, which otherwise softens it for the
+     duration of the press. Declared on the resting state, not inside :active:
+     a layer created at press time is created too late to help. */
+  [data-press] {
+    will-change: transform;
+  }
+  [data-press]:not(:disabled):active {
+    transform: scale(0.98);
+  }
+
+  /* Reduced motion collapses animation, never the state change itself. */
+  /* ---- Native date/time picker indicator --------------------------------
+     The UA draws this glyph inside a shadow tree that no token can reach, and
+     it is near-black: on a dark surface it is effectively invisible. Inverting
+     it is the only reliable way to make it legible without replacing the
+     control with a custom calendar.
+
+     Written as plain CSS rather than a `dark:[&::-webkit-...]` utility because
+     Tailwind composes the variant as `:where([data-theme=dark])::-webkit-...`,
+     which does not match: the theme attribute is on the root, not on the input.
+     off-token by necessity: no token can address a UA shadow-tree glyph. */
+  /* Base first, dark override second: both selectors have the same specificity
+     on the pseudo-element, so the LAST one wins. Written the other way round
+     the unscoped rule silently cancelled the dark inversion. */
+  ::-webkit-calendar-picker-indicator {
+    opacity: 0.6;
+    cursor: pointer;
+  }
+  ::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+  }
+  /* brightness(0) crushes the glyph to pure black, then invert(1) lifts it to
+     pure white, so the result does not depend on the UA's own glyph colour.
+     Stated as two functions because a lone `invert(100%)` is minified to the
+     bare `invert()` form. */
+  /* :root[data-theme] raises specificity above the bare pseudo-element rule.
+     Source order alone is not enough: the minifier reorders these, and both
+     selectors otherwise carry the same weight, so the unscoped rule won and
+     the inversion silently did nothing. */
+  :root[data-theme='dark'] ::-webkit-calendar-picker-indicator {
+    filter: brightness(0) invert(1);
+    opacity: 0.75;
+  }
+  :root[data-theme='dark'] ::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+  }
+  ::-webkit-calendar-picker-indicator {
+    opacity: 0.6;
+    cursor: pointer;
+  }
+  ::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+    [data-press]:active {
+      transform: none;
+    }
+  }
+}
+
+/* ---- Utilities --------------------------------------------------------- */
+@layer utilities {
+  /* Focus treatment for bordered fields.
+
+     The border goes to FULL-strength accent, not a tint: it is the focus
+     indicator and must meet WCAG 1.4.11 at 3:1 against the ground. A 50% tint
+     measured 2.36:1 on white and fails. The ring is a soft halo at 30% and
+     carries no contrast duty, so it may be as quiet as it likes.
+
+     Both sit inside the element's own box, so no layout shifts and nothing
+     collides with a neighbour in a tight toolbar. */
+  .field {
+    transition:
+      border-color var(--duration) var(--ease-snap),
+      box-shadow var(--duration) var(--ease-snap);
+  }
+  /* !important is deliberate and is the one place this system uses it. A
+     utility class setting border-color sits in the same cascade layer, so
+     without it the resting border wins and the field never lights up. A focus
+     indicator must not be overridable by a colour utility. */
+  .field:focus-visible,
+  .field:has(:focus-visible) {
+    outline: none;
+    border-color: var(--color-focus) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-focus) 30%, transparent);
+  }
+  /* Invalid takes the same shape in the error colour, so the two states are one
+     visual language rather than two. */
+  .field[aria-invalid='true'],
+  .field:has([aria-invalid='true']) {
+    border-color: var(--color-error) !important;
+  }
+  .field[aria-invalid='true']:focus-visible,
+  .field:has([aria-invalid='true']:focus-visible) {
+    border-color: var(--color-error) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-error) 30%, transparent);
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
+  }
+
+  /* Hairline scrollbar */
+  /* Scroll without a visible bar.
+     For a row the user drags or swipes rather than reads: a nav strip, a chip
+     row, a tab list. The bar is chrome there, and it steals vertical space from
+     a control that is often only 32px tall.
+
+     Only for SHORT horizontal runs where the overflow is obvious from clipped
+     content. Never on a long vertical list: hiding the bar there removes the
+     only cue that there is more, and the only way to judge how much. */
+  /* The page's own scrollbar.
+     Without this the document keeps the UA default: a wide, opaque bar in a
+     light grey trough that ignores the theme entirely and reads as a seam down
+     the edge of a dark page.
+
+     Applied to `html` rather than `body` because the viewport scrollbar is
+     rendered by the root element; styling body alone does nothing. Slightly
+     wider than .scroll-thin (10px vs 8px) since it is dragged over the full
+     page height and is the only bar a person aims at without precision. */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-hi) transparent;
+  }
+  html::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  html::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  html::-webkit-scrollbar-thumb {
+    background-color: var(--color-line-hi);
+    border: 3px solid transparent;
+    background-clip: content-box;
+    border-radius: var(--radius-full);
+    transition: background-color var(--duration) var(--ease-snap);
+  }
+  html::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-fg-subtle);
+  }
+  html::-webkit-scrollbar-thumb:active {
+    background-color: var(--color-fg-muted);
+  }
+  html::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  .scroll-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scroll-none::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scroll-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-hi) transparent;
+  }
+  /* 8px gutter carrying a 4px thumb: the transparent border is what makes the
+     thumb read as slim without shrinking the grab target below usable. A 4px
+     bar with no padding is hard to hit and reads as a hairline crack. */
+  .scroll-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .scroll-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scroll-thin::-webkit-scrollbar-thumb {
+    background-color: var(--color-line-hi);
+    border: 2px solid transparent;
+    background-clip: content-box;
+    border-radius: var(--radius-full);
+    transition: background-color var(--duration) var(--ease-snap);
+  }
+  /* Brightens on hover of the CONTAINER, not just the thumb: the bar should
+     announce itself when the pointer enters the region it scrolls. */
+  .scroll-thin:hover::-webkit-scrollbar-thumb {
+    background-color: var(--color-fg-subtle);
+  }
+  .scroll-thin::-webkit-scrollbar-thumb:hover {
+    background-color: var(--color-fg-muted);
+  }
+  /* Where two bars meet. Left unpainted it renders as a pale UA square. */
+  .scroll-thin::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+/* ---- Radix animation helpers ------------------------------------------- */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes slide-in-right {
+  from {
+    transform: translateX(8px);
+    opacity: 0;
+  }
+}
+@keyframes slide-up {
+  from {
+    transform: translateY(4px);
+    opacity: 0;
+  }
+}
+/* Accordion open/close.
+   Radix measures the panel and exposes --radix-accordion-content-height, so the
+   animation ends exactly at the real height. Animating to a guessed max-height
+   either clips long content or pauses at the end while the surplus collapses. */
+/* Popover, menu, combobox list.
+
+   Keyed off Radix's own [data-state] rather than Tailwind
+   `data-[state=open]:` variants. Those variants are built by string
+   concatenation inside the package, and Tailwind's scanner cannot always
+   resolve a class it never sees written out, so the selector silently never
+   compiled: the menu appeared with no animation at all, and Radix's
+   positioning pass was visible as a snap.
+
+   Opacity and a small Y translate only. NO scale: scaling a panel of text
+   re-rasterises every glyph each frame, and Radix measures and repositions the
+   panel on the same frames. */
+@keyframes pop-in {
+  from { opacity: 0; transform: translateY(-2px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pop-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+/* Scoped to the popper wrapper Radix creates for floating content, so this
+   cannot reach an accordion or any other component that also uses
+   [data-state]. */
+[data-radix-popper-content-wrapper] > [data-state='open'] {
+  animation: pop-in var(--duration-fast) var(--ease-snap);
+}
+[data-radix-popper-content-wrapper] > [data-state='closed'] {
+  animation: pop-out var(--duration-fast) var(--ease-snap);
+}
+
+/* Typing dots, iMessage-style.
+
+   Scale AND opacity, not a translate. iMessage grows each dot from the middle
+   rather than lifting it, which reads as breathing rather than bouncing: a
+   vertical hop on a 6px dot at this size looks jittery because the travel is a
+   large fraction of the dot itself.
+
+   The curve is deliberately soft at both ends (a sine, not the system's snap
+   ease) so the dots never appear to stop and start. The cycle is long enough
+   that the row feels unhurried: a fast loop reads as impatience.
+
+   Staggered by a third of the cycle, so exactly one dot is at its peak at any
+   moment and the row reads as travel rather than three blinks. */
+@keyframes typing-wave {
+  0%, 60%, 100% { transform: scale(0.72); opacity: 0.38; }
+  30%           { transform: scale(1.12); opacity: 1; }
+}
+.animate-typing-wave {
+  animation: typing-wave 1.4s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  /* Round scaling looks wrong off a corner origin. */
+  transform-origin: center;
+}
+
+/* Dialog and overlay.
+   Scale from 0.98, not 0.9: a modal is already the focus of the screen, so a
+   large scale reads as a bounce rather than an arrival. Paired with a 4px lift
+   so it settles rather than simply appearing. */
+@keyframes dialog-in {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(0.98) translateY(4px); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1) translateY(0); }
+}
+@keyframes dialog-out {
+  from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  to   { opacity: 0; transform: translate(-50%, -50%) scale(0.98); }
+}
+@keyframes fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+/* Exit is faster than entry throughout the system: an arrival deserves to be
+   watched, a dismissal should get out of the way. */
+.animate-dialog-in  { animation: dialog-in var(--duration) var(--ease-expo); }
+.animate-dialog-out { animation: dialog-out var(--duration-fast) var(--ease-snap); }
+.animate-fade-out   { animation: fade-out var(--duration-fast) var(--ease-snap); }
+
+@keyframes accordion-down {
+  from { height: 0; opacity: 0; }
+  to   { height: var(--radix-accordion-content-height); opacity: 1; }
+}
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); opacity: 1; }
+  to   { height: 0; opacity: 0; }
+}
+.animate-accordion-down {
+  animation: accordion-down var(--duration) var(--ease-snap);
+}
+.animate-accordion-up {
+  animation: accordion-up var(--duration) var(--ease-snap);
+}
+
+.animate-fade-in {
+  animation: fade-in var(--duration-fast) ease-out;
+}
+.animate-slide-in-right {
+  animation: slide-in-right var(--duration) ease-out;
+}
+.animate-slide-up {
+  animation: slide-up var(--duration) var(--ease-expo);
+}

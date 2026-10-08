@@ -1,0 +1,59 @@
+@import '../styles/foundation.css';
+
+/* App overrides on top of the TPH foundation. Foundation stays an untouched
+   copy so check-foundation can diff it; everything portfolio-specific lives here. */
+
+@theme {
+  /* next/font hashes family names, so point the TPH families at its variables. */
+  --font-sans: var(--font-geist), 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-albert), 'Albert Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Portfolio hero statement. TPH caps display at 3rem for product UI; a
+     portfolio's single opening line is its focal object, so it scales up. */
+  --text-hero: clamp(3rem, 9vw, 7rem);
+  --text-hero--line-height: 0.98;
+  --text-hero--letter-spacing: -0.045em;
+
+  /* Section statements: between title and hero. */
+  --text-statement: clamp(2rem, 4.5vw, 3.5rem);
+  --text-statement--line-height: 1.05;
+  --text-statement--letter-spacing: -0.035em;
+
+  /* Scroll reveals. Longer than TPH's business-UI budget on purpose: they
+     play once per section on a showcase page and only move transform/opacity. */
+  --duration-reveal: 700ms;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+::selection {
+  background: var(--color-flame);
+  color: var(--color-flame-on);
+}
+
+/* Reveal targets start visible; MotionProvider hides them only once GSAP is
+   ready and motion is allowed, so no-JS and reduced-motion get full content. */
+[data-reveal] {
+  will-change: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
