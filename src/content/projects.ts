@@ -142,6 +142,14 @@ export const projects: Project[] = [
   },
   {
     slug: 'flowqa',
+    screenshots: {
+      frame: 'browser',
+      brand: { from: '#2f7cf6', to: '#0c2350' }, // off-token: FlowQA blue
+      images: [
+        { src: '/screens/flowqa/dashboard.jpg', alt: 'FlowQA projects dashboard with health, last 7 runs and tests needing attention', width: 1600, height: 1000 },
+        { src: '/screens/flowqa/test-detail.jpg', alt: 'FlowQA test detail: recorded steps, locators, assertions and the final capture', width: 1600, height: 1000 },
+      ],
+    },
     id: 'TC-03',
     name: 'FlowQA',
     summary: 'Record-and-replay test automation platform',
