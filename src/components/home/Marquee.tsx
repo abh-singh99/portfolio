@@ -6,9 +6,10 @@ export function Marquee() {
       {marquee.map((w) => (
         <li key={w} className="flex items-center px-6 font-display text-marquee font-bold text-fg-subtle sm:px-8">
           {w}
-          <span aria-hidden="true" className="ml-12 text-flame sm:ml-16">
-            ✳
-          </span>
+          {/* Drawn, not a text glyph: iOS renders ✳ as a green emoji. */}
+          <svg aria-hidden="true" viewBox="0 0 24 24" className="ml-12 size-[0.6em] shrink-0 text-flame sm:ml-16" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round">
+            <path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4" />
+          </svg>
         </li>
       ))}
     </ul>
