@@ -226,6 +226,29 @@ html.lenis body {
   .stage-win-front { left: 26%; width: 80%; top: 44%; }
 }
 
+/* Clickable stages lift slightly; the badge shows on hover or focus, and
+   stays visible on touch screens where there is no hover. */
+.project-link .stage {
+  transition: transform 300ms var(--ease-expo);
+}
+.project-link:hover .stage,
+.project-link:focus-visible .stage {
+  transform: translateY(-4px);
+}
+@media (hover: hover) {
+  .project-link-badge {
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
+  .project-link:hover .project-link-badge,
+  .project-link:focus-visible .project-link-badge {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .project-link .stage { transition: none; transform: none !important; }
+}
+
 /* ---- Paint text ---------------------------------------------------------
    Words start dim and paint in as the statement scrolls through view. The
    dim state is applied by script, so without motion the text is solid. */

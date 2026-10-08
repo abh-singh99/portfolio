@@ -61,6 +61,21 @@ export const work = {
   eyebrow: 'Selected projects',
   heading: ['Products I’ve', 'helped ship.'],
   summaryLabel: 'Test summary',
+  visitLabel: 'Visit site',
+  appLabel: 'Get the app',
+  soonLabel: 'Coming soon',
+  newTab: 'opens in a new tab',
+};
+
+// The /get/<slug> page behind each app's screens.
+export const getApp = {
+  heading: (name: string) => `Get ${name}`,
+  body: 'Opening the store for your phone. If nothing happens, pick a store below.',
+  desktop: 'Pick your store to download the app.',
+  play: 'Get it on Google Play',
+  appStore: 'Download on the App Store',
+  only: (name: string, platform: string) => `${name} is on ${platform} only for now.`,
+  back: '← Back to projects',
 };
 
 export const strengths = {

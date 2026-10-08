@@ -18,6 +18,15 @@ export type ProjectScreenshots = {
   images: { src: string; alt: string; width: number; height: number }[];
 };
 
+/** Where the screens lead when clicked. */
+export type ProjectLink =
+  /** A public website, opened in a new tab. */
+  | { kind: 'site'; href: string; label: string }
+  /** Store listings. The /get/<slug> page sends visitors to the one for their phone. */
+  | { kind: 'app'; android?: string; ios?: string }
+  /** Not public yet: clicking shows this note instead of a link. */
+  | { kind: 'soon'; note: string };
+
 export type Project = {
   slug: string;
   id: string;
@@ -41,11 +50,14 @@ export type Project = {
   media?: ProjectMedia;
   /** Optional screenshots, shown when there is no video. */
   screenshots?: ProjectScreenshots;
+  link?: ProjectLink;
 };
 
 export const projects: Project[] = [
   {
     slug: 'yeapp',
+    // Not on the App Store yet; iPhone visitors are told it's Android only.
+    link: { kind: 'app', android: 'https://play.google.com/store/apps/details?id=com.kinvrs.yeapp' },
     screenshots: {
       frame: 'phone',
       brand: { from: '#7c4dff', to: '#3b1fa3' }, // off-token: Yeapp purple
@@ -94,6 +106,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'scuderia-car-parts',
+    link: { kind: 'soon', note: 'Scuderia Car Parts isn’t live yet. It launches soon.' },
     screenshots: {
       frame: 'browser',
       brand: { from: '#b8141c', to: '#5e0a0e' }, // off-token: Scuderia brand red
@@ -142,6 +155,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'flowqa',
+    link: { kind: 'soon', note: 'FlowQA isn’t public yet.' },
     screenshots: {
       frame: 'browser',
       brand: { from: '#2f7cf6', to: '#0c2350' }, // off-token: FlowQA blue
@@ -190,6 +204,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'nhs',
+    link: { kind: 'site', href: 'https://www.nhs.uk', label: 'nhs.uk' },
     screenshots: {
       frame: 'browser',
       brand: { from: '#1f5fbf', to: '#0b2a5c' }, // off-token: NHS blue
@@ -240,6 +255,11 @@ export const projects: Project[] = [
   },
   {
     slug: 'luv-or-pop',
+    link: {
+      kind: 'app',
+      android: 'https://play.google.com/store/apps/details?id=com.popdaloon',
+      ios: 'https://apps.apple.com/app/id6741908238',
+    },
     screenshots: {
       frame: 'phone',
       brand: { from: '#e8384f', to: '#6d1028' }, // off-token: Luv or Pop balloon red
@@ -290,4 +310,9 @@ export const projects: Project[] = [
 
 export function getProject(slug: string) {
   return projects.find((p) => p.slug === slug);
+}
+
+/** App projects with at least one store listing; these get a /get/<slug> page. */
+export function appProjects() {
+  return projects.filter((p) => p.link?.kind === 'app' && (p.link.android || p.link.ios));
 }

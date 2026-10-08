@@ -3,6 +3,7 @@ import { projects, type Project } from '@/content/projects';
 import { Container } from '@/components/layout/Container';
 import { ProjectVideo } from '@/components/ProjectVideo';
 import { ProjectStage } from '@/components/ProjectStage';
+import { ProjectLink } from '@/components/ProjectLink';
 import { SectionHeading } from './SectionHeading';
 
 // For projects without screens yet: the test strategy, laid out like a test
@@ -30,7 +31,12 @@ function TestSummary({ p }: { p: Project }) {
 
 function Visual({ p }: { p: Project }) {
   if (p.media) return <ProjectVideo media={p.media} />;
-  if (p.screenshots) return <ProjectStage screens={p.screenshots} label={p.name} />;
+  if (p.screenshots)
+    return (
+      <ProjectLink p={p}>
+        <ProjectStage screens={p.screenshots} label={p.name} />
+      </ProjectLink>
+    );
   return <TestSummary p={p} />;
 }
 

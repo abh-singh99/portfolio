@@ -127,3 +127,56 @@ test('SEO files are served', async ({ request }) => {
   expect((await request.get('/robots.txt')).ok()).toBeTruthy();
   expect((await request.get('/opengraph-image')).headers()['content-type']).toContain('image/png');
 });
+
+test.describe('project links', () => {
+  test('website screens open the live site in a new tab', async ({ page }) => {
+    await page.goto('/');
+    for (const p of projects.filter((p) => p.link?.kind === 'site')) {
+      const link = page.locator('#work').getByRole('link', { name: new RegExp(`^Visit site: ${p.name}`) });
+      await expect(link).toHaveAttribute('href', p.link!.kind === 'site' ? p.link!.href : '');
+      await expect(link).toHaveAttribute('target', '_blank');
+    }
+  });
+
+  test('app screens lead to their store page', async ({ page }) => {
+    await page.goto('/');
+    for (const p of projects.filter((p) => p.link?.kind === 'app')) {
+      await expect(page.locator('#work').getByRole('link', { name: `Get the app: ${p.name}` })).toHaveAttribute(
+        'href',
+        `/get/${p.slug}`,
+      );
+    }
+  });
+
+  test('products that are not live show a note', async ({ page }) => {
+    await page.goto('/');
+    for (const p of projects.filter((p) => p.link?.kind === 'soon')) {
+      const note = p.link!.kind === 'soon' ? p.link!.note : '';
+      await expect(async () => {
+        await page.getByRole('button', { name: `${p.name}: Coming soon` }).click();
+        await expect(page.getByRole('status').filter({ hasText: note })).toBeVisible({ timeout: 1000 });
+      }).toPass();
+    }
+  });
+
+  test('store page sends phones to their store and shows buttons elsewhere', async ({ page, isMobile }) => {
+    // Never actually leave for the stores; record where the page tried to go.
+    const visited: string[] = [];
+    await page.route(/(play\.google\.com|apps\.apple\.com)/, (route) => {
+      visited.push(route.request().url());
+      return route.fulfill({ body: 'store' });
+    });
+    for (const p of projects.filter((p) => p.link?.kind === 'app')) {
+      const link: { android?: string; ios?: string } = p.link!.kind === 'app' ? p.link! : {};
+      await page.goto(`/get/${p.slug}`);
+      if (isMobile && link.android) {
+        // The Pixel 7 project is Android.
+        await expect.poll(() => visited).toContain(link.android);
+      } else {
+        await expect(page.getByRole('heading', { level: 1, name: `Get ${p.name}` })).toBeVisible();
+        if (link.android) await expect(page.getByRole('link', { name: 'Get it on Google Play' })).toHaveAttribute('href', link.android);
+        if (link.ios) await expect(page.getByRole('link', { name: 'Download on the App Store' })).toHaveAttribute('href', link.ios);
+      }
+    }
+  });
+});
