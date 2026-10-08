@@ -46,6 +46,14 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: 'yeapp',
+    screenshots: {
+      frame: 'phone',
+      brand: { from: '#7c4dff', to: '#3b1fa3' }, // off-token: Yeapp purple
+      images: [
+        { src: '/screens/yeapp/home.jpg', alt: 'Yeapp home screen with chats and a voice message playing with its transcript', width: 392, height: 844 },
+        { src: '/screens/yeapp/onboarding.jpg', alt: 'Yeapp onboarding screen: every voice message syncs a word-by-word transcript', width: 394, height: 852 },
+      ],
+    },
     id: 'TC-01',
     name: 'Yeapp by Krafton',
     summary: 'Voice-first social messaging app',
