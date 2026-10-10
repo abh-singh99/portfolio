@@ -4,7 +4,6 @@ import { About } from '@/components/home/About';
 import { PaintStatement } from '@/components/home/PaintStatement';
 import { SelectedWork } from '@/components/home/SelectedWork';
 import { Strengths } from '@/components/home/Strengths';
-import { FlowQASpotlight } from '@/components/home/FlowQASpotlight';
 import { Experience } from '@/components/home/Experience';
 import { Credentials } from '@/components/home/Credentials';
 import { Contact } from '@/components/home/Contact';
@@ -27,7 +26,6 @@ export default function Home() {
       </LabProvider>
       <PaintStatement />
       <Strengths />
-      <FlowQASpotlight />
       <Experience />
       <Credentials />
       <Contact />

@@ -79,7 +79,7 @@ function ProjectRow({ p, flip }: { p: Project; flip: boolean }) {
 export function SelectedWork() {
   return (
     <section id="work" aria-labelledby="work-heading" className="scroll-mt-16">
-      <Container className="flex flex-col gap-20 py-24 sm:gap-28 sm:py-36">
+      <Container className="flex flex-col gap-20 pt-24 pb-12 sm:gap-28 sm:pt-36 sm:pb-16">
         <SectionHeading id="work-heading" eyebrow={work.eyebrow} lines={work.heading} />
         {projects.map((p, i) => (
           <ProjectRow key={p.slug} p={p} flip={i % 2 === 1} />

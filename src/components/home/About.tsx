@@ -15,7 +15,7 @@ export function About() {
   return (
     <section id="about" aria-labelledby="about-heading" className="scroll-mt-8">
       {/* Wide measure on purpose: the story reads as two short blocks under the statement. */}
-      <Container className="flex flex-col gap-10 py-24 sm:py-36">
+      <Container className="flex flex-col gap-10 pt-12 pb-24 sm:pt-16 sm:pb-36">
         <SectionHeading id="about-heading" eyebrow={about.eyebrow} lines={about.heading} align="left" />
         <div className="flex flex-col gap-5" data-reveal>
           {about.body.map((p) => (

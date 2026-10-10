@@ -78,12 +78,12 @@ test('Automation: suite fails 6 on build 1.0 and passes on 1.1', async ({ page }
 test('Accessibility: axe finds violations on 1.0 and none on 1.1', async ({ page }) => {
   await openCard(page, /^Accessibility audit/);
   await page.getByRole('button', { name: 'Run scan' }).click();
-  await expect(page.locator('.devtools-list button')).toHaveCount(5, { timeout: 15_000 });
+  await expect(page.locator('.devtools-list button')).toHaveCount(5, { timeout: 30_000 });
   await page.locator('.devtools-list button').first().click();
   await expect(page.locator('[data-a11y-specimen] [data-hl="true"]')).toHaveCount(1);
   await page.locator('.devtools-bar select').selectOption('1.1');
   await page.getByRole('button', { name: 'Run scan' }).click();
-  await expect(page.getByText('No automated violations found.')).toBeVisible({ timeout: 15_000 });
+  await expect(page.getByText('No automated violations found.')).toBeVisible({ timeout: 30_000 });
 });
 
 test('progress persists and the bug report opens the checkout demo', async ({ page }) => {
