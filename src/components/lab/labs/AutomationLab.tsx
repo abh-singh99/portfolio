@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { automationLab } from '@/content/lab';
 import { EMPTY, VALID, FIELDS, submit, type Build, type CheckoutForm, type Submission } from '@/lib/lab/checkout';
 import { SUITE } from '@/lib/lab/suite';
@@ -8,6 +8,7 @@ import { BrowserWindow, EditorWindow, Explain, Guide, RealWork } from '../chrome
 import { CheckoutPage } from '../CheckoutPage';
 import { CursorIcon } from '../icons';
 import { pause, useAlive, useLab } from '../LabProvider';
+import { ScaledViewport } from '../responsive';
 
 type Status = 'queued' | 'run' | 'pass' | 'fail';
 type Outcome = { pass: boolean; expected: string; actual: string; ms: number };
@@ -53,6 +54,10 @@ export function AutomationLab() {
   const [failShot, setFailShot] = useState(false);
   const pageRef = useRef<HTMLDivElement>(null);
   const termRef = useRef<HTMLPreElement>(null);
+  const scale = useRef(1);
+  const onScale = useCallback((s: number) => {
+    scale.current = s;
+  }, []);
 
   const log = (node: React.ReactNode) => {
     setTerm((t) => [...t, node]);
@@ -63,9 +68,13 @@ export function AutomationLab() {
     const page = pageRef.current;
     const el = page?.querySelector<HTMLElement>(`[data-target="${target}"]`);
     if (!page || !el) return;
+    // Rects are in screen pixels; the preview may be scaled down on phones.
     const p = page.getBoundingClientRect();
     const r = el.getBoundingClientRect();
-    setCursor((c) => ({ x: r.left - p.left + Math.min(r.width / 2, 60), y: r.top - p.top + r.height / 2, click: click ? (c?.click ?? 0) + 1 : (c?.click ?? 0) }));
+    const k = scale.current;
+    const x = (r.left - p.left + Math.min(r.width / 2, 60 * k)) / k;
+    const y = (r.top - p.top + r.height / 2) / k;
+    setCursor((c) => ({ x, y, click: click ? (c?.click ?? 0) + 1 : (c?.click ?? 0) }));
     await pause(260);
   };
 
@@ -178,8 +187,18 @@ export function AutomationLab() {
             <label className="flex items-center gap-2">
               Build under test
               <select value={build} disabled={running} onChange={(e) => setBuild(e.target.value as Build)} aria-label="Build under test">
-                <option value="1.0">1.0 (current release)</option>
-                <option value="1.1">1.1 (with fixes)</option>
+                <option value="1.0">1.0 · current</option>
+                <option value="1.1">1.1 · fixes</option>
+              </select>
+            </label>
+            <label className="ed-pick">
+              <span className="sr-only">Test</span>
+              <select value={shown} disabled={running} onChange={(e) => setShown(Number(e.target.value))}>
+                {SUITE.map((s, i) => (
+                  <option key={s.id} value={i}>
+                    {status[i] === 'pass' ? '✓' : status[i] === 'fail' ? '✗' : status[i] === 'run' ? '●' : '○'} {s.id} {s.title}
+                  </option>
+                ))}
               </select>
             </label>
             <button
@@ -242,21 +261,23 @@ export function AutomationLab() {
         </EditorWindow>
 
         <BrowserWindow tab="Checkout · Apex Parts" favicon="#c8102e" url={`staging-${build.replace('.', '-')}.apex-parts.test/checkout`} controlled>
-          <div className="relative">
-            <CheckoutPage ref={pageRef} idPrefix="ax" form={form} result={result} readOnly />
-            {cursor && (
-              <span className="lab-cursor is-click" style={{ left: cursor.x, top: cursor.y }} aria-hidden="true">
-                <CursorIcon />
-                {/* Keyed by click count so the ripple replays on every click. */}
-                <span key={cursor.click} className="ripple" />
-              </span>
-            )}
-            {failShot && (
-              <div className="lab-failshot" aria-hidden="true">
-                <span>test-failed-1.png</span>
-              </div>
-            )}
-          </div>
+          <ScaledViewport width={680} onScale={onScale}>
+            <div className="relative">
+              <CheckoutPage ref={pageRef} idPrefix="ax" form={form} result={result} readOnly />
+              {cursor && (
+                <span className="lab-cursor is-click" style={{ left: cursor.x, top: cursor.y }} aria-hidden="true">
+                  <CursorIcon />
+                  {/* Keyed by click count so the ripple replays on every click. */}
+                  <span key={cursor.click} className="ripple" />
+                </span>
+              )}
+              {failShot && (
+                <div className="lab-failshot" aria-hidden="true">
+                  <span>test-failed-1.png</span>
+                </div>
+              )}
+            </div>
+          </ScaledViewport>
         </BrowserWindow>
       </div>
       <Explain html={automationLab.intro} />

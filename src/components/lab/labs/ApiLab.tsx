@@ -141,6 +141,31 @@ export function ApiLab() {
           </aside>
 
           <section className="api-main" aria-label="Request">
+            {/* Narrow screens: the collection becomes a picker instead of a sidebar. */}
+            <div className="api-picker">
+              <label className="sr-only" htmlFor="api-pick">
+                Request
+              </label>
+              <select id="api-pick" value={presetId} onChange={(e) => load(e.target.value)}>
+                {folders.map((f) => (
+                  <optgroup key={f} label={f}>
+                    {PRESETS.filter((p) => p.folder === f).map((p) => {
+                      const r = collection?.find((x) => x.id === p.id);
+                      const mark = r ? (r.checks.some((c) => !c.pass) ? ' · FAIL' : ' · PASS') : '';
+                      return (
+                        <option key={p.id} value={p.id}>
+                          {p.method} {p.name}
+                          {mark}
+                        </option>
+                      );
+                    })}
+                  </optgroup>
+                ))}
+              </select>
+              <button type="button" className={`api-run ${step === 3 ? 'lab-nudge' : ''}`} onClick={runCollection} disabled={busy}>
+                Run collection
+              </button>
+            </div>
             <div className="api-reqtab">
               <span>
                 <b className={`api-m ${method}`} style={{ width: 'auto' }}>{method}</b> {preset.name}

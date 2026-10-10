@@ -113,7 +113,7 @@ test.describe('reduced motion', () => {
   test('content is visible without animation and Lenis is off', async ({ page }) => {
     await page.goto('/');
     await page.locator('#credentials').scrollIntoViewIfNeeded();
-    await expect(page.locator('#credentials [data-reveal]').first()).toHaveCSS('opacity', '1');
+    await expect(page.locator('#credentials h2')).toHaveCSS('opacity', '1');
     await expect(page.locator('html')).not.toHaveClass(/lenis/);
   });
 });
@@ -186,4 +186,16 @@ test('sections follow the agreed order', async ({ page }) => {
   const ids = await page.locator('main > section[id]').evaluateAll((els) => els.map((e) => e.id));
   const order = ['work', 'about', 'lab', 'bug-report', 'strengths', 'experience', 'credentials', 'contact'];
   expect(ids.filter((id) => order.includes(id))).toEqual(order);
+});
+
+test('content is visible on load without waiting for scroll', async ({ page }) => {
+  await page.goto('/');
+  // Jump straight down, as a fast flick would, and check nothing is still hidden.
+  for (const id of ['work', 'about', 'lab', 'bug-report', 'experience', 'contact']) {
+    await page.locator(`#${id}`).evaluate((e) => e.scrollIntoView());
+    const hidden = await page.locator(`#${id} h2, #${id} h3, #${id} p`).evaluateAll(
+      (els) => els.filter((e) => e.textContent?.trim() && Number(getComputedStyle(e).opacity) < 0.99 && !e.closest('[data-paint]')).length,
+    );
+    expect(hidden, `#${id}`).toBe(0);
+  }
 });

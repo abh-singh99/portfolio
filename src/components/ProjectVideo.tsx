@@ -44,7 +44,7 @@ export function ProjectVideo({ media }: { media: ProjectMedia }) {
 
   if (media.frame === 'phone') {
     return (
-      <figure className="mx-auto w-full max-w-xs" data-reveal>
+      <figure className="mx-auto w-full max-w-xs">
         <div className="overflow-hidden rounded-phone border-8 border-surface-3 bg-surface-1">{video}</div>
         <figcaption className="sr-only">{media.caption}</figcaption>
       </figure>
@@ -52,7 +52,7 @@ export function ProjectVideo({ media }: { media: ProjectMedia }) {
   }
 
   return (
-    <figure className="w-full overflow-hidden rounded-card border border-line bg-surface-1" data-reveal>
+    <figure className="w-full overflow-hidden rounded-card border border-line bg-surface-1">
       <div className="flex items-center gap-2 border-b border-line px-4 py-3" aria-hidden="true">
         <span className="size-2.5 rounded-full bg-surface-3" />
         <span className="size-2.5 rounded-full bg-surface-3" />

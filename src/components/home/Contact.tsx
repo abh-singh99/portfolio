@@ -19,11 +19,11 @@ export function Contact() {
       {/* The pointer passes through to the grid except over links and buttons. */}
       <Container className="pointer-events-none relative z-10 flex flex-col items-center gap-8 py-32 text-center [&_a]:pointer-events-auto [&_button]:pointer-events-auto">
         <SectionHeading id="contact-heading" eyebrow={contact.eyebrow} lines={contact.heading} />
-        <p className="max-w-xl text-lead text-fg-muted" data-reveal>
+        <p className="max-w-xl text-lead text-fg-muted">
           {contact.body}
         </p>
 
-        <div className="flex flex-wrap items-center justify-center gap-4" data-reveal>
+        <div className="flex flex-wrap items-center justify-center gap-4">
           <a
             href={`mailto:${site.email}`}
             className="rounded font-display text-heading font-medium text-fg-hi hover:text-flame sm:text-title"
@@ -33,7 +33,7 @@ export function Contact() {
           <CopyEmail email={site.email} label={contact.copyLabel} copiedLabel={contact.copiedLabel} />
         </div>
 
-        <div className="mt-4 flex flex-col items-center gap-4" data-reveal>
+        <div className="mt-4 flex flex-col items-center gap-4">
           <div className="flex flex-wrap justify-center gap-3">
             <Pill href={`mailto:${site.email}`} variant="solid">
               {contact.emailCta}

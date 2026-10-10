@@ -1,17 +1,22 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { functionalLab } from '@/content/lab';
 import { expose, VALID, EMPTY, type CheckoutForm, type DefectId, type Submission } from '@/lib/lab/checkout';
 import { BrowserWindow, Explain, Guide, Html, Pill, RealWork } from '../chrome';
 import { CheckoutPage } from '../CheckoutPage';
 import { useLab } from '../LabProvider';
+import { useMedia, WIDE } from '../responsive';
 
 const total = functionalLab.defects.length;
 const sevTone = (s: string) => (s === 'Critical' ? 'fail' : s === 'Major' ? 'warn' : undefined);
 
 export function FunctionalLab() {
   const { markDone } = useLab();
+  // Side panels open beside the shop on wide screens; on narrow ones they
+  // collapse to one-line summaries under it.
+  const wide = useMedia(WIDE);
+  const notesRef = useRef<HTMLDivElement>(null);
   const [form, setForm] = useState<CheckoutForm>(EMPTY);
   const [result, setResult] = useState<Submission | null>(null);
   const [found, setFound] = useState<Map<DefectId, string>>(new Map());
@@ -31,6 +36,8 @@ export function FunctionalLab() {
     setFound(next);
     setNotes(msgs.length ? msgs : [{ html: functionalLab.noDefect, tone: 'info' }]);
     if (next.size === total) markDone('functional');
+    // On narrow screens the verdict lands below the order summary, out of view.
+    if (!wide) requestAnimationFrame(() => notesRef.current?.scrollIntoView({ block: 'nearest', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }));
   };
 
   const n = found.size;
@@ -57,7 +64,7 @@ export function FunctionalLab() {
               }}
             />
           </BrowserWindow>
-          <div className="flex flex-col gap-2" aria-live="polite">
+          <div ref={notesRef} className="flex scroll-mb-4 flex-col gap-2" aria-live="polite">
             {notes.map((m) => (
               <Explain key={m.html} html={m.html} tone={m.tone} />
             ))}
@@ -65,22 +72,27 @@ export function FunctionalLab() {
         </div>
 
         <div className="flex min-w-0 flex-col gap-4">
-          <details className="lab-panel" open>
-            <summary className="lab-panel-h cursor-pointer text-label font-semibold text-fg-hi">Requirements · checkout v1</summary>
+          <details className="lab-panel lab-disclosure" open={wide}>
+            <summary className="lab-panel-h text-label font-semibold text-fg-hi">
+              Requirements · checkout v1
+              <span className="ml-auto font-mono text-caption font-normal text-fg-muted">{functionalLab.requirements.length} rules</span>
+            </summary>
             <ol className="flex list-decimal flex-col gap-1.5 py-3 pr-4 pl-9 text-body-sm text-fg-muted">
               {functionalLab.requirements.map((r) => (
                 <li key={r}>{r}</li>
               ))}
             </ol>
           </details>
-          <div className="lab-panel">
-            <div className="lab-panel-h justify-between">
-              <span className="text-label font-semibold text-fg-hi">Bug board · build 1.0</span>
-              <Pill tone={n === total ? 'pass' : n ? 'warn' : undefined}>
-                {n} / {total} found
-              </Pill>
-            </div>
-            <ul className="flex flex-col gap-2 p-3">
+          <details className="lab-panel lab-disclosure" open={wide}>
+            <summary className="lab-panel-h text-label font-semibold text-fg-hi">
+              Bug board · build 1.0
+              <span className="ml-auto">
+                <Pill tone={n === total ? 'pass' : n ? 'warn' : undefined}>
+                  {n} / {total} found
+                </Pill>
+              </span>
+            </summary>
+            <ul className="flex max-h-96 flex-col gap-2 overflow-y-auto p-3 lg:max-h-none">
               {functionalLab.defects.map((d) => {
                 const input = found.get(d.id as DefectId);
                 return (
@@ -120,7 +132,7 @@ export function FunctionalLab() {
                 );
               })}
             </ul>
-          </div>
+          </details>
         </div>
       </div>
       <RealWork text={functionalLab.real} />

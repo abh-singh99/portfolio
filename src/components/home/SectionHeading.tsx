@@ -17,7 +17,7 @@ export function SectionHeading({
 }) {
   const list = typeof lines === 'string' ? [lines] : lines;
   return (
-    <div className={`flex flex-col gap-4 ${align === 'center' ? 'items-center text-center' : ''}`} data-reveal>
+    <div className={`flex flex-col gap-4 ${align === 'center' ? 'items-center text-center' : ''}`}>
       <Eyebrow>{eyebrow}</Eyebrow>
       <h2 id={id} className={`font-display font-semibold text-fg-hi ${size === 'statement' ? 'text-statement' : 'text-section'}`}>
         {list.map((l) => (

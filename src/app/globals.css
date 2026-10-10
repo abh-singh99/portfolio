@@ -47,7 +47,6 @@
   /* Device frame for app recordings. */
   --radius-phone: 2.5rem;
 
-  --duration-reveal: 700ms;
 }
 
 :root {

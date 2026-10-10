@@ -14,21 +14,21 @@ export function Hero() {
       {/* Text lets the pointer through to the grid; only the buttons catch it. */}
       <div className="pointer-events-none relative z-10 flex max-w-5xl flex-col items-center gap-6 text-center">
         <Eyebrow>{hero.eyebrow}</Eyebrow>
-        <h1 id="hero-heading" className="font-display text-hero font-semibold text-fg-hi" data-reveal>
+        <h1 id="hero-heading" className="font-display text-hero font-semibold text-fg-hi">
           {hero.title.map((line, i) => (
             <span key={line} className={`block ${i === hero.accentLine ? 'text-flame' : ''}`}>
               {line}
             </span>
           ))}
         </h1>
-        <p className="max-w-2xl text-lead text-fg-muted" data-reveal data-reveal-delay="0.1">
+        <p className="max-w-2xl text-lead text-fg-muted">
           {hero.intro}
         </p>
-        <p className="text-body text-fg" data-reveal data-reveal-delay="0.15">
+        <p className="text-body text-fg">
           <span aria-hidden="true" className="mr-2 inline-block size-2 rounded-full bg-success align-middle" />
           {hero.location}
         </p>
-        <div className="mt-2 flex flex-wrap justify-center gap-3" data-reveal data-reveal-delay="0.2">
+        <div className="mt-2 flex flex-wrap justify-center gap-3">
           <Pill href="/#work" variant="solid">
             {hero.cta.work}
           </Pill>

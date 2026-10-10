@@ -33,7 +33,7 @@ for (const theme of ['dark', 'light'] as const) {
     for (const tab of ['Backend', 'Functional', 'Boundary values', 'Automation', 'Accessibility']) {
       await page.getByRole('tab', { name: tab }).click();
       const results = await new AxeBuilder({ page })
-        .include('dialog.lab-modal')
+        .include('[role="dialog"]')
         .exclude('[data-a11y-specimen]')
         .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
         .analyze();
