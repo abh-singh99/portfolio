@@ -11,10 +11,10 @@ export function BugReport() {
     <section id="bug-report" aria-labelledby="bug-report-heading" className="scroll-mt-16">
       <Container className="flex flex-col gap-10 pb-24 sm:pb-36">
         <SectionHeading id="bug-report-heading" eyebrow={r.eyebrow} lines={r.heading} size="section" align="left" />
-        <p className="max-w-3xl text-lead text-fg-muted" data-reveal>
+        <p className="max-w-3xl text-lead text-fg-muted">
           {r.lead}
         </p>
-        <article className="overflow-hidden rounded-card border border-line bg-surface-1" aria-labelledby="bug-report-title" data-reveal>
+        <article className="overflow-hidden rounded-card border border-line bg-surface-1" aria-labelledby="bug-report-title">
           <header className="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-line px-5 py-4 sm:px-8">
             <span className="font-mono text-label text-link">{r.id}</span>
             <span className="rounded-full border border-error px-2.5 py-0.5 font-mono text-caption font-semibold text-error">Critical</span>

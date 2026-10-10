@@ -47,11 +47,11 @@ function ProjectRow({ p, flip }: { p: Project; flip: boolean }) {
       aria-labelledby={`${p.slug}-title`}
       className={`grid items-center gap-10 lg:gap-14 ${flip ? 'lg:grid-cols-[5fr_7fr]' : 'lg:grid-cols-[7fr_5fr]'}`}
     >
-      <div className={`min-w-0 ${flip ? 'lg:order-2' : ''}`} data-reveal>
+      <div className={`min-w-0 ${flip ? 'lg:order-2' : ''}`}>
         <Visual p={p} />
       </div>
 
-      <div className="flex min-w-0 flex-col gap-5" data-reveal>
+      <div className="flex min-w-0 flex-col gap-5">
         <p className="text-eyebrow font-semibold uppercase text-flame">
           {p.category} · {p.platforms.join(', ')}
         </p>

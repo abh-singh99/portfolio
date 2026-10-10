@@ -5,6 +5,7 @@ import { boundaryLab } from '@/content/lab';
 import { accepts, coverage, partition, sets, type BoundaryBuild } from '@/lib/lab/boundary';
 import { BrowserWindow, Guide, Html, Pill, RealWork } from '../chrome';
 import { useLab } from '../LabProvider';
+import { useMedia, WIDE } from '../responsive';
 
 const MIN = 18;
 const MAX = 70;
@@ -16,6 +17,7 @@ const BUILDS: { id: BoundaryBuild; label: string }[] = [
 
 export function BoundaryLab() {
   const { markDone } = useLab();
+  const wide = useMedia(WIDE);
   const [build, setBuild] = useState<BoundaryBuild>('upper');
   const [values, setValues] = useState<number[]>([30]);
   const [input, setInput] = useState('');
@@ -154,12 +156,14 @@ export function BoundaryLab() {
                   ))}
                 </ul>
               </div>
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center justify-between">
-                  <p className="text-label font-semibold text-fg-hi">Coverage</p>
-                  <Pill tone={core === 4 ? 'pass' : core ? 'warn' : undefined}>core edges {core}/4</Pill>
-                </div>
-                <ul className="flex flex-col gap-1.5 text-body-sm">
+              <details className="lab-disclosure flex flex-col gap-2" open={wide}>
+                <summary className="flex items-center gap-2 text-label font-semibold text-fg-hi">
+                  Coverage
+                  <span className="ml-auto">
+                    <Pill tone={core === 4 ? 'pass' : core ? 'warn' : undefined}>core edges {core}/4</Pill>
+                  </span>
+                </summary>
+                <ul className="mt-2 flex flex-col gap-1.5 text-body-sm">
                   {cov.map((c) => (
                     <li key={c.label} className="flex items-center gap-2">
                       <Pill tone={c.hit ? 'pass' : undefined}>{c.hit ? 'Tested' : 'Missing'}</Pill>
@@ -167,7 +171,7 @@ export function BoundaryLab() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </details>
             </div>
             <p className="text-caption text-fg-muted">{boundaryLab.partitions}</p>
           </div>

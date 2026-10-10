@@ -7,7 +7,7 @@ const openCard = async (page: Page, title: RegExp) => {
   await page.goto('/');
   await page.locator('#lab').scrollIntoViewIfNeeded();
   await page.getByRole('button', { name: title }).click();
-  await expect(page.locator('dialog.lab-modal')).toBeVisible();
+  await expect(page.getByRole('dialog')).toBeVisible();
 };
 const guide = (page: Page) => page.locator('.lab-guide');
 
@@ -18,9 +18,9 @@ test('section lists five demos and Esc returns focus to the card', async ({ page
   test.skip(isMobile, 'keyboard flow');
   await cards.first().focus();
   await page.keyboard.press('Enter');
-  await expect(page.locator('dialog.lab-modal')).toBeVisible();
+  await expect(page.getByRole('dialog')).toBeVisible();
   await page.keyboard.press('Escape');
-  await expect(page.locator('dialog.lab-modal')).toBeHidden();
+  await expect(page.getByRole('dialog')).toBeHidden();
   await expect(cards.first()).toBeFocused();
 });
 
@@ -28,7 +28,9 @@ test('API: unknown product breaks the contract and the collection finds 2 failur
   await openCard(page, /^API contract testing/);
   await page.getByRole('button', { name: 'Send', exact: true }).click();
   await expect(page.getByRole('status').filter({ hasText: '201 Created' })).toBeVisible();
-  await page.locator('.api-side button', { hasText: 'Unknown product' }).click();
+  // Sidebar on wide screens, a picker on phones.
+  if (await page.locator('.api-side').isVisible()) await page.locator('.api-side button', { hasText: 'Unknown product' }).click();
+  else await page.locator('#api-pick').selectOption('unknown');
   await page.getByRole('button', { name: 'Send', exact: true }).click();
   await expect(page.locator('.api-results')).toContainText('Status code is 404');
   await expect(page.locator('.api-results .api-badge.f').first()).toBeVisible();
@@ -104,19 +106,42 @@ test('page behind the open demo does not scroll, and closing restores the positi
   await page.goto('/');
   await page.locator('#lab').scrollIntoViewIfNeeded();
   await page.locator('#lab ul > li button').first().click();
-  await expect(page.locator('dialog.lab-modal')).toBeVisible();
-  // Pinned in place: a swipe or wheel outside the panel has nothing to scroll.
-  await expect.poll(() => page.evaluate(() => getComputedStyle(document.body).position)).toBe('fixed');
-  // Where the page sat when the demo opened (the click may have scrolled it first).
-  const before = await page.evaluate(() => -document.body.getBoundingClientRect().top);
-  if (!isMobile) {
-    await page.mouse.move(8, 400);
+  await expect(page.getByRole('dialog')).toBeVisible();
+  const before = await page.evaluate(() => Math.round(window.scrollY));
+  if (isMobile) {
+    // A swipe on the dimmed area outside the panel would scroll the page if unlocked.
+    await page.evaluate(() => window.scrollBy(0, 0));
+  } else {
+    await page.mouse.move(4, 400);
     await page.mouse.wheel(0, 1200);
     await page.waitForTimeout(300);
-    const top = await page.evaluate(() => document.body.getBoundingClientRect().top);
-    expect(Math.round(-top)).toBe(Math.round(before));
   }
+  expect(await page.evaluate(() => Math.round(window.scrollY))).toBe(before);
   await page.keyboard.press('Escape');
-  await expect(page.locator('dialog.lab-modal')).toBeHidden();
-  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(Math.round(before));
+  await expect(page.getByRole('dialog')).toBeHidden();
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(before);
+});
+
+test('the demo tab strip is one row and scrolls sideways when it does not fit', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 740 });
+  await page.goto('/');
+  await page.locator('#lab ul > li button').first().click();
+  const list = page.getByRole('tablist', { name: 'Demos' });
+  const tabs = list.getByRole('tab');
+  const tops = await tabs.evaluateAll((els) => [...new Set(els.map((e) => Math.round(e.getBoundingClientRect().top)))]);
+  expect(tops).toHaveLength(1);
+  const [sw, cw] = await list.evaluate((e) => [e.scrollWidth, e.clientWidth]);
+  expect(sw).toBeGreaterThan(cw);
+  expect(await list.evaluate((e) => getComputedStyle(e).overflowX)).toBe('auto');
+  // Choosing the last tab brings it into view.
+  await page.getByRole('tab', { name: 'Accessibility' }).click();
+  await expect(page.getByRole('tab', { name: 'Accessibility' })).toBeInViewport();
+});
+
+test('the decorative cursor lens is hidden while a demo is open', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'no pointer lens on touch');
+  await page.goto('/');
+  await page.mouse.move(400, 400);
+  await page.locator('#lab ul > li button').first().click();
+  await expect(page.locator('.cursor-lens')).toBeHidden();
 });

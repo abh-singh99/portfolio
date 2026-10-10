@@ -13,7 +13,7 @@ export function Credentials() {
             <li
               key={c.name}
               className={`flex flex-col items-center gap-1 bg-surface-0 px-6 py-8 text-center ${i === rows.length - 1 && rows.length % 2 ? 'sm:col-span-2' : ''}`}
-              data-reveal
+             
             >
               <p className="text-subheading font-medium text-fg-hi">{c.name}</p>
               <p className="text-label text-fg-muted">{c.issuer}</p>

@@ -1,8 +1,10 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import * as Dialog from '@radix-ui/react-dialog';
+import * as Tabs from '@radix-ui/react-tabs';
 import { testLab, type LabId } from '@/content/lab';
-import { lockScroll, unlockScroll } from '@/lib/scroll';
+import { pauseScroll, resumeScroll } from '@/lib/scroll';
 import { useLab } from './LabProvider';
 import { ApiLab } from './labs/ApiLab';
 import { FunctionalLab } from './labs/FunctionalLab';
@@ -18,108 +20,86 @@ const LABS: Record<LabId, () => React.JSX.Element> = {
   a11y: A11yLab,
 };
 
-// Native <dialog> opened with showModal(): focus is trapped, Esc closes it and
-// the page behind is inert. Focus returns to whatever opened it.
+// Radix owns the behaviour: focus trap, Esc, focus return and page scroll lock
+// (including touch on iOS). The tab strip is one row that scrolls sideways on
+// narrow screens and keeps the active tab in view.
 export function LabModal() {
   const { active, setActive, close } = useLab();
-  const ref = useRef<HTMLDialogElement>(null);
+  const list = useRef<HTMLDivElement>(null);
   const opener = useRef<HTMLElement | null>(null);
-  const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+  const card = testLab.cards.find((c) => c.id === active);
 
   useEffect(() => {
-    const d = ref.current;
-    if (!d) return;
-    if (active && !d.open) {
-      opener.current = document.activeElement as HTMLElement | null;
-      d.showModal();
-      lockScroll();
-    } else if (!active && d.open) {
-      d.close();
-    }
+    if (!active) return;
+    if (!opener.current) opener.current = document.activeElement as HTMLElement | null;
+    pauseScroll();
+    return resumeScroll;
   }, [active]);
 
-  // Never leave the page frozen if the modal unmounts while open.
-  useEffect(() => unlockScroll, []);
-
-  const onClose = () => {
-    unlockScroll();
-    close();
-    opener.current?.focus();
-  };
-
-  const ids = testLab.cards.map((c) => c.id);
-  const card = testLab.cards.find((c) => c.id === active);
-  const Lab = active ? LABS[active] : null;
-
-  const onTabKey = (e: React.KeyboardEvent, i: number) => {
-    const n = e.key === 'ArrowRight' ? (i + 1) % ids.length : e.key === 'ArrowLeft' ? (i - 1 + ids.length) % ids.length : -1;
-    if (n < 0) return;
-    e.preventDefault();
-    setActive(ids[n]);
-    tabs.current[n]?.focus();
-  };
+  useEffect(() => {
+    const el = list.current?.querySelector<HTMLElement>('[data-state="active"]');
+    el?.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'instant' });
+  }, [active]);
 
   return (
-    <dialog
-      ref={ref}
-      className="lab-modal"
-      aria-labelledby="lab-modal-title"
-      onClose={onClose}
-      onClick={(e) => e.target === ref.current && ref.current?.close()}
-    >
-      <div className="flex flex-wrap items-center gap-3 border-b border-line py-3 pr-4 pl-5">
-        <div className="mr-auto flex flex-col">
-          <h2 id="lab-modal-title" className="text-body font-semibold text-fg-hi">
-            {card?.modalTitle}
-          </h2>
-          <p className="font-mono text-caption text-fg-muted">{testLab.simulated}</p>
-        </div>
-        <div
-          role="tablist"
-          aria-label={testLab.tabsLabel}
-          className="order-3 flex w-full max-w-full gap-1 overflow-x-auto rounded-full border border-line bg-surface-1 p-1 md:order-2 md:w-auto"
+    <Dialog.Root open={!!active} onOpenChange={(o) => !o && close()}>
+      <Dialog.Portal>
+        <Dialog.Overlay className="lab-overlay fixed inset-0 z-50" />
+        <Dialog.Content
+          className="lab-modal fixed z-50 flex flex-col"
+          aria-describedby={undefined}
+          onCloseAutoFocus={(e) => {
+            // Opened from a card or button outside Radix: send focus back there.
+            if (opener.current) {
+              e.preventDefault();
+              opener.current.focus();
+              opener.current = null;
+            }
+          }}
         >
-          {testLab.cards.map((c, i) => (
-            <button
-              key={c.id}
-              ref={(el) => {
-                tabs.current[i] = el;
-              }}
-              type="button"
-              role="tab"
-              id={`lab-tab-${c.id}`}
-              aria-selected={active === c.id}
-              aria-controls="lab-panel"
-              tabIndex={active === c.id ? 0 : -1}
-              onClick={() => setActive(c.id)}
-              onKeyDown={(e) => onTabKey(e, i)}
-              className={`flex-none rounded-full px-3 py-1.5 text-label font-semibold ${
-                active === c.id ? 'bg-fg-hi text-surface-0' : 'text-fg-muted hover:text-fg-hi'
-              }`}
-            >
-              {c.tab}
-            </button>
-          ))}
-        </div>
-        <button
-          type="button"
-          onClick={() => ref.current?.close()}
-          aria-label={testLab.close}
-          className="order-2 grid size-10 flex-none place-items-center rounded-full border border-line-hi text-heading leading-none text-fg-hi hover:bg-surface-2 md:order-3"
-        >
-          ×
-        </button>
-      </div>
-      <div
-        id="lab-panel"
-        role="tabpanel"
-        aria-labelledby={active ? `lab-tab-${active}` : undefined}
-        className="lab-modal-body flex flex-col gap-4 overflow-y-auto px-4 pt-4 pb-6 sm:px-5"
-        data-lenis-prevent
-      >
-        {/* Keyed so switching tabs starts each demo fresh and stops its timers. */}
-        {Lab && <Lab key={active} />}
-      </div>
-    </dialog>
+          <Tabs.Root
+            value={active ?? undefined}
+            onValueChange={(v) => setActive(v as LabId)}
+            className="flex min-h-0 flex-1 flex-col"
+          >
+            <div className="flex flex-col border-b border-line">
+              <div className="flex items-center gap-3 px-4 pt-2 sm:px-5 sm:pt-3">
+                <div className="mr-auto flex min-w-0 flex-col">
+                  <Dialog.Title className="text-body font-semibold text-fg-hi">{card?.modalTitle}</Dialog.Title>
+                  <p className="font-mono text-caption text-fg-muted">{testLab.simulated}</p>
+                </div>
+                <Dialog.Close
+                  aria-label={testLab.close}
+                  className="grid size-9 flex-none sm:size-10 place-items-center rounded-full border border-line-hi text-heading leading-none text-fg-hi hover:bg-surface-2"
+                >
+                  ×
+                </Dialog.Close>
+              </div>
+              <Tabs.List ref={list} aria-label={testLab.tabsLabel} className="lab-tabs mt-2 flex overflow-x-auto px-2 sm:px-3">
+                {testLab.cards.map((c) => (
+                  <Tabs.Trigger key={c.id} value={c.id} className="lab-tab shrink-0">
+                    {c.tab}
+                  </Tabs.Trigger>
+                ))}
+              </Tabs.List>
+            </div>
+            {testLab.cards.map((c) => {
+              const Lab = LABS[c.id];
+              return (
+                <Tabs.Content
+                  key={c.id}
+                  value={c.id}
+                  className="lab-modal-body flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-4 pt-4 pb-6 focus-visible:outline-none sm:px-5"
+                  data-lenis-prevent
+                >
+                  {/* Inactive tabs unmount, so each demo starts fresh and its timers stop. */}
+                  <Lab />
+                </Tabs.Content>
+              );
+            })}
+          </Tabs.Root>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   );
 }

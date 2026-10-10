@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="grid gap-4 border-t border-line py-10 lg:grid-cols-12 lg:gap-8" data-reveal>
+    <section className="grid gap-4 border-t border-line py-10 lg:grid-cols-12 lg:gap-8">
       <h2 className="font-display text-bento font-semibold text-fg-hi lg:col-span-4">{title}</h2>
       <div className="lg:col-span-8">{children}</div>
     </section>
@@ -47,7 +47,7 @@ export default async function CaseStudy({ params }: { params: Promise<Params> })
           ← All work
         </Link>
 
-        <header className="flex flex-col items-center gap-6 text-center" data-reveal>
+        <header className="flex flex-col items-center gap-6 text-center">
           <p className="text-eyebrow font-semibold uppercase text-flame">
             {project.id.replace('TC-', '')} / {project.category} · Case study
           </p>
@@ -68,7 +68,7 @@ export default async function CaseStudy({ params }: { params: Promise<Params> })
           project.screenshots && <ProjectStage screens={project.screenshots} label={project.name} />
         )}
 
-        <dl className="grid gap-8 rounded-card border border-line bg-surface-1 p-6 sm:grid-cols-2 sm:p-8 lg:grid-cols-4" data-reveal>
+        <dl className="grid gap-8 rounded-card border border-line bg-surface-1 p-6 sm:grid-cols-2 sm:p-8 lg:grid-cols-4">
           <div className="flex flex-col gap-1">
             <dt className="text-label text-fg-muted">Company</dt>
             <dd className="text-subheading text-fg-hi">{project.company}</dd>

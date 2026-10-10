@@ -14,14 +14,14 @@ export function TestLab() {
     <section id="lab" aria-labelledby="lab-heading" className="scroll-mt-16">
       <Container className="flex flex-col gap-10 pb-24 sm:pb-36">
         <SectionHeading id="lab-heading" eyebrow={testLab.eyebrow} lines={testLab.heading} size="section" align="left" />
-        <p className="max-w-3xl text-lead text-fg-muted" data-reveal>
+        <p className="max-w-3xl text-lead text-fg-muted">
           {testLab.lead}
         </p>
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {testLab.cards.map((c, i) => {
             const Icon = LabIcon[c.id];
             return (
-              <li key={c.id} className="flex" data-reveal>
+              <li key={c.id} className="flex">
                 <button
                   type="button"
                   onClick={() => open(c.id)}

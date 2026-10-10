@@ -12,7 +12,7 @@ export function Experience() {
             <li
               key={`${r.company}-${r.period}`}
               className="flex flex-col items-center gap-3 border-t border-line py-10 text-center last:border-b"
-              data-reveal
+             
             >
               <p className="font-mono text-label text-flame">{r.period}</p>
               <h3 className="font-display text-bento font-semibold text-fg-hi">{r.company}</h3>

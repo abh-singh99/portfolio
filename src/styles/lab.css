@@ -40,30 +40,30 @@
   border-color: var(--color-flame);
 }
 
-/* Modal ------------------------------------------------------------------ */
+/* Modal ------------------------------------------------------------------
+   Centred with inset + auto margins so transform stays free for the entrance.
+   Full screen below sm. */
+.lab-overlay {
+  background: rgb(0 0 0 / 0.62);
+  backdrop-filter: blur(3px);
+}
 .lab-modal {
+  inset: 0;
   width: min(1200px, calc(100vw - 2rem));
-  max-width: none;
+  height: fit-content;
   max-height: calc(100dvh - 2rem);
   margin: auto;
-  padding: 0;
   overflow: hidden;
   border: 1px solid var(--color-line-hi);
   border-radius: calc(var(--radius-card) + 8px);
   background: var(--color-surface-0);
   color: var(--color-fg);
 }
-.lab-modal[open] {
-  display: flex;
-  flex-direction: column;
-  animation: lab-in 450ms var(--ease-expo);
-}
-.lab-modal::backdrop {
-  background: rgb(0 0 0 / 0.62);
-  backdrop-filter: blur(3px);
+.lab-modal[data-state='open'] {
+  animation: lab-in var(--duration-slow) var(--ease-expo);
 }
 @keyframes lab-in {
-  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  from { opacity: 0; transform: translateY(18px) scale(0.98); }
   to { opacity: 1; transform: none; }
 }
 .lab-modal-body {
@@ -72,13 +72,49 @@
 .lab-modal-body > * {
   flex-shrink: 0;
 }
-@media (max-width: 40rem) {
+@media (max-width: 39.999rem) {
   .lab-modal {
     width: 100vw;
     height: 100dvh;
     max-height: 100dvh;
+    border: 0;
     border-radius: 0;
   }
+}
+/* One row of tabs; scrolls sideways when it doesn't fit, with a fade on the
+   trailing edge so it reads as scrollable. Active = underline + colour. */
+.lab-tabs {
+  scrollbar-width: none;
+  mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+}
+.lab-tabs::-webkit-scrollbar { display: none; }
+@media (min-width: 48rem) {
+  .lab-tabs { mask-image: none; }
+}
+.lab-tab {
+  position: relative;
+  min-height: 2.75rem;
+  padding: 0 0.875rem;
+  font: 600 var(--text-label) var(--font-sans);
+  color: var(--color-fg-muted);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.lab-tab:hover { color: var(--color-fg-hi); }
+.lab-tab[data-state='active'] { color: var(--color-fg-hi); }
+.lab-tab[data-state='active']::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0.875rem;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--color-flame);
+}
+.lab-tab:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -4px;
+  border-radius: var(--radius);
 }
 
 /* Coach strip, callouts, pills -------------------------------------------- */
@@ -147,6 +183,12 @@
 .lab-guide.is-done .lab-guide-step {
   color: var(--color-success);
 }
+@media (max-width: 39.999rem) {
+  .lab-guide { gap: 0.125rem 0.625rem; padding: 0.625rem 0.75rem; }
+  .lab-guide-num { width: 1.75rem; height: 1.75rem; font-size: 0.75rem; }
+  .lab-guide-step { font-size: 0.6875rem; }
+  .lab-guide-say { font-size: var(--text-body-sm); }
+}
 .lab-explain {
   padding: 0.75rem 0.875rem;
   border-left: 3px solid var(--color-flame);
@@ -211,6 +253,26 @@
   padding: 0.75rem 0.875rem;
   border-bottom: 1px solid var(--color-line);
 }
+
+/* Disclosure panels: one-line summary, chevron, expands downward. */
+.lab-disclosure > summary {
+  list-style: none;
+  cursor: pointer;
+}
+.lab-disclosure > summary::-webkit-details-marker { display: none; }
+.lab-disclosure > summary::after {
+  content: '';
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-left: 0.25rem;
+  border-right: 2px solid var(--color-fg-muted);
+  border-bottom: 2px solid var(--color-fg-muted);
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform var(--duration-fast, 150ms);
+}
+.lab-disclosure[open] > summary::after { transform: rotate(-135deg) translateY(-2px); }
+.lab-disclosure:not([open]) > summary { border-bottom: 0; }
+.lab-disclosure > summary:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; border-radius: var(--radius-card); }
 
 /* Browser window (generic Chromium-style chrome) ------------------------- */
 .win {
@@ -284,15 +346,24 @@
 .ed-term .r { color: #f14c4c; }
 .ed-term .d { color: #888; }
 .ed-foot { display: flex; flex-wrap: wrap; gap: 12px; padding: 4px 10px; background: #007acc; color: #fff; font-size: 11.5px; }
-@media (max-width: 40rem) {
+.ed-pick { display: none; }
+.ed-pick select { width: 100%; }
+/* Narrow screens: a test picker replaces the list; code and terminal get
+   fixed heights so the driven browser below stays in reach. */
+@media (max-width: 47.999rem) {
   .ed-main { grid-template-columns: 1fr; }
-  .ed-tests { max-height: 150px; border-right: 0; border-bottom: 1px solid #333; }
+  .ed-tests { display: none; }
+  .ed-pick { display: block; flex: 1 1 100%; order: 3; }
+  .ed-bar label:first-child { flex: 1; }
+  .ed-bar label:first-child select { flex: 1; min-width: 0; }
+  .ed-code { max-height: 11rem; }
+  .ed-term { height: 9rem; }
 }
 
 /* API client --------------------------------------------------------------- */
 .api { display: grid; grid-template-columns: 220px minmax(0, 1fr); min-height: 560px; font-size: 13px; }
 .api-side { display: flex; flex-direction: column; gap: 1px; padding: 8px 0; border-right: 1px solid #e3e3e6; background: #fafafa; }
-.api-side-h { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 4px 12px 8px; border-bottom: 1px solid #e3e3e6; margin-bottom: 4px; font-weight: 600; }
+.api-side-h { white-space: nowrap; display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 4px 12px 8px; border-bottom: 1px solid #e3e3e6; margin-bottom: 4px; font-weight: 600; }
 .api-run { border: 0; border-radius: 5px; padding: 4px 9px; background: #1a73e8; color: #fff; font: 600 11.5px var(--font-sans); cursor: pointer; }
 .api-run:disabled { opacity: 0.6; }
 .api-folder { padding: 6px 12px 2px; font-size: 11.5px; color: #5f6368; }
@@ -350,10 +421,19 @@
 .api-runner li { display: grid; grid-template-columns: minmax(0, 1fr) 46px 64px 48px; gap: 10px; align-items: center; padding: 6px 8px; border: 1px solid #ececec; border-radius: 6px; font-size: 12.5px; }
 .api-runner li small { display: block; color: #5f6368; font: 11px var(--font-mono); overflow-wrap: anywhere; }
 .api-runner .why { grid-column: 1 / -1; color: #d93025; font-size: 12px; }
-@media (max-width: 48rem) {
-  .api { grid-template-columns: 1fr; }
-  .api-side { max-height: 200px; overflow: auto; border-right: 0; border-bottom: 1px solid #e3e3e6; }
-  .api-asserts { grid-template-columns: 1fr; }
+/* The picker replaces the sidebar on narrow screens. */
+.api-picker { display: none; }
+@media (max-width: 47.999rem) {
+  .api { grid-template-columns: 1fr; min-height: 0; }
+  .api-side { display: none; }
+  .api-picker { display: flex; gap: 8px; padding: 10px 14px; border-bottom: 1px solid #e3e3e6; background: #fafafa; }
+  .api-picker select { flex: 1; min-width: 0; min-height: 36px; padding: 0 8px; border: 1px solid #d5d8dc; border-radius: 6px; background: #fff; color: #202124; font: 13px var(--font-sans); }
+  .api-picker .api-run { min-height: 36px; padding: 0 12px; }
+  .api-line-grp { flex-basis: 100%; }
+  .api-send { flex: 1; }
+  .api-asserts { grid-template-columns: 1fr 1fr; }
+  .api-asserts label:last-child { grid-column: 1 / -1; }
+  .api-meta { margin-left: 0; }
   .api-runner li { grid-template-columns: minmax(0, 1fr) auto auto; }
   .api-runner li > :nth-child(3) { display: none; }
 }
@@ -459,5 +539,11 @@
 @media (prefers-reduced-motion: reduce) {
   .lab-card, .lab-card-icon, .lab-card-arrow, .lab-cursor { transition: none; }
   .lab-card:hover { transform: none; }
-  .lab-modal[open], .bug-card.is-found, .lab-nudge, .lab-cursor.is-click .ripple { animation: none; }
+  .lab-modal[data-state='open'], .bug-card.is-found, .lab-nudge, .lab-cursor.is-click .ripple { animation: none; }
+}
+
+/* The site's cursor lens blends with whatever is under it; over the white app
+   windows it turns into a black disc. Inside a demo the normal cursor is right. */
+body:has(.lab-modal[data-state='open']) .cursor-lens {
+  display: none;
 }
