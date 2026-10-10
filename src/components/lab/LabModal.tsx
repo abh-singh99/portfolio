@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import { testLab, type LabId } from '@/content/lab';
-import { pauseScroll, resumeScroll } from '@/lib/scroll';
+import { lockScroll, unlockScroll } from '@/lib/scroll';
 import { useLab } from './LabProvider';
 import { ApiLab } from './labs/ApiLab';
 import { FunctionalLab } from './labs/FunctionalLab';
@@ -32,14 +32,17 @@ export function LabModal() {
     if (active && !d.open) {
       opener.current = document.activeElement as HTMLElement | null;
       d.showModal();
-      pauseScroll();
+      lockScroll();
     } else if (!active && d.open) {
       d.close();
     }
   }, [active]);
 
+  // Never leave the page frozen if the modal unmounts while open.
+  useEffect(() => unlockScroll, []);
+
   const onClose = () => {
-    resumeScroll();
+    unlockScroll();
     close();
     opener.current?.focus();
   };

@@ -66,6 +66,9 @@
   from { opacity: 0; transform: translateY(18px) scale(0.97); }
   to { opacity: 1; transform: none; }
 }
+.lab-modal-body {
+  overscroll-behavior: contain;
+}
 .lab-modal-body > * {
   flex-shrink: 0;
 }

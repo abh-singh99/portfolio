@@ -78,7 +78,11 @@ test('Automation: suite fails 6 on build 1.0 and passes on 1.1', async ({ page }
 test('Accessibility: axe finds violations on 1.0 and none on 1.1', async ({ page }) => {
   await openCard(page, /^Accessibility audit/);
   await page.getByRole('button', { name: 'Run scan' }).click();
-  await expect(page.locator('.devtools-list button')).toHaveCount(5, { timeout: 30_000 });
+  // Always flagged on 1.0. Colour contrast can come back as "needs review"
+  // instead of a violation depending on the viewport, so it isn't required here.
+  const list = page.locator('.devtools-list');
+  for (const rule of ['button-name', 'image-alt', 'label', 'link-name'])
+    await expect(list.getByText(`Rule ${rule}`, { exact: false })).toBeVisible({ timeout: 30_000 });
   await page.locator('.devtools-list button').first().click();
   await expect(page.locator('[data-a11y-specimen] [data-hl="true"]')).toHaveCount(1);
   await page.locator('.devtools-bar select').selectOption('1.1');
@@ -94,4 +98,25 @@ test('progress persists and the bug report opens the checkout demo', async ({ pa
   await expect(page.locator('#lab').getByText('✓ Done')).toHaveCount(1);
   await page.getByRole('button', { name: 'Reproduce it in the Test Lab' }).click();
   await expect(page.getByRole('heading', { name: 'Functional testing' })).toBeVisible();
+});
+
+test('page behind the open demo does not scroll, and closing restores the position', async ({ page, isMobile }) => {
+  await page.goto('/');
+  await page.locator('#lab').scrollIntoViewIfNeeded();
+  await page.locator('#lab ul > li button').first().click();
+  await expect(page.locator('dialog.lab-modal')).toBeVisible();
+  // Pinned in place: a swipe or wheel outside the panel has nothing to scroll.
+  await expect.poll(() => page.evaluate(() => getComputedStyle(document.body).position)).toBe('fixed');
+  // Where the page sat when the demo opened (the click may have scrolled it first).
+  const before = await page.evaluate(() => -document.body.getBoundingClientRect().top);
+  if (!isMobile) {
+    await page.mouse.move(8, 400);
+    await page.mouse.wheel(0, 1200);
+    await page.waitForTimeout(300);
+    const top = await page.evaluate(() => document.body.getBoundingClientRect().top);
+    expect(Math.round(-top)).toBe(Math.round(before));
+  }
+  await page.keyboard.press('Escape');
+  await expect(page.locator('dialog.lab-modal')).toBeHidden();
+  await expect.poll(() => page.evaluate(() => Math.round(window.scrollY))).toBe(Math.round(before));
 });
