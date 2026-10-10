@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { setLenis } from '@/lib/scroll';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,6 +19,7 @@ function useSmoothScroll() {
     if (prefersReducedMotion()) return;
 
     const lenis = new Lenis({ anchors: { offset: -72 }, lerp: 0.12 });
+    setLenis(lenis);
     lenis.on('scroll', ScrollTrigger.update);
     const tick = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(tick);
@@ -25,6 +27,7 @@ function useSmoothScroll() {
 
     return () => {
       gsap.ticker.remove(tick);
+      setLenis(null);
       lenis.destroy();
     };
   }, []);

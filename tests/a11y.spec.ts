@@ -21,6 +21,28 @@ for (const theme of ['dark', 'light'] as const) {
   });
 }
 
+// Each Test Lab demo, open in the modal. The accessibility demo's sign-up form
+// is deliberately broken (it is what the visitor audits), so it is excluded.
+for (const theme of ['dark', 'light'] as const) {
+  test(`Test Lab demos have no WCAG A/AA violations, ${theme} theme`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.addInitScript((t) => localStorage.setItem('theme', t), theme);
+    await page.goto('/');
+    await page.locator('#lab ul > li button').first().click();
+    const found: string[] = [];
+    for (const tab of ['Backend', 'Functional', 'Boundary values', 'Automation', 'Accessibility']) {
+      await page.getByRole('tab', { name: tab }).click();
+      const results = await new AxeBuilder({ page })
+        .include('dialog.lab-modal')
+        .exclude('[data-a11y-specimen]')
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
+        .analyze();
+      found.push(...results.violations.map((v) => `${tab} · ${v.id}: ${v.nodes.map((n) => n.target).join(', ')}`));
+    }
+    expect(found).toEqual([]);
+  });
+}
+
 test('no horizontal overflow at 360px', async ({ browser }) => {
   const page = await browser.newPage({ viewport: { width: 360, height: 640 } });
   for (const path of pages.filter((p) => !p.startsWith('/get/'))) {

@@ -101,30 +101,6 @@ export const strengths = {
   ],
 };
 
-export const flowqa = {
-  eyebrow: 'Internal tool',
-  heading: 'FlowQA',
-  lead: 'A record-and-replay automation platform I developed. Record a flow once, run it on any environment, and export it as real Playwright code.',
-  features: [
-    { title: 'Record and replay', body: 'Capture end-to-end flows in the browser and replay them as tests.' },
-    { title: 'Multi-environment runs', body: 'Dev, staging and production, with safeguards on production.' },
-    { title: 'Reusable building blocks', body: 'Shared steps, shared variables and test plan import.' },
-    { title: 'Project health', body: 'A dashboard with run history and reports.' },
-  ],
-  codeCaption: 'Example: a recorded flow exported as a standalone Playwright test',
-  code: `import { test, expect } from '@playwright/test';
-
-test('checkout with a saved part', async ({ page }) => {
-  await page.goto(process.env.BASE_URL!);
-  await page.getByRole('link', { name: 'Parts' }).click();
-  await page.getByRole('button', { name: 'Add to cart' }).first().click();
-  await page.getByRole('link', { name: 'Cart' }).click();
-  await expect(page.getByRole('heading', { name: 'Your cart' })).toBeVisible();
-});`,
-  exportsLabel: 'Exports to',
-  exports: ['TypeScript', 'JavaScript', 'Python'],
-};
-
 export const credentials = {
   eyebrow: 'Credentials',
   heading: 'Certified and still learning.',
