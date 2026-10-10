@@ -21,6 +21,7 @@ export const site = {
   nav: [
     { label: 'Work', href: '/#work' },
     { label: 'About', href: '/#about' },
+    { label: 'Lab', href: '/#lab' },
     { label: 'Experience', href: '/#experience' },
     { label: 'Contact', href: '/#contact' },
   ],

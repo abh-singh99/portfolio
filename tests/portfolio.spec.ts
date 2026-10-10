@@ -6,7 +6,7 @@ test.describe('home', () => {
   test('renders one h1 and every section', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('h1')).toHaveCount(1);
-    for (const id of ['work', 'about', 'strengths', 'flowqa', 'experience', 'credentials', 'contact']) {
+    for (const id of ['work', 'about', 'lab', 'bug-report', 'strengths', 'flowqa', 'experience', 'credentials', 'contact']) {
       await expect(page.locator(`#${id}`)).toBeAttached();
     }
   });
@@ -179,4 +179,11 @@ test.describe('project links', () => {
       }
     }
   });
+});
+
+test('sections follow the agreed order', async ({ page }) => {
+  await page.goto('/');
+  const ids = await page.locator('main > section[id]').evaluateAll((els) => els.map((e) => e.id));
+  const order = ['work', 'about', 'lab', 'bug-report', 'strengths', 'flowqa', 'experience', 'credentials', 'contact'];
+  expect(ids.filter((id) => order.includes(id))).toEqual(order);
 });

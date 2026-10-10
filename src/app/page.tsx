@@ -18,6 +18,7 @@ export default function Home() {
     <>
       <Hero />
       <Marquee />
+      <SelectedWork />
       <About />
       <LabProvider>
         <TestLab />
@@ -25,7 +26,6 @@ export default function Home() {
         <LabModal />
       </LabProvider>
       <PaintStatement />
-      <SelectedWork />
       <Strengths />
       <FlowQASpotlight />
       <Experience />
