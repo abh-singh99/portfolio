@@ -33,6 +33,8 @@ export type Project = {
   name: string;
   summary: string;
   category: string;
+  /** Card tag; defaults to "category · platforms". */
+  tag?: string;
   company: string;
   period: string;
   platforms: string[];
@@ -166,17 +168,18 @@ export const projects: Project[] = [
     },
     id: 'TC-03',
     name: 'FlowQA',
-    summary: 'Record-and-replay test automation platform',
+    summary: 'No-code record-and-replay test automation platform, built in-house for the QA team',
     category: 'Test automation',
     company: 'The Product Highway',
     period: 'Jun 2026 to present',
     platforms: ['Playwright', 'TypeScript'],
+    tag: 'Test automation · Playwright, TypeScript · Internal tool',
     problem:
       'The team needed a faster way to turn manual test flows into automated runs across environments.',
     contribution:
       'Developed the full application with AI-assisted development, on a base framework set up by a teammate.',
     outcome: 'Recorded tests export as standalone Playwright projects for CI pipelines.',
-    metric: { value: '3', label: 'export languages: TS, JS, Python' },
+    metric: { value: '~1,900', label: 'cases recorded for Scuderia (about 1,200 end-to-end, 700 regression)' },
     overview:
       'FlowQA is an internal record-and-replay end-to-end automation platform built on Playwright and TypeScript.',
     role: 'Developer of the full application, handed over for deployment.',
@@ -197,9 +200,9 @@ export const projects: Project[] = [
     ],
     tools: ['Playwright', 'TypeScript', 'Claude Code'],
     results: [
-      'Built multi-environment runs with production safeguards.',
-      'Added reusable steps, shared variables and test plan import.',
-      'Enabled export of recorded tests as standalone Playwright projects.',
+      'Built the test recorder and its assertion tools, so testers create tests by using the app in the browser, with no coding experience needed.',
+      'Built shared steps and shared variables, so a common flow replays before recording and a value is changed once instead of in every test’s .env file. Also built test import, where testers follow the imported steps to record each case, and export of test scripts (TypeScript, JavaScript, Python) and test results.',
+      'Runs the same recorded tests across environments, with control over which steps run where, such as skipping the payment step in production so no real order is created. Used by the QA team and developers on Scuderia and Gray Porter.',
     ],
   },
   {
