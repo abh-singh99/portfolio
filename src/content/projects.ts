@@ -101,9 +101,9 @@ export const projects: Project[] = [
     ],
     tools: ['Postman', 'ClickUp', 'Android', 'iOS', 'Chrome DevTools'],
     results: [
-      'Owned end-to-end testing on real Android and iOS devices, from OTP sign-in through chat, voice rooms, notifications and referrals.',
-      'Treated chat and voice rooms as the critical flow, checking every message state, the hold-to-record gestures, and voice filters, stickers and disappearing messages.',
-      'Defined a blast radius for each release, so regression stayed focused on the affected areas and caught 15–30 bugs per feature release with near-zero regressions.',
+      'Owned end-to-end testing on real Android and iOS devices: OTP sign-in, chat, voice rooms, notifications and referrals.',
+      'Treated chat and voice rooms as the critical flow: every message state, hold-to-record gestures, voice filters, stickers and disappearing messages.',
+      'Scoped regression to each release’s blast radius, catching 15–30 bugs per feature release with near-zero regressions.',
     ],
   },
   {
@@ -150,8 +150,8 @@ export const projects: Project[] = [
     ],
     tools: ['FlowQA', 'Playwright', 'Figma', 'Chrome DevTools'],
     results: [
-      'Ran end-to-end testing on dev and staging from the first build through client UAT handover, finding about 120 bugs along the way.',
-      'Verified the parts catalogue, fitment and search suggestions against the client’s live website, and tested cart and checkout across locations, addresses and test cards, including a hidden-tax mismatch of £7–10 between the price shown and the amount charged.',
+      'Tested end to end on dev and staging from the first build to client UAT handover, finding about 120 bugs.',
+      'Verified the catalogue, fitment and search suggestions against the client’s live site, and tested checkout across locations, addresses and test cards.',
       'Covered Chrome, Edge, Safari and Firefox on desktop, mobile and tablet, and automated the major flows in Playwright.',
     ],
   },
@@ -200,9 +200,9 @@ export const projects: Project[] = [
     ],
     tools: ['Playwright', 'TypeScript', 'Claude Code'],
     results: [
-      'Built the test recorder and its assertion tools, so testers create tests by using the app in the browser, with no coding experience needed.',
-      'Built shared steps and shared variables, so a common flow replays before recording and a value is changed once instead of in every test’s .env file. Also built test import, where testers follow the imported steps to record each case, and export of test scripts (TypeScript, JavaScript, Python) and test results.',
-      'Runs the same recorded tests across environments, with control over which steps run where, such as skipping the payment step in production so no real order is created. Used by the QA team and developers on Scuderia and Gray Porter.',
+      'Built the test recorder and assertion tools, so testers create tests just by using the app in the browser, with no coding needed.',
+      'Built shared steps and variables (a common flow replays before recording, and a value changes once instead of in every test’s .env), plus test import and export of scripts (TS, JS, Python) and results.',
+      'Runs recorded tests across environments with per-step control, such as skipping payment in production so no real order is created.',
     ],
   },
   {
@@ -304,9 +304,9 @@ export const projects: Project[] = [
     ],
     tools: ['Postman', 'Figma', 'Android', 'iOS'],
     results: [
-      'Owned end-to-end testing on real Android and iOS devices, from OTP sign-up and under-18 blocking through profile setup, matching and video chat.',
-      'Validated every screen, including error states, against the Figma designs, and caught 15–20 bugs, mostly design, on an already-stable live app.',
-      'Tested subscriptions with a backend bypass on dev and staging and real payments on live, plus photo and video upload, block, report and account deletion.',
+      'Owned end-to-end testing on real Android and iOS devices: OTP sign-up, under-18 blocking, profile setup, matching and video chat.',
+      'Checked every screen and error state against Figma, catching 15–20 bugs, mostly design, on an already-stable live app.',
+      'Tested subscriptions through a backend bypass on dev and staging and with real payments on live, plus photo and video upload, block, report and account deletion.',
     ],
   },
 ];
