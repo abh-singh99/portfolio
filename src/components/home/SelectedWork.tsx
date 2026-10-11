@@ -53,7 +53,7 @@ function ProjectRow({ p, flip }: { p: Project; flip: boolean }) {
 
       <div className="flex min-w-0 flex-col gap-4">
         <p className="text-eyebrow font-semibold uppercase text-flame">
-          {p.category} · {p.platforms.join(', ')}
+          {p.tag ?? `${p.category} · ${p.platforms.join(', ')}`}
         </p>
         <h3 id={`${p.slug}-title`} className="font-display text-bento font-semibold text-fg-hi">
           {p.name}
