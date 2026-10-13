@@ -3,7 +3,7 @@ import { Marquee } from '@/components/home/Marquee';
 import { About } from '@/components/home/About';
 import { PaintStatement } from '@/components/home/PaintStatement';
 import { SelectedWork } from '@/components/home/SelectedWork';
-import { Strengths } from '@/components/home/Strengths';
+import { Toolkit } from '@/components/home/Toolkit';
 import { Experience } from '@/components/home/Experience';
 import { Credentials } from '@/components/home/Credentials';
 import { Contact } from '@/components/home/Contact';
@@ -18,14 +18,14 @@ export default function Home() {
       <Hero />
       <Marquee />
       <SelectedWork />
-      <About />
+      <Toolkit />
       <LabProvider>
         <TestLab />
         <BugReport />
         <LabModal />
       </LabProvider>
+      <About />
       <PaintStatement />
-      <Strengths />
       <Experience />
       <Credentials />
       <Contact />

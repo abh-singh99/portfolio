@@ -20,8 +20,8 @@ export const site = {
   builtWith: 'AI-built. Human-tested.',
   nav: [
     { label: 'Work', href: '/#work' },
-    { label: 'About', href: '/#about' },
     { label: 'Lab', href: '/#lab' },
+    { label: 'About', href: '/#about' },
     { label: 'Experience', href: '/#experience' },
     { label: 'Contact', href: '/#contact' },
   ],

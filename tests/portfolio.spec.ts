@@ -6,7 +6,7 @@ test.describe('home', () => {
   test('renders one h1 and every section', async ({ page }) => {
     await page.goto('/');
     await expect(page.locator('h1')).toHaveCount(1);
-    for (const id of ['work', 'about', 'lab', 'bug-report', 'strengths', 'experience', 'credentials', 'contact']) {
+    for (const id of ['work', 'toolkit', 'about', 'lab', 'bug-report', 'experience', 'credentials', 'contact']) {
       await expect(page.locator(`#${id}`)).toBeAttached();
     }
   });
@@ -184,14 +184,14 @@ test.describe('project links', () => {
 test('sections follow the agreed order', async ({ page }) => {
   await page.goto('/');
   const ids = await page.locator('main > section[id]').evaluateAll((els) => els.map((e) => e.id));
-  const order = ['work', 'about', 'lab', 'bug-report', 'strengths', 'experience', 'credentials', 'contact'];
+  const order = ['work', 'toolkit', 'lab', 'bug-report', 'about', 'experience', 'credentials', 'contact'];
   expect(ids.filter((id) => order.includes(id))).toEqual(order);
 });
 
 test('content is visible on load without waiting for scroll', async ({ page }) => {
   await page.goto('/');
   // Jump straight down, as a fast flick would, and check nothing is still hidden.
-  for (const id of ['work', 'about', 'lab', 'bug-report', 'experience', 'contact']) {
+  for (const id of ['work', 'toolkit', 'about', 'lab', 'bug-report', 'experience', 'contact']) {
     await page.locator(`#${id}`).evaluate((e) => e.scrollIntoView());
     const hidden = await page.locator(`#${id} h2, #${id} h3, #${id} p`).evaluateAll(
       (els) => els.filter((e) => e.textContent?.trim() && Number(getComputedStyle(e).opacity) < 0.99 && !e.closest('[data-paint]')).length,
