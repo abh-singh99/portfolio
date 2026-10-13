@@ -27,7 +27,10 @@ export const marquee = [
 export const about = {
   eyebrow: 'About me',
   heading: ['Quality is a *process,*', 'not a ~phase.~'],
-  body: 'My path into QA started in operations and data validation at Amazon, where root-cause work on high-volume discrepancies taught me to find exactly where things break. Since 2024 I have tested healthcare, e-commerce and consumer mobile products, and I am ISTQB certified.',
+  body: [
+    'I got into QA tracing high-volume data mismatches to their root cause at Amazon, and I still test by asking exactly where something breaks, and why. Since 2024 I’ve tested an NHS transaction system, a multi-region parts store and two consumer apps on real Android and iOS devices, working across the UI, API and database so bugs get caught where they start, not just where they show up.',
+    'I scope regression to what each release can affect and automate what repeats, which is why I built FlowQA, a no-code test recorder for my team. I’m ISTQB certified, based in Bengaluru and open to QA roles.',
+  ],
   // The four points from Why work with me.
   strengths: [
     {

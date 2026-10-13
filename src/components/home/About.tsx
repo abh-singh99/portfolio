@@ -9,7 +9,13 @@ export function About() {
       <Container className="flex flex-col gap-12 py-24 sm:py-36">
         <div className="flex flex-col gap-8">
           <SectionHeading id="about-heading" eyebrow={about.eyebrow} lines={about.heading} align="left" />
-          <p className="max-w-4xl text-lead text-fg-muted">{about.body}</p>
+          <div className="flex max-w-4xl flex-col gap-5">
+            {about.body.map((p) => (
+              <p key={p} className="text-lead text-fg-muted">
+                {p}
+              </p>
+            ))}
+          </div>
         </div>
         <ol className="grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
           {about.strengths.map((item, i) => (
