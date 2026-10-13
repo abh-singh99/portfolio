@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, JetBrains_Mono } from 'next/font/google';
+import { Inter, Instrument_Serif, JetBrains_Mono, Space_Grotesk } from 'next/font/google';
 import { site } from '@/content/site';
 import { MotionProvider } from '@/providers/MotionProvider';
 import { SkipLink } from '@/components/layout/SkipLink';
@@ -10,6 +10,9 @@ import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const jetbrains = JetBrains_Mono({ subsets: ['latin'], variable: '--font-jetbrains' });
+// Section headings only: a grotesk headline with serif italic accent words.
+const grotesk = Space_Grotesk({ subsets: ['latin'], weight: '700', variable: '--font-grotesk' });
+const serif = Instrument_Serif({ subsets: ['latin'], weight: '400', style: ['normal', 'italic'], variable: '--font-instrument' });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -37,7 +40,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       lang="en"
       data-theme="dark"
       suppressHydrationWarning
-      className={`${inter.variable} ${jetbrains.variable}`}
+      className={`${inter.variable} ${jetbrains.variable} ${grotesk.variable} ${serif.variable}`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />

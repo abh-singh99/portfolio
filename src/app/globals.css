@@ -14,6 +14,9 @@
   --font-sans: var(--font-inter), 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-inter), 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), 'JetBrains Mono', ui-monospace, monospace;
+  /* Section headings: grotesk headline, serif italic for accent words. */
+  --font-heading: var(--font-grotesk), 'Space Grotesk', var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument), 'Instrument Serif', Georgia, serif;
 
   /* Display scale for the portfolio. TPH caps display at 3rem for product UI;
      an editorial page is built on these statements, so they scale up. */
@@ -260,4 +263,53 @@ html.lenis body {
   html {
     scroll-behavior: auto;
   }
+}
+
+/* ---- Mixed-font headings ------------------------------------------------
+   Hero and section headings: a bold grotesk with accent words picked out in
+   content (see src/lib/accents.ts). Body text and card titles stay in Inter. */
+.hd-mix {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+.hd-serif,
+.hd-strike {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.hd-serif {
+  font-size: 1.12em;
+  line-height: 0.9;
+  color: var(--color-flame);
+}
+.hd-strike {
+  font-size: 1.1em;
+  color: var(--color-fg-muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--color-flame);
+  text-decoration-thickness: 0.06em;
+}
+/* Only the fill is cleared: color stays the solid heading colour, so contrast
+   is measured on the stroke you see, and browsers without text-stroke (which
+   also lack text-fill-color) fall back to a solid word. */
+.hd-outline {
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: 1.5px var(--color-fg-hi);
+}
+.hd-pill {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.72em;
+  letter-spacing: -0.02em;
+  padding: 0.05em 0.32em 0.1em;
+  border: 1.5px solid var(--color-flame);
+  border-radius: 0.22em;
+  color: var(--color-flame);
+  vertical-align: 0.06em;
+  white-space: nowrap;
 }

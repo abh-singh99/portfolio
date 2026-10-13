@@ -1,6 +1,7 @@
 import { ImageResponse } from 'next/og';
 import { site } from '@/content/site';
 import { hero } from '@/content/home';
+import { plainText } from '@/lib/accents';
 
 export const alt = `${site.name}, ${site.role}`;
 export const size = { width: 1200, height: 630 };
@@ -35,8 +36,8 @@ export default function OpengraphImage() {
           {`${site.name} · ${site.role}`}
         </div>
         <div style={{ display: 'flex', flexDirection: 'column', fontSize: 96, fontWeight: 600, letterSpacing: -4, lineHeight: 1 }}>
-          {hero.title.map((line, i) => (
-            <span key={line} style={{ color: i === hero.accentLine ? c.flame : c.fgHi }}>
+          {hero.title.map(plainText).map((line, i, all) => (
+            <span key={line} style={{ color: i === all.length - 1 ? c.flame : c.fgHi }}>
               {line}
             </span>
           ))}

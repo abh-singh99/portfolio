@@ -1,6 +1,6 @@
 export const experience = {
   eyebrow: 'Experience',
-  heading: 'Where I’ve worked.',
+  heading: 'Where I’ve *worked.*',
   roles: [
     {
       title: 'QA Engineer',
