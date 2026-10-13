@@ -315,13 +315,14 @@ html.lenis body {
 }
 
 /* ---- Film grain ---------------------------------------------------------
-   One fixed layer of SVG fractal noise over the page. It sits above the nav
-   (z-40) and under the Test Lab modal (z-50), ignores the pointer, and never
-   repaints on scroll. Off for reduced transparency and forced colours. */
+   One fixed layer of SVG fractal noise on the page ground only. z-index -1
+   puts it above the body background (painted on the canvas) and below all
+   content, so text, images and cards stay clean. It ignores the pointer and
+   never repaints on scroll. Off for reduced transparency and forced colours. */
 .grain {
   position: fixed;
   inset: 0;
-  z-index: 45;
+  z-index: -1;
   pointer-events: none;
   opacity: 0.04;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
