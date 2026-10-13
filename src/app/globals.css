@@ -302,6 +302,10 @@ html.lenis body {
   paint-order: stroke fill;
 }
 .hd-pill {
+  /* inline-block so the padded border takes up line height; a plain inline
+     box overlaps the next line when the heading wraps. */
+  display: inline-block;
+  line-height: 1.1;
   font-family: var(--font-mono);
   font-weight: 500;
   font-size: 0.72em;
