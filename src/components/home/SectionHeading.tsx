@@ -1,4 +1,5 @@
 import { Eyebrow } from '@/components/ui';
+import { Accents } from '@/components/Accents';
 
 // Eyebrow plus a large statement heading. Lines render as blocks so each
 // phrase breaks where the copy says, not where the measure falls.
@@ -19,10 +20,10 @@ export function SectionHeading({
   return (
     <div className={`flex flex-col gap-4 ${align === 'center' ? 'items-center text-center' : ''}`}>
       <Eyebrow>{eyebrow}</Eyebrow>
-      <h2 id={id} className={`font-display font-semibold text-fg-hi ${size === 'statement' ? 'text-statement' : 'text-section'}`}>
+      <h2 id={id} className={`hd-mix text-fg-hi ${size === 'statement' ? 'text-statement' : 'text-section'}`}>
         {list.map((l) => (
           <span key={l} className="block">
-            {l}
+            <Accents text={l} />
           </span>
         ))}
       </h2>

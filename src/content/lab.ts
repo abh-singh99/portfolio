@@ -6,7 +6,7 @@ export type LabId = 'api' | 'functional' | 'boundary' | 'automation' | 'a11y';
 
 export const testLab = {
   eyebrow: 'Test Lab',
-  heading: ['Don’t take my word for it.', 'Test it yourself.'],
+  heading: ['Don’t take my *word* for it.', 'Test it _yourself._'],
   lead: 'Five working demos of how I test, on a fictional parts shop with real defects planted in it. Explore it by hand, design the test cases, then run the automated suite.',
   simulated: 'Simulated · runs in your browser',
   close: 'Close demo',
@@ -104,7 +104,7 @@ export const a11yLab = {
 /* ---------------------------------------------------------- Bug report */
 export const bugReport = {
   eyebrow: 'Bug report',
-  heading: ['A bug report', 'I would send.'],
+  heading: ['A `bug report` I would *send.*'],
   lead: 'Clear reports get bugs fixed the first time. This one is BUG-05 from the Test Lab checkout, so you can reproduce it yourself.',
   id: 'BUG-05',
   title: 'VAT is charged on the full subtotal instead of the discounted amount',

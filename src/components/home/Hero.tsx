@@ -2,6 +2,7 @@ import { hero } from '@/content/home';
 import { site } from '@/content/site';
 import { Eyebrow, Pill } from '@/components/ui';
 import { PerspectiveGrid } from '@/components/PerspectiveGrid';
+import { Accents } from '@/components/Accents';
 
 export function Hero() {
   return (
@@ -14,10 +15,10 @@ export function Hero() {
       {/* Text lets the pointer through to the grid; only the buttons catch it. */}
       <div className="pointer-events-none relative z-10 flex max-w-5xl flex-col items-center gap-6 text-center">
         <Eyebrow>{hero.eyebrow}</Eyebrow>
-        <h1 id="hero-heading" className="font-display text-hero font-semibold text-fg-hi">
-          {hero.title.map((line, i) => (
-            <span key={line} className={`block ${i === hero.accentLine ? 'text-flame' : ''}`}>
-              {line}
+        <h1 id="hero-heading" className="hd-mix text-hero text-fg-hi">
+          {hero.title.map((line) => (
+            <span key={line} className="block">
+              <Accents text={line} />
             </span>
           ))}
         </h1>
