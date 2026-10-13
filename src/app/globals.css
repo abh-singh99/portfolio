@@ -14,8 +14,7 @@
   --font-sans: var(--font-inter), 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-inter), 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), 'JetBrains Mono', ui-monospace, monospace;
-  /* Section headings: grotesk headline, serif italic for accent words. */
-  --font-heading: var(--font-grotesk), 'Space Grotesk', var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  /* Serif italic for accent words in headings. */
   --font-serif: var(--font-instrument), 'Instrument Serif', Georgia, serif;
 
   /* Display scale for the portfolio. TPH caps display at 3rem for product UI;
@@ -266,13 +265,12 @@ html.lenis body {
 }
 
 /* ---- Mixed-font headings ------------------------------------------------
-   Hero and section headings: a bold grotesk with accent words picked out in
-   content (see src/lib/accents.ts). Body text and card titles stay in Inter. */
+   Hero and section headings stay in the site's Inter, with accent words picked
+   out in content (see src/lib/accents.ts). */
 .hd-mix {
-  font-family: var(--font-heading);
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 1.02;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.03em;
   text-wrap: balance;
 }
 .hd-serif,
@@ -294,12 +292,14 @@ html.lenis body {
   text-decoration-color: var(--color-flame);
   text-decoration-thickness: 0.06em;
 }
-/* Only the fill is cleared: color stays the solid heading colour, so contrast
-   is measured on the stroke you see, and browsers without text-stroke (which
-   also lack text-fill-color) fall back to a solid word. */
+/* Stroke painted first, then the letters filled with the page ground: the
+   fill covers the stroke inside each glyph, including where the variable
+   font's contours overlap, leaving a clean outer outline. Both outlined words
+   sit on surface-0. */
 .hd-outline {
-  -webkit-text-fill-color: transparent;
-  -webkit-text-stroke: 1.5px var(--color-fg-hi);
+  -webkit-text-fill-color: var(--color-surface-0);
+  -webkit-text-stroke: 3px var(--color-fg-hi);
+  paint-order: stroke fill;
 }
 .hd-pill {
   font-family: var(--font-mono);
