@@ -153,7 +153,7 @@ test.describe('project links', () => {
     for (const p of projects.filter((p) => p.link?.kind === 'soon')) {
       const note = p.link!.kind === 'soon' ? p.link!.note : '';
       await expect(async () => {
-        await page.getByRole('button', { name: `${p.name}: Coming soon` }).click();
+        await page.getByRole('button', { name: `${p.name}: Launching soon` }).click();
         await expect(page.getByRole('status').filter({ hasText: note })).toBeVisible({ timeout: 1000 });
       }).toPass();
     }

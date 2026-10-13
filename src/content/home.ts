@@ -62,7 +62,7 @@ export const work = {
   summaryLabel: 'Test summary',
   visitLabel: 'Visit site',
   appLabel: 'Get the app',
-  soonLabel: 'Coming soon',
+  soonLabel: 'Launching soon',
   newTab: 'opens in a new tab',
 };
 
