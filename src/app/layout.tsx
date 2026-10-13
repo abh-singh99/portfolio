@@ -51,6 +51,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <main id="main">{children}</main>
           <Footer />
         </MotionProvider>
+        {/* Film grain over the page; see .grain in globals.css. */}
+        <div className="grain" aria-hidden="true" />
         <CursorLens />
       </body>
     </html>
