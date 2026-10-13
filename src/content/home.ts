@@ -28,8 +28,12 @@ export const about = {
   eyebrow: 'About me',
   heading: ['Quality is a *process,*', 'not a ~phase.~'],
   body: 'My path into QA started in operations and data validation at Amazon, where root-cause work on high-volume discrepancies taught me to find exactly where things break. Since 2024 I have tested healthcare, e-commerce and consumer mobile products, and I am ISTQB certified.',
-  // What sets the work apart; ownership end to end is told by the projects.
+  // The four points from Why work with me.
   strengths: [
+    {
+      title: 'I own the whole path',
+      body: 'From early builds to the Play Store and App Store, and every release after launch.',
+    },
     {
       title: 'Suites that scale',
       body: 'From 60–80 cases per feature up to a ~2,000 case end-to-end suite written from Figma.',
