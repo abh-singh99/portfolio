@@ -104,7 +104,8 @@ export const a11yLab = {
 /* ---------------------------------------------------------- Bug report */
 export const bugReport = {
   eyebrow: 'Bug report',
-  heading: ['A `bug report` I would *send.*'],
+  // Non-breaking spaces keep “I would send.” on one line when the heading wraps.
+  heading: ['A `bug report` I\u00a0would\u00a0*send.*'],
   lead: 'Clear reports get bugs fixed the first time. This one is BUG-05 from the Test Lab checkout, so you can reproduce it yourself.',
   id: 'BUG-05',
   title: 'VAT is charged on the full subtotal instead of the discounted amount',
