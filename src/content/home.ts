@@ -28,8 +28,8 @@ export const about = {
   eyebrow: 'About me',
   heading: ['Quality is a *process,*', 'not a ~phase.~'],
   body: [
-    'I got into QA tracing high-volume data mismatches to their root cause at Amazon, and I still test by asking exactly where something breaks, and why. Since 2024 I’ve tested an NHS transaction system, a multi-region parts store and two consumer apps on real Android and iOS devices, working across the UI, API and database so bugs get caught where they start, not just where they show up.',
-    'I scope regression to what each release can affect and automate what repeats, which is why I built FlowQA, a no-code test recorder for my team. I’m ISTQB certified, based in Bengaluru and open to QA roles.',
+    'Quality isn’t a check you do once before launch. It’s a habit that runs through every stage: reading requirements and designs for gaps, testing the first build, checking the APIs and data underneath, and re-testing with every release that follows.',
+    'It started at Amazon, where tracing data discrepancies to their root cause taught me to ask where something actually breaks, and why. I carry that into every product I test, so a bug gets fixed once, at its source, and a test makes sure it stays fixed.',
   ],
   // The four points from Why work with me.
   strengths: [
