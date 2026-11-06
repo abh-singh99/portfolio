@@ -26,7 +26,7 @@ export function TestLab() {
                   type="button"
                   onClick={() => open(c.id)}
                   aria-label={`${c.title}: ${c.body}`}
-                  className="lab-card relative flex w-full flex-col gap-4 rounded-card border border-line bg-surface-0 p-5 text-left"
+                  className="lab-card glass relative flex w-full flex-col gap-4 rounded-card p-5 text-left"
                 >
                   <span className="lab-card-icon grid size-11 place-items-center rounded-card bg-flame/15 text-flame">
                     <Icon />

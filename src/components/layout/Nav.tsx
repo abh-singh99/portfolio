@@ -35,37 +35,32 @@ export function Nav() {
 
   useEffect(() => setOpen(false), [pathname]);
 
-  // Stacked and transparent over the hero, as in the reference; once the page
-  // scrolls it folds into a solid bar so it never sits on top of content.
+  // Transparent over the hero; once the page scrolls it turns into a frosted
+  // bar so the glow still shows through but text underneath never clashes.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
+    const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-40">
+    <header className="fixed inset-x-0 top-0 z-40">
       <div
         data-scrolled={scrolled || undefined}
-        className={`pointer-events-auto flex items-center justify-between border-b px-4 py-3 transition-colors sm:px-8 ${
+        className={`border-b transition-[background-color,border-color,backdrop-filter] duration-300 ${
           scrolled
-            ? 'border-line bg-surface-0'
-            : 'border-line bg-surface-0 sm:pointer-events-none sm:items-start sm:border-transparent sm:bg-transparent sm:pt-7'
+            ? 'border-line bg-surface-0/70 backdrop-blur-xl backdrop-saturate-150'
+            : 'border-transparent bg-transparent'
         }`}
       >
-        <Link
-          href="/"
-          className="pointer-events-auto rounded text-heading font-semibold tracking-tight text-fg-hi"
-        >
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-8 sm:py-4">
+        <Link href="/" className="rounded text-heading font-semibold tracking-tight text-fg-hi">
           {site.shortName}
           <span className="text-flame">.</span>
         </Link>
 
-        <nav
-          aria-label="Primary"
-          className={`pointer-events-auto hidden sm:flex ${scrolled ? 'flex-row items-center gap-4' : 'flex-col items-end'}`}
-        >
+        <nav aria-label="Primary" className="hidden items-center gap-1 sm:flex">
           {site.nav.map((item) => {
             const id = item.href.split('#')[1];
             const isActive = active === id;
@@ -74,29 +69,25 @@ export function Nav() {
                 key={item.href}
                 href={item.href}
                 aria-current={isActive ? 'true' : undefined}
-                className="flex min-h-6 items-center gap-2 rounded px-1 py-1 text-label font-medium uppercase tracking-wide text-fg-hi hover:text-flame"
+                className={`relative rounded px-3 py-2 text-label font-medium transition-colors hover:text-fg-hi ${isActive ? 'text-fg-hi' : 'text-fg-muted'}`}
               >
-                <span
-                  aria-hidden="true"
-                  className={`size-1.5 rounded-full bg-current transition-opacity ${isActive ? 'opacity-100' : scrolled ? 'hidden' : 'opacity-0'}`}
-                />
                 {item.label}
+                <span aria-hidden="true" className="nav-underline absolute inset-x-3 -bottom-px h-0.5 rounded-full bg-flame" />
               </Link>
             );
           })}
-          <div className={`flex items-center gap-1 ${scrolled ? '' : 'mt-2'}`}>
-            <a
-              href={site.resume.href}
-              download
-              className="inline-flex min-h-6 items-center rounded px-1 py-1 text-label font-medium uppercase tracking-wide text-link hover:text-link-hi"
-            >
-              CV
-            </a>
-            <ThemeToggle />
-          </div>
+          <span aria-hidden="true" className="mx-2 h-5 w-px bg-line-hi/40" />
+          <a
+            href={site.resume.href}
+            download
+            className="glow-cta inline-flex min-h-9 items-center rounded-full border border-line-hi px-4 text-label font-semibold text-fg-hi hover:border-flame"
+          >
+            CV
+          </a>
+          <ThemeToggle />
         </nav>
 
-        <div className="pointer-events-auto flex items-center gap-1 sm:hidden">
+        <div className="flex items-center gap-1 sm:hidden">
           <ThemeToggle />
           <button
             type="button"
@@ -109,13 +100,14 @@ export function Nav() {
             {open ? 'Close' : 'Menu'}
           </button>
         </div>
+        </div>
       </div>
 
       {open && (
         <nav
           id="mobile-nav"
           aria-label="Primary"
-          className="pointer-events-auto mx-4 mt-3 flex flex-col rounded-card border border-line bg-surface-1 p-2 sm:hidden"
+          className="glass mx-4 mt-3 flex flex-col rounded-card p-2 sm:hidden"
         >
           {site.nav.map((item) => (
             <Link

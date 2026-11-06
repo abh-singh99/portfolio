@@ -3,7 +3,7 @@ import { Container } from '@/components/layout/Container';
 
 export function PaintStatement() {
   return (
-    <section aria-label="Approach" className="bg-surface-1">
+    <section aria-label="Approach" className="border-y border-line bg-surface-1/30">
       <Container className="py-28 sm:py-40">
         <p data-paint className="max-w-5xl font-display text-statement font-bold text-fg-hi">
           {statement.split(' ').map((w, i) => (

@@ -6,6 +6,7 @@ import { SkipLink } from '@/components/layout/SkipLink';
 import { Nav } from '@/components/layout/Nav';
 import { CursorLens } from '@/components/layout/CursorLens';
 import { Footer } from '@/components/layout/Footer';
+import { AmbientGlow } from '@/components/layout/AmbientGlow';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
+        <AmbientGlow />
         <SkipLink />
         <MotionProvider>
           <Nav />

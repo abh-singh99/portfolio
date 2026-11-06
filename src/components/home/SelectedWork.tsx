@@ -10,7 +10,7 @@ import { SectionHeading } from './SectionHeading';
 // run summary, in the same slot the screens take. Reads only from projects.ts.
 function TestSummary({ p }: { p: Project }) {
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-card border border-line bg-surface-1">
+    <div className="glass flex h-full flex-col overflow-hidden rounded-card">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line px-5 py-4 sm:px-7">
         <p className="font-mono text-label text-fg-muted">
           {p.id} · {work.summaryLabel}

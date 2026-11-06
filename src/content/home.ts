@@ -8,6 +8,12 @@ export const hero = {
     'QA Engineer in Bengaluru. I test mobile and web products end to end, from first build to store launch, with manual, API and automation testing.',
   proof: ['3,000+ test cases written', '5 products', '2 store launches'],
   availability: 'Open to QA roles',
+  badge: 'Open to QA roles · Bengaluru',
+  // Typed one after another under the heading.
+  rolesLead: 'Hands-on with',
+  roles: ['manual testing', 'API testing', 'Playwright automation', 'mobile app testing', 'accessibility audits'],
+  rolesLabel: 'Hands-on with manual, API, Playwright, mobile and accessibility testing.',
+  chips: ['Playwright', 'Selenium', 'Postman', 'SQL', 'TypeScript'],
 };
 
 export const marquee = [
@@ -30,6 +36,12 @@ export const about = {
   body: [
     'Quality isn’t a check you do once before launch. It’s a habit that runs through every stage: reading requirements and designs for gaps, testing the first build, checking the APIs and data underneath, and re-testing with every release that follows.',
     'It started at Amazon, where tracing data discrepancies to their root cause taught me to ask where something actually breaks, and why. I carry that into every product I test, so a bug gets fixed once, at its source, and a test makes sure it stays fixed.',
+  ],
+  // Counted up as the cards come into view.
+  stats: [
+    { value: 3000, suffix: '+', label: 'Test cases written', body: 'Across web, mobile and API suites', icon: 'cases' },
+    { value: 5, suffix: '', label: 'Products tested', body: 'Healthcare, e-commerce and consumer apps', icon: 'products' },
+    { value: 2, suffix: '', label: 'Store launches', body: 'Play Store and App Store, first build to release', icon: 'launch' },
   ],
   // The four points from Why work with me.
   strengths: [

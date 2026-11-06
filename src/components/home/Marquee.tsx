@@ -15,7 +15,7 @@ export function Marquee() {
     </ul>
   );
   return (
-    <section aria-label="Tools I use" className="marquee overflow-hidden border-y border-line bg-surface-1 py-8 sm:py-10">
+    <section aria-label="Tools I use" className="marquee overflow-hidden border-y border-line bg-surface-1/40 backdrop-blur-sm py-8 sm:py-10">
       <div className="marquee-track">
         {row(false)}
         {row(true)}

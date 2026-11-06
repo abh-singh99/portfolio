@@ -12,18 +12,20 @@ type PillProps = {
   variant?: 'solid' | 'outline';
   download?: boolean;
   arrow?: boolean;
+  /** Flame glow on hover; keep to the one primary action in a region. */
+  glow?: boolean;
   /** Full accessible name; must start with the visible label (WCAG 2.5.3). */
   ariaLabel?: string;
 };
 
 // Pill-shaped link button. One solid pill per region; the rest are outline.
-export function Pill({ href, children, variant = 'outline', download, arrow, ariaLabel }: PillProps) {
+export function Pill({ href, children, variant = 'outline', download, arrow, glow, ariaLabel }: PillProps) {
   const base =
     'pointer-events-auto inline-flex items-center gap-3 rounded-full px-5 py-3 text-label font-semibold';
   const look =
     variant === 'solid'
       ? 'bg-accent text-accent-on hover:bg-accent-hi'
-      : 'border border-line-hi text-fg-hi hover:bg-surface-2';
+      : 'glass border-line-hi text-fg-hi hover:bg-surface-2';
   const content = (
     <>
       <span>{children}</span>
@@ -39,7 +41,7 @@ export function Pill({ href, children, variant = 'outline', download, arrow, ari
       )}
     </>
   );
-  const className = `${base} ${look}`;
+  const className = `${base} ${look} ${glow ? 'glow-cta' : ''}`;
   if (download || href.endsWith('.pdf')) {
     return (
       <a href={href} download={download} aria-label={ariaLabel} data-press className={className}>
