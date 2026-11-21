@@ -83,49 +83,60 @@ export function ProjectCarousel({ items, children }: { items: Item[]; children: 
     }
   };
 
-  const arrow =
-    'grid size-11 place-items-center rounded-full border border-line-hi text-fg-hi transition-colors hover:border-flame hover:text-flame aria-disabled:opacity-35 aria-disabled:hover:border-line-hi aria-disabled:hover:text-fg-hi';
+  // Streaming-app style: an arrow sits over each edge of the rail on a fade,
+  // and shows while the pointer is over the rail (or the arrow has focus).
+  // At either end its arrow stays focusable but is marked aria-disabled, so a
+  // keyboard user never loses focus. Touch screens swipe instead.
+  const edge = (side: 'left' | 'right') =>
+    `rail-arrow absolute inset-y-0 z-10 hidden w-[var(--rail-gutter)] min-w-16 items-center opacity-0 transition-opacity duration-300 group-hover/rail:opacity-100 focus-visible:opacity-100 aria-disabled:pointer-events-none aria-disabled:!opacity-0 aria-disabled:focus-visible:!opacity-40 ${
+      side === 'left'
+        ? 'left-0 justify-start bg-gradient-to-r from-surface-0 via-surface-0/70 to-transparent pl-4 sm:pl-6'
+        : 'right-0 justify-end bg-gradient-to-l from-surface-0 via-surface-0/70 to-transparent pr-4 sm:pr-6'
+    }`;
+  const chevron = (d: string) => (
+    <span className="grid size-12 place-items-center rounded-full border border-line-hi bg-surface-0/80 text-fg-hi shadow-lg backdrop-blur transition-[transform,color,border-color] duration-200 group-hover/arrow:scale-110 group-hover/arrow:border-flame group-hover/arrow:text-flame">
+      <svg aria-hidden="true" viewBox="0 0 16 16" className="size-5" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d={d} strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </span>
+  );
 
   return (
     <div role="region" aria-roledescription="carousel" aria-label="Projects" className="flex flex-col gap-6" onKeyDown={onKey}>
+      {/* Full bleed: the rail spans the viewport, so cards scroll in from the
+          right edge and out past the left edge; the padding and snap padding
+          keep the resting card aligned with the content column. */}
+      <div className="project-rail group/rail relative">
+        <button type="button" onClick={prev} aria-disabled={atStart || undefined} aria-label="Previous project" className={`group/arrow ${edge('left')}`}>
+          {chevron('M10 3.5 5.5 8l4.5 4.5')}
+        </button>
+
+        <div ref={track} className="project-track flex snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain pb-2 sm:gap-5">
+          {children.map((child, i) => (
+            <div
+              key={items[i].slug}
+              id={`slide-${items[i].slug}`}
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${i + 1} of ${items.length}: ${items[i].name}`}
+              className="flex w-[86vw] shrink-0 snap-start sm:w-[58vw] lg:w-[min(34rem,38vw)] [&>*]:w-full"
+            >
+              {child}
+            </div>
+          ))}
+        </div>
+
+        <button type="button" onClick={next} aria-disabled={atEnd || undefined} aria-label="Next project" className={`group/arrow ${edge('right')}`}>
+          {chevron('M6 3.5 10.5 8 6 12.5')}
+        </button>
+      </div>
+
       <div className="flex items-center justify-between gap-4">
         <p className="font-mono text-label text-fg-muted" aria-live="polite">
           <span className="text-fg-hi">{String(index + 1).padStart(2, '0')}</span> / {String(items.length).padStart(2, '0')}
           <span className="sr-only">: {items[index].name}</span>
         </p>
-        <div className="flex gap-2">
-          <button type="button" onClick={prev} aria-disabled={atStart || undefined} aria-label="Previous project" data-press className={arrow}>
-            <svg aria-hidden="true" viewBox="0 0 16 16" className="size-4" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M10 3.5 5.5 8l4.5 4.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-          <button type="button" onClick={next} aria-disabled={atEnd || undefined} aria-label="Next project" data-press className={arrow}>
-            <svg aria-hidden="true" viewBox="0 0 16 16" className="size-4" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M6 3.5 10.5 8 6 12.5" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <div
-        ref={track}
-        className="project-track -mx-4 flex snap-x snap-mandatory scroll-px-4 gap-4 overflow-x-auto overscroll-x-contain px-4 pb-2 sm:-mx-8 sm:scroll-px-8 sm:gap-5 sm:px-8 lg:mr-[calc(50%-50vw)]"
-      >
-        {children.map((child, i) => (
-          <div
-            key={items[i].slug}
-            id={`slide-${items[i].slug}`}
-            role="group"
-            aria-roledescription="slide"
-            aria-label={`${i + 1} of ${items.length}: ${items[i].name}`}
-            className="flex w-[86%] shrink-0 snap-start sm:w-[58%] lg:w-[38%] [&>*]:w-full"
-          >
-            {child}
-          </div>
-        ))}
-      </div>
-
-      <div className="project-dots flex justify-center gap-1">
+      <div className="project-dots flex gap-1">
         {items.map((it, i) => (
           <button
             key={it.slug}
@@ -142,6 +153,7 @@ export function ProjectCarousel({ items, children }: { items: Item[]; children: 
             />
           </button>
         ))}
+      </div>
       </div>
     </div>
   );

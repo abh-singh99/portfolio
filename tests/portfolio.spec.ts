@@ -201,21 +201,32 @@ test('content is visible on load without waiting for scroll', async ({ page }) =
 });
 
 test.describe('project carousel', () => {
-  test('arrows, dots and keys move along the rail', async ({ page }) => {
+  test('edge arrows, dots and keys move along the rail', async ({ page, isMobile }) => {
     await page.goto('/');
     const carousel = page.getByRole('region', { name: 'Projects' });
     const current = carousel.locator('.project-dots [aria-current="true"]');
+    const last = projects[projects.length - 1];
+    await expect(current).toHaveAccessibleName(`Go to ${projects[0].name}`);
+
+    if (isMobile) {
+      // Touch screens swipe; the edge arrows are for hover pointers only.
+      await expect(carousel.getByRole('button', { name: 'Next project' })).toBeHidden();
+      await carousel.getByRole('button', { name: `Go to ${projects[2].name}` }).click();
+      await expect(current).toHaveAccessibleName(`Go to ${projects[2].name}`);
+      return;
+    }
+
     const prev = carousel.getByRole('button', { name: 'Previous project' });
     const next = carousel.getByRole('button', { name: 'Next project' });
-
-    await expect(current).toHaveAccessibleName(`Go to ${projects[0].name}`);
     await expect(prev).toHaveAttribute('aria-disabled', 'true');
 
+    // The arrows fade in while the pointer is over the rail.
+    await carousel.locator('.project-track').hover();
+    await expect(next).toHaveCSS('opacity', '1');
     await next.click();
     await expect(current).toHaveAccessibleName(`Go to ${projects[1].name}`);
     await expect(prev).not.toHaveAttribute('aria-disabled');
 
-    const last = projects[projects.length - 1];
     await carousel.getByRole('button', { name: `Go to ${last.name}` }).click();
     await expect(current).toHaveAccessibleName(`Go to ${last.name}`);
     await expect(next).toHaveAttribute('aria-disabled', 'true');
@@ -225,5 +236,19 @@ test.describe('project carousel', () => {
     await page.keyboard.press('ArrowLeft');
     await expect(next).not.toHaveAttribute('aria-disabled');
     await expect(current).not.toHaveAccessibleName(`Go to ${last.name}`);
+  });
+
+  test('rail runs edge to edge with the first card on the content column', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto('/');
+    const box = await page.evaluate(() => {
+      const t = document.querySelector('.project-track')!.getBoundingClientRect();
+      const card = document.querySelector('.project-track > *')!.getBoundingClientRect();
+      const heading = document.getElementById('work-heading')!.closest('div')!.getBoundingClientRect();
+      return { left: t.left, right: t.right, card: card.left, column: heading.left, vw: document.documentElement.clientWidth };
+    });
+    expect(box.left).toBeLessThanOrEqual(0);
+    expect(box.right).toBeGreaterThanOrEqual(box.vw);
+    expect(Math.abs(box.card - box.column)).toBeLessThan(2);
   });
 });

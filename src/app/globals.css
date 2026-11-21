@@ -336,14 +336,28 @@ html.lenis body {
 }
 
 /* ---- Project carousel ----------------------------------------------------
-   Native scroll-snap rail; scrollbar hidden because arrows, dots and swipe
-   drive it. On large screens the rail runs to the viewport's right edge so
-   the next card peeks in instead of being cut at the content column. */
+   Native scroll-snap rail, full bleed: --rail-gutter is the distance from the
+   viewport edge to the content column (Container: max-w-6xl, px-4 / sm:px-8),
+   so the rail pulls out to both screen edges while the resting card lines up
+   with the column. Scrollbar hidden: arrows, dots and swipe drive it. */
+.project-rail {
+  --rail-gutter: calc(max(0px, (100vw - 72rem) / 2) + 1rem);
+  margin-inline: calc(-1 * var(--rail-gutter));
+}
+@media (min-width: 40rem) {
+  .project-rail { --rail-gutter: calc(max(0px, (100vw - 72rem) / 2) + 2rem); }
+}
 .project-track {
+  padding-inline: var(--rail-gutter);
+  scroll-padding-inline: var(--rail-gutter);
   scrollbar-width: none;
 }
 .project-track::-webkit-scrollbar {
   display: none;
+}
+/* Edge arrows need a pointer that hovers; touch screens swipe. */
+@media (hover: hover) and (pointer: fine) {
+  .rail-arrow { display: flex; }
 }
 @media (prefers-reduced-motion: reduce) {
   .project-track { scroll-behavior: auto; }
