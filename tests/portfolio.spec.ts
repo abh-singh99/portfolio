@@ -201,22 +201,29 @@ test('content is visible on load without waiting for scroll', async ({ page }) =
 });
 
 test.describe('project carousel', () => {
-  test('tabs, arrows and keys move between every project', async ({ page }) => {
+  test('arrows, dots and keys move along the rail', async ({ page }) => {
     await page.goto('/');
     const carousel = page.getByRole('region', { name: 'Projects' });
-    const current = carousel.locator('.project-picker [aria-current="true"]');
-    await expect(current).toContainText(projects[0].name);
+    const current = carousel.locator('.project-dots [aria-current="true"]');
+    const prev = carousel.getByRole('button', { name: 'Previous project' });
+    const next = carousel.getByRole('button', { name: 'Next project' });
 
-    await carousel.getByRole('button', { name: 'Next project' }).click();
-    await expect(current).toContainText(projects[1].name);
+    await expect(current).toHaveAccessibleName(`Go to ${projects[0].name}`);
+    await expect(prev).toHaveAttribute('aria-disabled', 'true');
 
-    await carousel.getByRole('button', { name: 'Previous project' }).click();
-    await carousel.getByRole('button', { name: 'Previous project' }).click();
-    await expect(current).toContainText(projects[projects.length - 1].name);
+    await next.click();
+    await expect(current).toHaveAccessibleName(`Go to ${projects[1].name}`);
+    await expect(prev).not.toHaveAttribute('aria-disabled');
 
-    await carousel.locator('.project-picker').getByRole('button', { name: new RegExp(projects[2].name) }).click();
-    await expect(current).toContainText(projects[2].name);
-    await page.keyboard.press('ArrowRight');
-    await expect(current).toContainText(projects[3].name);
+    const last = projects[projects.length - 1];
+    await carousel.getByRole('button', { name: `Go to ${last.name}` }).click();
+    await expect(current).toHaveAccessibleName(`Go to ${last.name}`);
+    await expect(next).toHaveAttribute('aria-disabled', 'true');
+
+    // Focus stays on the arrow at the end, and Left steps back from there.
+    await next.focus();
+    await page.keyboard.press('ArrowLeft');
+    await expect(next).not.toHaveAttribute('aria-disabled');
+    await expect(current).not.toHaveAccessibleName(`Go to ${last.name}`);
   });
 });

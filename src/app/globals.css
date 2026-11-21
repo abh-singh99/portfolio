@@ -336,14 +336,13 @@ html.lenis body {
 }
 
 /* ---- Project carousel ----------------------------------------------------
-   Native scroll-snap track; scrollbars hidden because tabs, arrows and swipe
-   drive it. */
-.project-track,
-.project-picker {
+   Native scroll-snap rail; scrollbar hidden because arrows, dots and swipe
+   drive it. On large screens the rail runs to the viewport's right edge so
+   the next card peeks in instead of being cut at the content column. */
+.project-track {
   scrollbar-width: none;
 }
-.project-track::-webkit-scrollbar,
-.project-picker::-webkit-scrollbar {
+.project-track::-webkit-scrollbar {
   display: none;
 }
 @media (prefers-reduced-motion: reduce) {

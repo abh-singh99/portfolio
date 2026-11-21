@@ -41,36 +41,36 @@ function Visual({ p }: { p: Project }) {
   return <TestSummary p={p} />;
 }
 
-// One slide: screens on the left, the story on the right.
-function ProjectSlide({ p }: { p: Project }) {
+// One card in the rail: screens on top, then the story in brief.
+function ProjectCard({ p }: { p: Project }) {
   return (
     <article
       aria-labelledby={`${p.slug}-title`}
-      className="grid items-center gap-8 rounded-card border border-line bg-surface-1/40 p-4 sm:p-6 lg:grid-cols-[7fr_5fr] lg:gap-12 lg:p-8"
+      className="flex flex-col gap-5 rounded-card border border-line bg-surface-1/40 p-3 transition-colors hover:border-line-hi sm:p-4"
     >
       <div className="min-w-0">
         <Visual p={p} />
       </div>
 
-      <div className="flex min-w-0 flex-col gap-4">
+      <div className="flex min-w-0 flex-1 flex-col gap-3 px-2 pb-2">
         <p className="text-eyebrow font-semibold uppercase text-flame">
           {p.tag ?? `${p.category} · ${p.platforms.join(', ')}`}
         </p>
-        <h3 id={`${p.slug}-title`} className="font-display text-bento font-semibold text-fg-hi">
+        <h3 id={`${p.slug}-title`} className="font-display text-title font-semibold text-fg-hi">
           {p.name}
         </h3>
-        <p className="text-body text-fg-muted">{p.summary}.</p>
-        <ul className="flex flex-col gap-2.5">
-          {p.results.slice(0, 3).map((r) => (
-            <li key={r} className="grid grid-cols-[0.625rem_1fr] items-baseline gap-3 text-body-sm text-fg">
-              <span aria-hidden="true" className="size-2 -translate-y-0.5 rounded-sm bg-flame" />
+        <p className="text-body-sm text-fg-muted">{p.summary}.</p>
+        <ul className="flex flex-col gap-2">
+          {p.results.slice(0, 2).map((r) => (
+            <li key={r} className="grid grid-cols-[0.5rem_1fr] items-baseline gap-2.5 text-body-sm text-fg">
+              <span aria-hidden="true" className="size-1.5 -translate-y-0.5 rounded-sm bg-flame" />
               {r}
             </li>
           ))}
         </ul>
-        <p className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-          <span className="font-mono text-title font-medium whitespace-nowrap text-flame tabular-nums">{p.metric.value}</span>
-          <span className="font-mono text-label uppercase tracking-wide text-fg-muted">{p.metric.label}</span>
+        <p className="mt-auto flex flex-wrap items-baseline gap-x-3 gap-y-1 border-t border-line pt-4">
+          <span className="font-mono text-heading font-medium whitespace-nowrap text-flame tabular-nums">{p.metric.value}</span>
+          <span className="font-mono text-caption uppercase tracking-wide text-fg-muted">{p.metric.label}</span>
         </p>
       </div>
     </article>
@@ -79,19 +79,14 @@ function ProjectSlide({ p }: { p: Project }) {
 
 export function SelectedWork() {
   return (
-    <section id="work" aria-labelledby="work-heading" className="scroll-mt-16">
+    <section id="work" aria-labelledby="work-heading" className="scroll-mt-16 overflow-x-clip">
       <Container className="flex flex-col gap-12 pt-24 pb-12 sm:gap-16 sm:pt-36 sm:pb-16">
         <SectionHeading id="work-heading" eyebrow={work.eyebrow} lines={work.heading} />
         <ProjectCarousel
-          items={projects.map((p) => ({
-            slug: p.slug,
-            name: p.name,
-            metric: p.metric.value,
-            tag: p.tag ?? `${p.category} · ${p.platforms.join(', ')}`,
-          }))}
+          items={projects.map((p) => ({ slug: p.slug, name: p.name }))}
         >
           {projects.map((p) => (
-            <ProjectSlide key={p.slug} p={p} />
+            <ProjectCard key={p.slug} p={p} />
           ))}
         </ProjectCarousel>
       </Container>
