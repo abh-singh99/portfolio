@@ -334,3 +334,18 @@ html.lenis body {
 @media (prefers-reduced-transparency: reduce), (forced-colors: active) {
   .grain { display: none; }
 }
+
+/* ---- Project carousel ----------------------------------------------------
+   Native scroll-snap track; scrollbars hidden because tabs, arrows and swipe
+   drive it. */
+.project-track,
+.project-picker {
+  scrollbar-width: none;
+}
+.project-track::-webkit-scrollbar,
+.project-picker::-webkit-scrollbar {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .project-track { scroll-behavior: auto; }
+}

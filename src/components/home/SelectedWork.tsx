@@ -5,6 +5,7 @@ import { ProjectVideo } from '@/components/ProjectVideo';
 import { ProjectStage } from '@/components/ProjectStage';
 import { ProjectLink } from '@/components/ProjectLink';
 import { SectionHeading } from './SectionHeading';
+import { ProjectCarousel } from './ProjectCarousel';
 
 // For projects without screens yet: the test strategy, laid out like a test
 // run summary, in the same slot the screens take. Reads only from projects.ts.
@@ -40,14 +41,14 @@ function Visual({ p }: { p: Project }) {
   return <TestSummary p={p} />;
 }
 
-// Screens on one side, the story on the other; sides alternate per project.
-function ProjectRow({ p, flip }: { p: Project; flip: boolean }) {
+// One slide: screens on the left, the story on the right.
+function ProjectSlide({ p }: { p: Project }) {
   return (
     <article
       aria-labelledby={`${p.slug}-title`}
-      className={`grid items-start gap-10 lg:gap-14 ${flip ? 'lg:grid-cols-[5fr_7fr]' : 'lg:grid-cols-[7fr_5fr]'}`}
+      className="grid items-center gap-8 rounded-card border border-line bg-surface-1/40 p-4 sm:p-6 lg:grid-cols-[7fr_5fr] lg:gap-12 lg:p-8"
     >
-      <div className={`min-w-0 lg:sticky lg:top-24 ${flip ? 'lg:order-2' : ''}`}>
+      <div className="min-w-0">
         <Visual p={p} />
       </div>
 
@@ -79,11 +80,20 @@ function ProjectRow({ p, flip }: { p: Project; flip: boolean }) {
 export function SelectedWork() {
   return (
     <section id="work" aria-labelledby="work-heading" className="scroll-mt-16">
-      <Container className="flex flex-col gap-20 pt-24 pb-12 sm:gap-28 sm:pt-36 sm:pb-16">
+      <Container className="flex flex-col gap-12 pt-24 pb-12 sm:gap-16 sm:pt-36 sm:pb-16">
         <SectionHeading id="work-heading" eyebrow={work.eyebrow} lines={work.heading} />
-        {projects.map((p, i) => (
-          <ProjectRow key={p.slug} p={p} flip={i % 2 === 1} />
-        ))}
+        <ProjectCarousel
+          items={projects.map((p) => ({
+            slug: p.slug,
+            name: p.name,
+            metric: p.metric.value,
+            tag: p.tag ?? `${p.category} · ${p.platforms.join(', ')}`,
+          }))}
+        >
+          {projects.map((p) => (
+            <ProjectSlide key={p.slug} p={p} />
+          ))}
+        </ProjectCarousel>
       </Container>
     </section>
   );

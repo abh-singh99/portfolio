@@ -199,3 +199,24 @@ test('content is visible on load without waiting for scroll', async ({ page }) =
     expect(hidden, `#${id}`).toBe(0);
   }
 });
+
+test.describe('project carousel', () => {
+  test('tabs, arrows and keys move between every project', async ({ page }) => {
+    await page.goto('/');
+    const carousel = page.getByRole('region', { name: 'Projects' });
+    const current = carousel.locator('.project-picker [aria-current="true"]');
+    await expect(current).toContainText(projects[0].name);
+
+    await carousel.getByRole('button', { name: 'Next project' }).click();
+    await expect(current).toContainText(projects[1].name);
+
+    await carousel.getByRole('button', { name: 'Previous project' }).click();
+    await carousel.getByRole('button', { name: 'Previous project' }).click();
+    await expect(current).toContainText(projects[projects.length - 1].name);
+
+    await carousel.locator('.project-picker').getByRole('button', { name: new RegExp(projects[2].name) }).click();
+    await expect(current).toContainText(projects[2].name);
+    await page.keyboard.press('ArrowRight');
+    await expect(current).toContainText(projects[3].name);
+  });
+});
